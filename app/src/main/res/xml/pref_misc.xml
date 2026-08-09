@@ -174,19 +174,22 @@
             android:entries="@array/pref_display_sf_renderengine_backend"
             android:entryValues="@array/pref_display_sf_renderengine_backend_values"
             android:key="key_display_sf_renderengine_backend"
-            android:title="Render Engine" />
+            android:title="Render Engine"
+            android:summary="Reboot is required to apply it" />
         <ListPreference
             android:defaultValue=""
             android:entries="@array/pref_display_hwui_backend"
             android:entryValues="@array/pref_display_hwui_backend_values"
             android:key="key_display_sf_hwui_backend"
-            android:title="Render Hardware UI" />
+            android:title="Render Hardware UI"
+            android:summary="Reboot is required to apply it" />
         <ListPreference
             android:defaultValue="kawase"
             android:entries="@array/pref_display_sf_blur_algorithm"
             android:entryValues="@array/pref_display_sf_blur_algorithm_values"
             android:key="key_display_sf_blur_algorithm"
-            android:title="Blur Mecanism" />
+            android:title="Blur Mecanism"
+            android:summary="Reboot is required to apply it" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Backlight">
         <SwitchPreference
@@ -201,7 +204,7 @@
             android:defaultValue="false"
             android:key="key_misc_disable_buttons_backlight"
             android:title="Disable backlight of hardware buttons if present"
-            android:summary="Requires a reboot" />
+            android:summary="Reboot is required to apply it" />
         <SwitchPreference
             android:defaultValue="false"
             android:key="key_misc_backlight_scale"
