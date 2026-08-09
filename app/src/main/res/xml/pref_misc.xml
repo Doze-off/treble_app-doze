@@ -51,6 +51,12 @@
             through the phone speaker." />
     </PreferenceCategory>
     <PreferenceCategory android:title="User interface">
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_misc_scroll_boost"
+            android:title="Scroll Boost"
+            android:summary="Improves scrolling smoothness by applying a temporary performance boost during scroll gestures. On heavier apps, it may use a more aggressive performance profile depending on vendor support. On low-RAM devices, this may increase memory pressure and reduce smoothness in some situations." />
         <EditTextPreference
             android:defaultValue="-1"
             android:key="key_misc_rounded_corners"

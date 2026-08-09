@@ -65,6 +65,7 @@ object MiscSettings : Settings {
     val TrafficFix = "key_misc_traffic_indicator"
     val SafeMedia = "key_misc_safe_media"
     val A2dpAddr = "key_misc_a2dp_identity"
+    val ScrollBoost = "key_misc_scroll_boost"
 
     override fun enabled() = true
 }
