@@ -7,6 +7,8 @@ import android.os.SystemProperties
 object Tools {
     lateinit var audioManager: AudioManager
     val vendorFp = SystemProperties.get("ro.vendor.build.fingerprint")
+    val productBd = SystemProperties.get("ro.product.board")
+    val productDc = SystemProperties.get("ro.product.device")
     val vendorFpLow = vendorFp.toLowerCase()
     val deviceId = SystemProperties.get("ro.build.overlay.deviceid")
 

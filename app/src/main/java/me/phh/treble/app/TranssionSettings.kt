@@ -6,8 +6,10 @@ object TranssionSettings : Settings {
     val usbOtg = "key_transsion_usb_otg"
     val dt2w = "key_transsion_dt2w"
 
-    override fun enabled() = Tools.vendorFp.startsWith("Infinix/") || Tools.vendorFp.startsWith("TECNO/")
-        || Tools.vendorFp.startsWith("Itel/")
+    override fun enabled() = Tools.vendorFp.startsWith("Infinix/") ||
+        Tools.vendorFp.startsWith("TECNO/") ||
+        Tools.vendorFp.startsWith("Itel/") ||
+        Tools.vendorFp.startsWith("google/")
 }
 
 class TranssionSettingsFragment : SettingsFragment() {
