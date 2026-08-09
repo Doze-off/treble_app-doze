@@ -69,6 +69,9 @@ object MiscSettings : Settings {
     val AxionProps = "key_misc_axion_props"
     val unisocColorTransform = "key_misc_unisoc_color_transform"
     val bluetoothFix =  "key_misc_bluetooth_fix"
+    val sfBlurAlgorithm = "key_display_sf_blur_algorithm"
+    val sfRenderEngineBackend = "key_display_sf_renderengine_backend"
+    val sfHwuiBackend = "key_display_sf_hwui_backend"
 
     override fun enabled() = true
 }

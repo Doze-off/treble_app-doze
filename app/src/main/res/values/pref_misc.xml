@@ -82,4 +82,42 @@
       <item>"24"</item>
       <item>"32"</item>
     </array>
+    <array name="pref_display_sf_blur_algorithm">
+      <item>"Disabled"</item>
+      <item>"Gaussian"</item>
+      <item>"Kawase"</item>
+      <item>"kawase2"</item>
+      <item>"kawase2_fix_aliasing"</item>
+    </array>
+    <array name="pref_display_sf_blur_algorithm_values">
+      <item>"disabled"</item>
+      <item>"gaussian"</item>
+      <item>"kawase"</item>
+      <item>"kawase2"</item>
+      <item>"kawase2_fix_aliasing"</item>
+    </array>
+    <array name="pref_display_sf_renderengine_backend">
+      <item>"Don't override"</item>
+      <item>"SkiaGL"</item>
+      <item>"SkiaGL (threaded)"</item>
+      <item>"SkiaVK"</item>
+      <item>"SkiaVK (threaded)"</item>
+    </array>
+    <array name="pref_display_sf_renderengine_backend_values">
+      <item>""</item>
+      <item>"skiagl"</item>
+      <item>"skiaglthreaded"</item>
+      <item>"skiavk"</item>
+      <item>"skiavkthreaded"</item>
+    </array>
+    <array name="pref_display_hwui_backend">
+      <item>"Don't override"</item>
+      <item>"SkiaGL"</item>
+      <item>"SkiaVK"</item>
+    </array>
+    <array name="pref_display_hwui_backend_values">
+      <item>""</item>
+      <item>"skiagl"</item>
+      <item>"skiavk"</item>
+    </array>
 </resources>

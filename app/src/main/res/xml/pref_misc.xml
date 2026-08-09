@@ -169,6 +169,24 @@
             android:key="key_misc_unisoc_color_transform"
             android:title="Unisoc black screen workaround"
             android:summary="Enables a workaround for black screen issues on some Unisoc devices. May affect color-based display features. Requires framework support. Applies instantly" />
+        <ListPreference
+            android:defaultValue=""
+            android:entries="@array/pref_display_sf_renderengine_backend"
+            android:entryValues="@array/pref_display_sf_renderengine_backend_values"
+            android:key="key_display_sf_renderengine_backend"
+            android:title="Render Engine" />
+        <ListPreference
+            android:defaultValue=""
+            android:entries="@array/pref_display_hwui_backend"
+            android:entryValues="@array/pref_display_hwui_backend_values"
+            android:key="key_display_sf_hwui_backend"
+            android:title="Render Hardware UI" />
+        <ListPreference
+            android:defaultValue="kawase"
+            android:entries="@array/pref_display_sf_blur_algorithm"
+            android:entryValues="@array/pref_display_sf_blur_algorithm_values"
+            android:key="key_display_sf_blur_algorithm"
+            android:title="Blur Mecanism" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Backlight">
         <SwitchPreference

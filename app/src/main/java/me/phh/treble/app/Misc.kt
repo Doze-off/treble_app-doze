@@ -446,6 +446,18 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.bluetooth_fix", if (value) "true" else "false")
             }
+            MiscSettings.sfBlurAlgorithm -> {
+                val value = sp.getString(key, "kawase")
+                SystemProperties.set("persist.sys.phh.sf.background_blur", value)
+            }
+            MiscSettings.sfRenderEngineBackend -> {
+                val value = sp.getString(key, "")
+                SystemProperties.set("persist.sys..phh.sf.renderengine.backend", value)
+            }
+            MiscSettings.sfHwuiBackend -> {
+                val value = sp.getString(key, "")
+                SystemProperties.set("persist.sys.phh.sf.debug.renderengine.backend", value)
+            }
         }
     }
 
