@@ -28,6 +28,7 @@ object MiscSettings : Settings {
     val removeTelephony = "key_misc_removetelephony"
     val disableAudioEffects = "key_misc_disable_audio_effects"
     val disableFastAudio = "key_misc_disable_fast_audio"
+    val lmkTweaks = "key_misc_lmk_tweaks"
     val cameraTimestampOverride = "key_misc_camera_timestamp"
     val sysbta = "key_misc_dynamic_sysbta"
     val noHwcomposer = "key_misc_no_hwcomposer"

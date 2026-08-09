@@ -215,6 +215,10 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.disable_fast_audio", if (value) "1" else "0")
             }
+            MiscSettings.lmkTweaks -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.lmk_tweaks", if (value) "true" else "false")
+            }
             MiscSettings.sysbta -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.bluetooth.system_audio_hal.enabled", if (value) "true" else "false")

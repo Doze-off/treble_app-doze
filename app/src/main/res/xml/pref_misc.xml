@@ -32,6 +32,10 @@
             android:defaultValue="false"
             android:key="key_misc_disable_fast_audio"
             android:title="Disable fast audio" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="key_misc_lmk_tweaks"
+            android:title="Aggressive memory management (lmk tweaks)" />
     </PreferenceCategory>
     <PreferenceCategory android:title="User interface">
         <EditTextPreference
