@@ -72,6 +72,9 @@ object MiscSettings : Settings {
     val sfBlurAlgorithm = "key_display_sf_blur_algorithm"
     val sfRenderEngineBackend = "key_display_sf_renderengine_backend"
     val sfHwuiBackend = "key_display_sf_hwui_backend"
+    val sfAutoLatchUnsignaled = "key_misc_sf_auto_latch_unsignaled"
+    val sfDisableBackpressure = "key_misc_sf_disable_backpressure"
+    val sfLatchUnsignaled = "key_misc_sf_latch_unsignaled"
 
     override fun enabled() = true
 }
