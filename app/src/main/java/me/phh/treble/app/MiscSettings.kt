@@ -66,6 +66,7 @@ object MiscSettings : Settings {
     val SafeMedia = "key_misc_safe_media"
     val A2dpAddr = "key_misc_a2dp_identity"
     val ScrollBoost = "key_misc_scroll_boost"
+    val AxionProps = "key_misc_axion_props"
 
     override fun enabled() = true
 }

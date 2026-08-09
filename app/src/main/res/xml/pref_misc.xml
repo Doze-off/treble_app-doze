@@ -307,6 +307,11 @@
             android:defaultValue="false"
             android:key="key_misc_lmk_tweaks"
             android:title="Aggressive memory management (lmk tweaks)" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="key_misc_axion_props"
+            android:title="Axion props"
+            android:summary="enable axion props" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Debugging">
         <Preference android:title="Debug Sensors">

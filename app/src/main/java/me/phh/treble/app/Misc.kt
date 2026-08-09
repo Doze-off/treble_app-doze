@@ -434,6 +434,10 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.scroll_boost", if (value) "true" else "false")
             }
+            MiscSettings.AxionProps -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.axion_props", if (value) "true" else "false")
+            }
         }
     }
 
