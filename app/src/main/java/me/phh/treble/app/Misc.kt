@@ -394,6 +394,10 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.securize", if (value) "1" else "0")
             }
+            MiscSettings.activityAnimPerfOverride -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.activity_anim_perf_override", if (value) "true" else "false")
+            }
             MiscSettings.disableLeApcfExtended -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.bt.le.disable_apcf_extended_features", if (value) "1" else "0")
