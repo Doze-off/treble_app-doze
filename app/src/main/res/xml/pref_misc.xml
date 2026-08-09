@@ -42,6 +42,13 @@
             android:key="key_misc_safe_media"
             android:title="Safe Media Volume Bypas"
             android:summary="disable framework safe media volume checks, warnings, and volume clamping." />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="key_misc_a2dp_identity"
+            android:title="A2dp Identity address"
+            android:summary="Some devices connect over Bluetooth correctly, but fail to expose the A2DP
+            output route to AudioPolicyManager, causing media audio to continue playing
+            through the phone speaker." />
     </PreferenceCategory>
     <PreferenceCategory android:title="User interface">
         <EditTextPreference

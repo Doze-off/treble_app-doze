@@ -64,6 +64,7 @@ object MiscSettings : Settings {
     val treatVirtualSensorsAsReal = "key_misc_treat_virtual_sensors_as_real"
     val TrafficFix = "key_misc_traffic_indicator"
     val SafeMedia = "key_misc_safe_media"
+    val A2dpAddr = "key_misc_a2dp_identity"
 
     override fun enabled() = true
 }
