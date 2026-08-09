@@ -6,13 +6,17 @@
     android:sharedUserId="android.uid.system">
 
 
-    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
-    <uses-permission android:name="android.permission.DIAGNOSTIC" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.DIAGNOSTIC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
     <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -28,7 +32,7 @@
         <uses-library android:name="vendor.qti.hardware.radio.am.V1_0" android:required="false"/>
         <uses-library android:name="vendor.qti.qcril.am.V1_0" android:required="false"/>
 
-        <service android:name=".EntryService" />
+        <service android:name=".EntryService" android:foregroundServiceType="connectedDevice" />
         <service android:name=".NubiaAutoFanControlService" />
 
         <service
