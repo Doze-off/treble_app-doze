@@ -205,10 +205,6 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.dynamic_fps", if (value) "1" else "0")
             }
-            MiscSettings.remotectl -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.remote", if (value) "true" else "false")
-            }
             MiscSettings.disableAudioEffects -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.disable_audio_effects", if (value) "1" else "0")
@@ -339,6 +335,10 @@ object Misc: EntryStartup {
             MiscSettings.escoTransportUnitSize -> {
                 val value = sp.getString(key, "0")
                 SystemProperties.set("persist.sys.bt.esco_transport_unit_size", value)
+            }
+            MiscSettings.securize -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.securize", if (value) "1" else "0")
             }
             MiscSettings.secureAdb -> {
                 val value = sp.getBoolean(key, false)

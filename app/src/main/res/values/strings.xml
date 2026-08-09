@@ -4,7 +4,6 @@
     <string name="title_activity_top_level">TrebleDroid Settings</string>
     <string name="desc_activity_top_level">Device specific settings</string>
     <string name="remove_telephony_subsystem">Remove Telephony Subsystem</string>
-    <string name="remove_root">Remove Root</string>
     <string name="continue_question">Continue?</string>
     <string name="title_activity_updater">Updater</string>
     <string name="update_not_found_title">Your system is up to date</string>
