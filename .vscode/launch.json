@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch TrebleApp",
+      "type": "android",
+      "request": "launch",
+      "app": "me.phh.treble.app",
+      "activity": ".SettingsActivity",
+      "adbExecutable": "adb",
+      "preLaunchTask": "Gradle: Build Debug APK"
+    }
+  ]
+}
