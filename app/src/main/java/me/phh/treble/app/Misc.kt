@@ -452,7 +452,7 @@ object Misc: EntryStartup {
             }
             MiscSettings.sfRenderEngineBackend -> {
                 val value = sp.getString(key, "")
-                SystemProperties.set("persist.sys..phh.sf.renderengine.backend", value)
+                SystemProperties.set("persist.sys.phh.sf.renderengine.backend", value)
             }
             MiscSettings.sfHwuiBackend -> {
                 val value = sp.getString(key, "")
