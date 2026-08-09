@@ -1,45 +1,67 @@
-name: Build
+name: Build TrebleApp
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          persist-credentials: true
 
-    - name: Setup Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: "temurin"
-        java-version: "17"
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
 
-    - name: Get latest commit hash
-      id: latest_commit
-      run: echo "hash=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: Get source commit hash
+        id: latest_commit
+        run: |
+          echo "hash=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
-    - name: Build APK
-      run: |
-        bash build.sh release
+      - name: Allow build script execution
+        run: chmod +x build.sh
 
-    - name: Upload build artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: TrebleApp
-        path: TrebleApp.apk
+      - name: Build release APK
+        run: |
+          bash build.sh release
 
-    - name: Update APK
-      run: |
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        git config --global credential.helper cache
-        git clone https://${{ secrets.TREBLEDROID_TOKEN }}@github.com/TrebleDroid/vendor_hardware_overlay
-        cd vendor_hardware_overlay
-        git checkout pie
-        cp ../TrebleApp.apk TrebleApp/app.apk
-        git add TrebleApp/app.apk
-        git commit -m "Up TrebleApp to TrebleDroid/treble_app@${{ steps.latest_commit.outputs.hash }}"
-        git push origin pie || true
+      - name: Verify APK
+        run: |
+          test -f TrebleApp.apk
+          ls -lh TrebleApp.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TrebleApp
+          path: TrebleApp.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit APK to repository root
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add TrebleApp.apk
+
+          if git diff --cached --quiet; then
+            echo "TrebleApp.apk não foi alterado; nenhum commit será criado."
+            exit 0
+          fi
+
+          git commit -m "Update TrebleApp.apk (${{ steps.latest_commit.outputs.hash }}) [skip ci]"
+          git push origin HEAD:master
