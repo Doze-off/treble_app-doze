@@ -418,6 +418,10 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.virtual_sensors_are_real", if (value) "1" else "0")
             }
+            MiscSettings.TrafficFix -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.traffic_indicator_fallback", if (value) "true" else "false")
+            }
         }
     }
 

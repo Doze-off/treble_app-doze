@@ -62,6 +62,7 @@ object MiscSettings : Settings {
     val escoTransportUnitSize = "key_misc_esco_transport_unit_size"
     val disableLeApcfExtended = "key_misc_disable_le_apcfe"
     val treatVirtualSensorsAsReal = "key_misc_treat_virtual_sensors_as_real"
+    val TrafficFix = "key_misc_traffic_indicator"
 
     override fun enabled() = true
 }
