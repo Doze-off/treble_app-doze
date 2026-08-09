@@ -143,7 +143,13 @@ class ImsSettingsFragment : SettingsFragment() {
 
             downloadRequest.setDestinationInExternalFilesDir(activity, Environment.DIRECTORY_DOWNLOADS, "ims.apk")
 
-            val myId = dm!!.enqueue(downloadRequest)
+            val myId: Long
+            try {
+                myId = dm!!.enqueue(downloadRequest)
+            } catch (e: Exception) {
+                Toast.makeText(activity, "IMS download failed: " + e.message, Toast.LENGTH_LONG).show()
+                return@setOnPreferenceClickListener true
+            }
 
             activity.registerReceiver(object: BroadcastReceiver() {
                 override fun onReceive(context: Context, intent: Intent) {
