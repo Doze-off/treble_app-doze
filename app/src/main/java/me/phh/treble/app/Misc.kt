@@ -442,6 +442,10 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.unisoc_color_transform_workaround", if (value) "true" else "false")
             }
+            MiscSettings.bluetoothFix -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.bluetooth_fix", if (value) "true" else "false")
+            }
         }
     }
 

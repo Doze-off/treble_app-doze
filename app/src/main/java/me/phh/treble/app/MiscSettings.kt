@@ -68,6 +68,7 @@ object MiscSettings : Settings {
     val ScrollBoost = "key_misc_scroll_boost"
     val AxionProps = "key_misc_axion_props"
     val unisocColorTransform = "key_misc_unisoc_color_transform"
+    val bluetoothFix =  "key_misc_bluetooth_fix"
 
     override fun enabled() = true
 }
