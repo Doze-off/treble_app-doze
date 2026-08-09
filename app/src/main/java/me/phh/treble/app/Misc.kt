@@ -143,6 +143,8 @@ object Misc: EntryStartup {
                 if (value >= 0) {
                     Settings.Secure.putInt(c.contentResolver, "sysui_rounded_content_padding", value)
                     SystemProperties.set("persist.sys.phh.rounded_corners_padding", value.toString())
+            } else {
+                    SystemProperties.set("persist.sys.phh.rounded_corners_padding", null)
                 }
             }
             MiscSettings.roundedCornersOverlay -> {
@@ -301,6 +303,54 @@ object Misc: EntryStartup {
             MiscSettings.allowBinderThread -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.allow_binder_thread_on_incoming_calls", if(value) "1" else "0")
+            }
+            MiscSettings.statusbarpaddingtop -> {
+                val value = sp.getString(key, "-1").toInt()
+                if(value != -1) {
+                SystemProperties.set("persist.sys.phh.status_bar_padding_top", value.toString())
+                } else {
+                    SystemProperties.set("persist.sys.phh.status_bar_padding_top", null)
+                }
+            }
+            MiscSettings.statusbarpaddingstart -> {
+                val value = sp.getString(key, "-1").toInt()
+                if(value != -1) {
+                SystemProperties.set("persist.sys.phh.status_bar_padding_start", value.toString())
+                } else {
+                    SystemProperties.set("persist.sys.phh.status_bar_padding_start", null)
+                }
+            }
+            MiscSettings.statusbarpaddingend -> {
+                val value = sp.getString(key, "-1").toInt()
+                if(value != -1) {
+                SystemProperties.set("persist.sys.phh.status_bar_padding_end", value.toString())
+                } else {
+                    SystemProperties.set("persist.sys.phh.status_bar_padding_end", null)
+                }
+            }
+            MiscSettings.statusbarpaddingbottom -> {
+                val value = sp.getString(key, "-1").toInt()
+                if(value != -1) {
+                SystemProperties.set("persist.sys.phh.status_bar_padding_bottom", value.toString())
+                } else {
+                    SystemProperties.set("persist.sys.phh.status_bar_padding_bottom", null)
+                }
+            }
+            MiscSettings.qsclockleftpadding -> {
+                val value = sp.getString(key, "-1").toInt()
+                if(value != -1) {
+                    SystemProperties.set("persist.sys.phh.qs_clock_left_padding", value.toString())
+                } else {
+                    SystemProperties.set("persist.sys.phh.qs_clock_left_padding", null)
+                }
+            }
+            MiscSettings.qsclockrightpadding -> {
+                val value = sp.getString(key, "-1").toInt()
+                if(value != -1) {
+                    SystemProperties.set("persist.sys.phh.qs_clock_right_padding", value.toString())
+                } else {
+                    SystemProperties.set("persist.sys.phh.qs_clock_right_padding", null)
+                }
             }
             MiscSettings.lowGammaBrightness -> {
                 val value = sp.getBoolean(key, false)
