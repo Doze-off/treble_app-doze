@@ -22,7 +22,6 @@ object MiscSettings : Settings {
     val forceNavbarOff = "key_misc_force_navbar_off"
     val bluetooth = "key_misc_bluetooth"
     val securize = "key_misc_securize"
-    val secureAdb = "key_misc_secure_adb"
     val removeTelephony = "key_misc_removetelephony"
     val disableAudioEffects = "key_misc_disable_audio_effects"
     val disableFastAudio = "key_misc_disable_fast_audio"
@@ -36,6 +35,7 @@ object MiscSettings : Settings {
     var patchSmsc = "key_misc_patch_smsc";
     val minimalBrightness = "key_misc_minimal_brightness"
     val aod = "key_misc_aod"
+    val disableDisplayDozeSuspend = "key_misc_disable_display_doze_suspend"
     val dt2w = "key_misc_dt2w"
     val restartSystemUI = "key_misc_restart_systemui"
     val fodColor = "key_misc_fod_color"
@@ -50,6 +50,7 @@ object MiscSettings : Settings {
     val disableSfHwcBackpressure = "key_misc_disable_sf_hwc_backpressure"
     val disableSaeUpgrade = "key_misc_disable_sae_upgrade"
     val escoTransportUnitSize = "key_misc_esco_transport_unit_size"
+    val disableLeApcfExtended = "key_misc_disable_le_apcfe"
     val treatVirtualSensorsAsReal = "key_misc_treat_virtual_sensors_as_real"
 
     override fun enabled() = true

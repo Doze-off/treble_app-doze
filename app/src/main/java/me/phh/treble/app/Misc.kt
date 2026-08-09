@@ -251,6 +251,10 @@ object Misc: EntryStartup {
                 SystemProperties.set("persist.sys.overlay.aod", if (value) "true" else "false")
                 OverlayPicker.setOverlayEnabled("me.phh.treble.overlay.misc.aod_systemui", value)
             }
+            MiscSettings.disableDisplayDozeSuspend -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.disable_display_doze_suspend", if (value) "true" else "false")
+            }
             MiscSettings.dt2w -> {
                 // Asus dt2w
                 val value = sp.getBoolean(key, false)
@@ -340,9 +344,9 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.securize", if (value) "1" else "0")
             }
-            MiscSettings.secureAdb -> {
+            MiscSettings.disableLeApcfExtended -> {
                 val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.adb_secure", if (value) "1" else "0")
+                SystemProperties.set("persist.sys.bt.le.disable_apcf_extended_features", if (value) "1" else "0")
             }
             MiscSettings.treatVirtualSensorsAsReal -> {
                 val value = sp.getBoolean(key, false)
