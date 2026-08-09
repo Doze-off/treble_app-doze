@@ -3,6 +3,14 @@
         android:fragment="me.phh.treble.app.MyDeviceSettingsFragment"
         android:title="My device" />
     <header
+        android:id="@+id/support_group"
+        android:title="Support Group"
+        android:summary="Join our Telegram support group">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://t.me/dozeoff_treble" />
+        </header>
+    <header
         android:fragment="me.phh.treble.app.OnePlusSettingsFragment"
         android:title="OnePlus features" />
     <header
