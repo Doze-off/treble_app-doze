@@ -7,8 +7,9 @@ object TranssionSettings : Settings {
     val dt2w = "key_transsion_dt2w"
 
     override fun enabled() = Tools.vendorFp.startsWith("Infinix/") ||
-        Tools.vendorBd.startsWith("TECNO-") ||
-        Tools.vendorFp.startsWith("Itel/")
+        Tools.vendorFp.startsWith("TECNO/") ||
+        Tools.vendorFp.startsWith("Itel/") ||
+        Tools.vendorFp.startsWith("google/")
 }
 
 class TranssionSettingsFragment : SettingsFragment() {
