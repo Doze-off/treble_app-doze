@@ -67,6 +67,7 @@ object MiscSettings : Settings {
     val A2dpAddr = "key_misc_a2dp_identity"
     val ScrollBoost = "key_misc_scroll_boost"
     val AxionProps = "key_misc_axion_props"
+    val unisocColorTransform = "key_misc_unisoc_color_transform"
 
     override fun enabled() = true
 }

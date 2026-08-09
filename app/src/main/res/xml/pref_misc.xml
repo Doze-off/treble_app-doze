@@ -164,6 +164,11 @@
             android:key="key_misc_force_navbar_off"
             android:title="Force navigation bar disabled"
             android:summary="Requires a reboot" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="key_misc_unisoc_color_transform"
+            android:title="Unisoc black screen workaround"
+            android:summary="Enables a workaround for black screen issues on some Unisoc devices. May affect color-based display features. Requires framework support. Applies instantly" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Backlight">
         <SwitchPreference

@@ -438,6 +438,10 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.axion_props", if (value) "true" else "false")
             }
+            MiscSettings.unisocColorTransform -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.unisoc_color_transform_workaround", if (value) "true" else "false")
+            }
         }
     }
 
@@ -467,5 +471,6 @@ object Misc: EntryStartup {
         spListener.onSharedPreferenceChanged(sp, MiscSettings.TrafficFix)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.SafeMedia)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.A2dpAddr)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.unisocColorTransform)
     }
 }
