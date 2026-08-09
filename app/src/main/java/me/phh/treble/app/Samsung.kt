@@ -97,6 +97,10 @@ class Samsung: EntryStartup {
                 val value = if(sp.getBoolean(key, false)) "true" else " false"
                 SystemProperties.set("persist.sys.phh.disable_back_mic", value)
             }
+            SamsungSettings.restore5G -> {
+                val value = if(sp.getBoolean(key, false)) "1" else " 0"
+                SystemProperties.set("persist.sys.phh.force_restore_5g", value)
+            }
         }
     }
 

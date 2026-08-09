@@ -15,6 +15,7 @@ object SamsungSettings : Settings {
     val fodSingleClick = "key_samsung_fod_single_click"
     val flashStrength = "key_samsung_flash_strength"
     val disableBackMic = "key_samsung_disable_back_mic"
+    val restore5G = "key_samsung_force_restore_5g"
 
     override fun enabled() = Tools.vendorFpLow.startsWith("samsung/") || Tools.vendorFpLow.startsWith("kddi/scv41_")
 }
