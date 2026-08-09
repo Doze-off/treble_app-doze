@@ -52,7 +52,6 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="User interface">
         <SwitchPreference
-            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_misc_scroll_boost"
             android:title="Scroll Boost"
