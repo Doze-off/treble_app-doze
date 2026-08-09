@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Release APK",
+      "type": "shell",
+      "command": ".\\build_release.bat",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Build Debug APK",
+      "type": "shell",
+      "command": ".\\gradlew.bat assembleDebug",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "adb: Start SettingsActivity",
+      "type": "shell",
+      "command": "adb shell am start -n me.phh.treble.app/.SettingsActivity",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    }
+  ]
+}
