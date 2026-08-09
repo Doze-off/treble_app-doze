@@ -422,6 +422,10 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.traffic_indicator_fallback", if (value) "true" else "false")
             }
+            MiscSettings.SafeMedia -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.disable_safe_media_volume", if (value) "true" else "false")
+            }
         }
     }
 

@@ -63,6 +63,7 @@ object MiscSettings : Settings {
     val disableLeApcfExtended = "key_misc_disable_le_apcfe"
     val treatVirtualSensorsAsReal = "key_misc_treat_virtual_sensors_as_real"
     val TrafficFix = "key_misc_traffic_indicator"
+    val SafeMedia = "key_misc_safe_media"
 
     override fun enabled() = true
 }
