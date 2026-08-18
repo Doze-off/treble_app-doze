@@ -17,8 +17,8 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="key_misc_traffic_indicator"
-            android:title="Traffic indicator fix"
-            android:summary="This patch fixes the traffic indicator but might break the firewall bypass patch, resulting in a loss of internet connectivity; it may also fail to work on certain kernels. If you want full access to the patch, I recommend using mtk-bpf-patch." />
+            android:title="BPF Fallback for Legacy Kernels"
+            android:summary="Enabled (true) uses a fallback for NetworkStats BPF maps. This mode is recommended for older or partially backported kernels and may preserve both traffic-indicator functionality and firewall-bypass connectivity. Disabled (false) turns off the fallback and forces the BPF compatibility path. This can resolve firewall-bypass issues completely and restore internet access, but may disable the traffic indicator or freeze the screen on some devices. Use only if the enabled mode does not fix the firewall bypass. Reboot required." />
     </PreferenceCategory>
     <PreferenceCategory android:title="Audio">
         <SwitchPreference
