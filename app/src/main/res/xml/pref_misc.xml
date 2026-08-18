@@ -15,7 +15,7 @@
             android:key="key_misc_mobile_signal"
             android:title="Signal meter method" />
         <SwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="key_misc_traffic_indicator"
             android:title="Traffic indicator fix"
             android:summary="This patch fixes the traffic indicator but might break the firewall bypass patch, resulting in a loss of internet connectivity; it may also fail to work on certain kernels. If you want full access to the patch, I recommend using mtk-bpf-patch." />
