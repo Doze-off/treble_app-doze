@@ -418,23 +418,23 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.virtual_sensors_are_real", if (value) "1" else "0")
             }
-            MiscSettings.TrafficFix -> {
-                val value = sp.getBoolean(key, false)
+            MiscSettings.trafficFix -> {
+                val value = sp.getBoolean(key, true)
                 SystemProperties.set("persist.sys.phh.traffic_indicator_fallback", if (value) "true" else "false")
             }
-            MiscSettings.SafeMedia -> {
+            MiscSettings.safeMedia -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.disable_safe_media_volume", if (value) "true" else "false")
             }
-            MiscSettings.A2dpAddr -> {
+            MiscSettings.a2dpAddr -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.a2dp_identity_addr", if (value) "true" else "false")
             }
-            MiscSettings.ScrollBoost -> {
+            MiscSettings.scrollBoost -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.scroll_boost", if (value) "true" else "false")
             }
-            MiscSettings.AxionProps -> {
+            MiscSettings.axionProps -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.axion_props", if (value) "true" else "false")
             }
