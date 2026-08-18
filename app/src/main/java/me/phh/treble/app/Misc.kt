@@ -496,9 +496,9 @@ object Misc: EntryStartup {
         spListener.onSharedPreferenceChanged(sp, MiscSettings.noHwcomposer)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.storageFUSE)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.dt2w)
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.TrafficFix)
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.SafeMedia)
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.A2dpAddr)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.trafficFix)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.safeMedia)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.a2dpAddr)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.unisocColorTransform)
     }
 }
