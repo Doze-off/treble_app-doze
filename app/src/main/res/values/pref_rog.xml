@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Evenly split across the confirmed valid 0-255 setpoint range -
+         rog5_inbox.c's fan_rpm_store() rejects anything outside it. These
+         are not named/documented ASUS presets, just round numbers within
+         the range that's actually confirmed to work. -->
+    <array name="pref_rog_fan">
+        <item>Off</item>
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+        <item>Max</item>
+    </array>
+    <array name="pref_rog_fan_values">
+        <item>"0"</item>
+        <item>"64"</item>
+        <item>"128"</item>
+        <item>"192"</item>
+        <item>"255"</item>
+    </array>
+</resources>

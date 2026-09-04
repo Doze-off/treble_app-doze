@@ -44,6 +44,9 @@
         android:fragment="me.phh.treble.app.AsusSettingsFragment"
         android:title="Asus features" />
     <header
+        android:fragment="me.phh.treble.app.RogSettingsFragment"
+        android:title="ROG features" />
+    <header
         android:fragment="me.phh.treble.app.DozeSettingsFragment"
         android:title="Doze features" />
     <header
