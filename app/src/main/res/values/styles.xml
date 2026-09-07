@@ -1,6 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="TextAppearance.CustomTitle" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 
-    <style name="Base.Theme.TrebleApp" parent="@android:style/Theme.DeviceDefault.Settings" />
-    <style name="Theme.TrebleApp" parent="Base.Theme.TrebleApp" />
+    <style name="SwitchMonetStyle" parent="ThemeOverlay.Material3">
+        <item name="colorControlActivated">?attr/colorPrimary</item>
+    </style>
 
+    <style name="TextAppearance.CustomSummary" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

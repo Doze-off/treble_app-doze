@@ -1,0 +1,417 @@
+<resources>
+    <string name="app_name">Treble</string>
+    <string name="title_activity_settings">Treble</string>
+    <string name="title_activity_top_level">Treble</string>
+    <string name="desc_activity_top_level">Device specific settings</string>
+    <string name="continue_question">Continue?</string>
+    <string name="title_activity_updater">Menu</string>
+    <string name="update_not_found_title">YOUR SYSTEM IS UP TO DATE</string>
+    <string name="update_found_title">SYSTEM UPDATE AVAILABLE</string>
+    <string name="checking_update_title">Checking for available update</string>
+    <string name="update_found_button">Download and install</string>
+    <string name="update_not_found_button">Check for update</string>
+    <string name="error_dialog_title">Error</string>
+    <string name="dynamic_device_message">Your device does not support OTA updates!</string>
+    <string name="update_error_message">An error has occurred during download!\nPlease, try again later.</string>
+    <string name="success_install_message">New update installed successfully.\nPlease, reboot now.</string>
+    <string name="failed_download_message">New update failed to be downloaded.\nCheck your logs for more information.</string>
+    <string name="failed_install_message">New update failed to be installed.\nCheck your logs for more information.</string>
+    <string name="preparing_update_title">Preparing system update</string>
+    <string name="downloading_update_title">Downloading system update</string>
+    <string name="applying_update_title">Applying system update</string>
+    <string name="applied_update_title">Update applied successfully</string>
+    <string name="manual_ota_button">Apply Manual OTA</string>
+    <string name="clear_ota_button">Clear OTA Files</string>
+    <string name="refresh_urls_button">Refresh URLs</string>
+    <string name="changelog_default">Changelog will appear here</string>
+    <string name="prevent_exit_message">The update is still ongoing. Leaving the app now will stop it.\nDo you really want to exit now?</string>
+    <string name="warning_dialog_title">Warning</string>
+    <string name="magisk_exists_message">Magisk was detected! If you proceed with the update you may lose Magisk or the installation may fail!</string>
+    <string name="menu_delete_ota">Delete OTA files</string>
+    <string name="delete_ota_message">Take in consideration that you may lose your userdata if you proceed!\nTo prevent this, cancel this dialog, reboot and flash the latest update on fastboot mode.\n\nDo you want to proceed anyway?</string>
+    <string name="toast_download_start">Downloading OTA package</string>
+    <string name="toast_download_finished">OTA package downloaded</string>
+    <string name="toast_download_fail">Failed downloading OTA package</string>
+    <string name="toast_install_done">OTA image successfully installed</string>
+    <string name="toast_install_fail">Failed installing OTA image</string>
+    <string name="toast_delete_cache">Packages cache deleted</string>
+    <string name="toast_reboot">Reboot your device to apply changes</string>
+    <string name="update_props">Updating Props</string>
+    <string name="update_available_message">Update available: %1$s\nGSI: %2$s\nVariant: %3$s</string>
+    <string name="no_update_available_message">No update available for variant: %1$s</string>
+    <string name="props_summary">Will bash from an URL, continue?</string>
+    <string name="restart_system_ui">Restarting System UI</string>
+
+
+    <!-- Categorias -->
+    <string name="title_group">GRUPO</string>
+    <string name="title_device_specific">ESPECÍFICO DO DISPOSITIVO</string>
+    <string name="title_display">TELA</string>
+    <string name="title_audio">ÁUDIO</string>
+    <string name="title_telephony">TELEFONIA</string>
+    <string name="title_camera">CÂMERA</string>
+    <string name="title_misc">DIVERSOS</string>
+    <string name="title_debugging">DEPURAÇÃO</string>
+
+    <!-- Preferências -->
+    <string name="title_gsi_group">Grupo de suporte GSI</string>
+    <string name="summary_gsi_group">Entrar</string>
+
+    <string name="title_asus">Configurações Asus</string>
+    <string name="title_mydevice">Meu dispositivo</string>
+    <string name="title_mediatek">Configurações Mediatek</string>
+    <string name="title_qualcomm">Configurações Qualcomm</string>
+    <string name="title_oneplus">Configurações OnePlus</string>
+    <string name="title_nubia">Configurações Nubia</string>
+    <string name="title_vsmart">Configurações Vsmart</string>
+    <string name="title_huawei">Configurações Huawei</string>
+    <string name="title_samsung">Configurações Samsung</string>
+    <string name="title_transsion">Configurações Transsion</string>
+    <string name="title_lenovo">Configurações Lenovo</string>
+    <string name="title_xiaomi">Configurações Xiaomi</string>
+    <string name="title_oppo">Configurações Oppo</string>
+    <string name="title_doze">Configurações Doze</string>
+
+    <string name="title_display_settings">Configurações de tela</string>
+    <string name="summary_display_settings">Brilho, taxa de atualização e mais</string>
+    <string name="title_ui_settings">Interface do usuário</string>
+    <string name="summary_ui_settings">Layouts, espaçamentos, ícones e outros</string>
+
+    <string name="title_audio_settings">Configurações de áudio</string>
+    <string name="summary_audio_settings">Bluetooth e correções gerais</string>
+    <string name="title_audiofx">Efeitos de áudio</string>
+    <string name="summary_audiofx">Modificações de áudio incluídas pelo fabricante</string>
+
+    <string name="title_telephony_settings">Configurações de telefonia</string>
+    <string name="summary_telephony">Sinal, rede, RIL e opções de 5G</string>
+    <string name="title_ims_settings">Configurações IMS</string>
+    <string name="summary_ims">VoLTE está aqui</string>
+
+    <string name="title_camera_settings">Configurações da câmera</string>
+    <string name="summary_camera">Ajustes úteis da câmera</string>
+
+    <string name="title_misc_settings">Configurações diversas</string>
+    <string name="summary_misc">Correções de impressão digital e outros recursos</string>
+
+    <string name="title_debug_settings">Configurações de depuração</string>
+    <string name="summary_debug">Depurar sensores</string>
+
+<!-- Pref Audio -->
+    <!-- GERAL-->
+    <string name="title_prefaudio">GERAL</string>
+    <string name="alt_audio_police">Use o áudio police alternativo</string>
+    <string name="alt_headset_detect_title">Use o método alternativo para a detecção dos fones de ouvido</string>
+    <string name="disable_audio_effects_title">Desativar os efeitos de áudio</string>
+    <string name="disable_fast_audio">Desativar o fast áudio</string>
+    <string name="disable_voicecall_route">Desativar a &quot;rota de chamada&quot; de voz</string>
+    <!-- Título -->
+    <string name="disable_headset_detect_sumarry">Correção para reconhecimento de fones de ouvido</string>
+    <string name="disable_audio_effects_sumarry">Desativar todos os efeitos de áudio do lado do Vendor</string>
+    <string name="disable_fast_audio_sumarry">Deve corrigir áudio quebrado/tremendo/cortado em dispositivos</string>
+    <string name="voicecall_route_sumarry">Pode corrigir eco ou áudio não funcional em chamadas\nRequer reiniciar o dispositivo</string>
+    <!-- Bluetooth -->
+    <string name="wide_bt_hal">Usar HAL Bluetooth em todo o sistema</string>
+    <string name="max_connect_bt_audio">Definir número máximo de dispositivos de áudio Bluetooth conectados</string>
+    <string name="esco_size_bt">Ajustar o tamanho da unidade de transporte eSCO</string>
+
+    <!-- Ajustes para Bluetooth -->
+    <string name="bt_workgrounds_title">\nAJUSTES DO BLUETOOTH</string>
+    <string name="disable_le_apcf">Desativar recurso estendido LE APCF</string>
+    <string name="le_acpf_sumarry">Corrigir falhas em alguns dispositivos antigos</string>
+    <string name="cap_le_vendorversion">Limitar versão do fornecedor LE</string>
+    <string name="predefined_workground_bluetooth">Ajustes predefinidos</string>
+    <string name="set_bluetooth_commands_unssuported_title">Definir comandos Bluetooth não suportados</string>
+    <string name="unssuported_bluetooth_of_features">Definir recursos Bluetooth OG não suportados</string>
+    <string name="unssuported_le_features_bluetooth">Definir recursos Bluetooth LE não suportados</string>
+    <string name="unssuported_bluetooth_stats">Definir estados Bluetooth não suportados</string>
+
+    <!-- Pref UI -->
+    <string name="two_plane_layout">Layout em duas colunas</string>
+    <string name="two_plane_layout_summary">Ativar layout para tablet. Requer reiniciar os apps</string>
+    <string name="disable_navigation_bar">Forçar desativação da barra de navegação</string>
+    <string name="disable_navigation_bar_summary">Requer reinicialização</string>
+    <string name="pointer_type">Tipo de ponteiro</string>
+
+    <!-- LockScreen -->
+    <string name="lckscreen">TELA DE BLOQUEIO</string>
+    <string name="fod_icon_color">Cor do ícone FOD</string>
+
+    <!-- Status Bar -->
+    <string name="stats_bar">BARRA DE STATUS</string>
+    <string name="bar_top_padding">Definir espaçamento superior da barra de status</string>
+    <string name="bar_start_padding">Definir espaçamento inicial da barra de status</string>
+    <string name="bar_end_padding">Definir espaçamento final da barra de status</string>
+
+    <!-- STYLES -->
+    <string name="styles_title">ESTILOS</string>
+    <string name="accent_color">Cor de destaque</string>
+    <string name="icon_shape">Formato do ícone</string>
+    <string name="icon_pack">Pacote de ícones</string>
+    <string name="font_family">Família da fonte</string>
+
+    <!-- TOOLS -->
+    <string name="tools_title">FERRAMENTAS</string>
+    <string name="restart_sysui_tools_option">Reiniciar SystemUI</string>
+
+    
+<!-- Xiaomi -->
+    <string name="dt2w">Ativar DT2W</string>
+    
+<!--     Asus -->
+    <!-- Tela -->
+    <string name="title_display_asus">TELA</string>
+    <string name="title_glove_mode">Ativar modo luva</string>
+    <string name="title_dt2w">Ativar toque duplo para despertar</string>
+
+    <!-- Diversos -->
+    <string name="title_misc_asus">DIVERSOS</string>
+    <string name="title_fp_wake">Ativar despertar por impressão digital</string>
+    <string name="title_usb_port_picker">Selecionar porta USB</string>
+    <string name="summary_usb_port_picker">Requer reinicialização</string>
+
+<!--     Mediatek -->
+
+
+    <!-- Categorias -->
+    <string name="title_general_mediatek">GERAL</string>
+    <string name="title_telephony_mediatek">TELEFONIA</string>
+
+    <!-- GERAL -->
+    <string name="title_touch_hint_rotate">Dica de desempenho de rotação em vez de toque</string>
+    <string name="summary_touch_hint_rotate">Para dispositivos Mediatek</string>
+
+    <string name="title_ged_kpi">Suporte a Mediatek GED KPI</string>
+    <string name="summary_ged_kpi">Pode melhorar o desempenho da GPU em dispositivos Mediatek</string>
+
+    <!-- Telefonia -->
+    <string name="title_force_cognitive">Suporte forward-port para forceCognitive</string>
+    <string name="summary_force_cognitive">Necessário em alguns dispositivos Mediatek</string>
+
+<!-- Sys UI -->
+    <string name="sysui_restart">Precisa reiniciar o SystemUI</string>
+    <string name="root_accesses">Precisa de accesso ao root</string>    
+
+    <!-- vsmart -->
+    <string name="tap_to_wake">Ativar toque duplo para ligar a tela</string>
+
+    <!-- transsion tab -->
+    <string name="display_title">TELA</string>
+    <string name="other_title">OUTROS</string>
+    <string name="otg_usb">Ativar USB OTG</string>
+
+    <!-- qualcoom -->
+    <string name="alternative_camera_profile">Usar perfil de câmera alternativo</string>
+    <string name="soundvolume">Desativar efeitos de som</string>
+    <string name="soundvolume_summary">Corrigir distorção de áudio</string>
+    <!-- qualcomm VoIP -->
+    <string name="sterio_voip">Desativar suporte a estéreo no VoIP</string>
+    <string name="sterio_voip_summary">Pode corrigir áudio agudo. Requer reinicialização</string>
+    <string name="voip_directoutput">Definir VoIP como saída direta</string>
+    <string name="voip_directoutput_summary">Deve corrigir áudio agudo. Requer reinicialização</string>
+
+    <!-- qualcomm rede móvel -->
+    <string name="mobile_network_title">REDE MÓVEL</string>
+    <string name="qcrild_boot">Reiniciar qcrild na inicialização</string>
+    <string name="qcrild_boot_summary">Solução alternativa para SMS recebidos\nPode causar falta de áudio em chamadas em alguns dispositivos</string>
+    
+        <!-- ims -->
+    <string name="title_ims_requeriments">REQUESITOS</string>
+    <string name="ims_apn">Criar IMS APN</string>
+    <string name="download_ims">Instalar o APK IMS para MEDIATEK R+ vendor</string>
+    <string name="key_ims">Solicitar conexão IMS</string>
+    <string name="force_ims_call">Forçar 4g em ligações</string>
+    <!-- Solução Alternativa -->
+    <string name="title_ims2">PROBLEMAS COM SOLUÇÃO ALTERNATIVA</string>
+    <string name="ims2_title_call_incoming">Permitir thread de binder em chamadas recebidas</string>
+    <string name="ims2_summary">Solução alternativa para chamadas 4G\nRequer reinicialização</string>
+
+    <!-- Lenovo -->
+    <string name="lenovo_stylus_pen">Ativar supporte a Caneta Stylus</string>
+    
+    <!-- OnePlus -->
+    <string name="oneplus_display">TELA</string>
+    <string name="oneplus_displaymode">Modo de exibição</string>
+    <string name="oneplus_brightness">Modo de alto brilho</string>
+    <string name="oneplusother">DIVERSOS</string>
+
+    <!-- Oppo -->
+    <string name="touch">Touchscreen</string>
+    <string name="gamemode_oppo">Ativar modo de jogo</string>
+    <string name="dc_diming">Ativar DC Diming</string>
+
+    <!-- telefone -->
+    <string name="smsc">Definir valor SMSC</string>
+    <string name="simcount">Contagem de SIM</string>
+
+    <string name="reset_simcount">Redefinir contagem de SIM</string>
+    <string name="reset_simcount_summary_telephone">Redefinir contagem de SIM para os valores padrão\nRequer reinicialização</string>
+
+    <string name="signal">Método do medidor de sinal</string>
+    <string name="restart_ril">Reiniciar RIL automaticamente</string>
+
+    <string name="patch_smsc">Corrigir SMSC</string>
+    <string name="pachsmsc_summary">Se você não consegue enviar mensagens, principalmente em dispositivos Samsung, desative a correção de SMSC, IGNORE ESSA OPÇÃO</string>
+
+    <string name="simcard">Remover subsistema de telefonia</string>
+    <string name="simcart_summary">Para dispositivos sem cartão SIM</string>
+
+    <string name="forcenetwork">Forçar exibição de rede 5G</string>
+    <string name="forcenetwork_summary">Exibe 5G como opção para o tipo de rede preferencial\nRequer reinicialização</string>
+
+    <string name="restrictnetwork">Modo de rede restrita</string>
+    <string name="restrictnetwork_summary">Precisa estar desativado em alguns dispositivos</string>
+
+    <!-- câmera -->
+    <string name="cameratitle">GERAL</string>
+    <string name="exposeauxcameras">Exibir câmeras auxiliares</string>
+    <string name="camera2apienable">Forçar ativação da Camera2API HAL3</string>
+    <string name="timestamp">Force Timestamp Source</string>
+    <string name="reboot_camera">Requer uma Reinicialização</string>
+
+    <!-- Debug -->
+    <string name="debugsensor">Debug Sensors</string>
+    <string name="trebleappkill">Fechar TrebleApp</string>
+    <string name="trebleappkill_summary">Para economizar alguns toques</string>
+    <string name="debbugablemode">Definir modo de depuração</string>
+    <string name="debbugablemode_summary">Toggle insecure adb and related</string>
+
+    <!-- doze -->
+    <string name="hardware_gesturedoze">Ativar gesto Handwave</string>
+    <string name="outofpocket_gesturedoze">Ativar gesto out-of-pocket</string>
+    <string name="chopgesture">Ativar gesto ChopChop</string>
+
+    <!-- tela -->
+    <string name="forcefreshrate_display">Forçar taxa de atualização</string>
+    <string name="dynamicfrashrate_display">Taxa de atualização dinâmica</string>
+    <string name="dynamicfrashrate_summary">Ajusta a taxa de atualização com base no conteúdo da tela\nRequer reinicialização</string>
+    <string name="sfgl">Desativar pressão de SF GL</string>
+    <string name="sfgl_summary">Pode melhorar o desempenho de renderização\nRequer reinicialização</string>
+    <string name="sfhwc_disable">Desativar pressão de SF HWC</string>
+    <string name="sfhwc_disablesummary">Pode melhorar o desempenho de renderização</string>
+    <string name="hw_overlay">Desativar sobreposições por hardware</string>
+    <string name="hw_overlaysummary">Consome mais CPU e bateria</string>
+    <string name="forceallowaod">Forçar permissão para Always-On Display</string>
+
+    <!-- aba2 -->
+    <string name="display_tab2">MOTOR DE RENDERIZAÇÃO</string>
+    <string name="renderengine">Backend do motor de renderização</string>
+
+    <!-- Desfoque -->
+    <string name="blureffects">Ativar efeitos de desfoque</string>
+    <string name="blureffects_summary">Pode impactar o desempenho em dispositivos basicos</string>
+
+    <!-- Retroiluminação -->
+    <string name="backlight_displaytitle">\nILUMINAÇÂO</string>
+    <string name="linearbrightness">Definir curva de brilho alternativa</string>
+    <string name="alt_backlight">Forçar escala alternativa de iluminação</string>
+    <string name="summary_altbacklight">Requer desligar/ligar a tela</string>
+    <string name="backlightdisable">Desativar iluminação usando botões físicos</string>
+    <string name="backlight_lowest">Permitir definir brilho no mínimo possível</string>
+
+   <!-- Huawei Strings -->
+    <string name="title_fingerprint">INPRESSÂO DIGTAL</string>
+    <string name="fingerprintgestures">Ativar gestos de impressão digital</string>
+    <string name="headsetforce_switchhuawei">Forçar troca de Fone de Ouvido (Padrão Huawuei)</string>
+    <string name="glovemode_huawei">Ativar modo de luvas para tela sensível ao toque</string>
+    <string name="grapicissueshuawei">Ativar solução alternativa para problemas gráficos</string>
+    <string name="grapicissueshuawei_summary">recomendado se a interface estiver borrada</string>
+    <string name="fastcharge_huawei">Carregamento rápido da Huawei</string>
+
+    <!-- Samsung -->
+    <string name="sterioaudio">Ativar modo de áudio estéreo</string>
+    <string name="reversecharge">Ativar carregamento reverso sem fio (se aplicável)</string>
+    <string name="disable_backmic">Desativar microfone traseiro embutido</string>
+    <string name="disablebackmic_summary">Pode corrigir microfone com defeito em gravações de vídeo</string>
+    <string name="samsungallcam">Ativar acesso a todas as câmeras</string>
+    <string name="samsung1text">Requer fornecedor Q</string>
+    <string name="samsung2text">Normalmente os valores são inteiros entre 1 e 5</string>
+    <string name="samsungflash">Definir intensidade do flash</string>
+    <!-- Soluções alternativas da Samsung -->
+    <string name="samsungtitle3">SOLUÇÕES ALTERNATIVAS</string>
+    <string name="samsung4">Ativar sensores extras</string>
+    <string name="samsung5">Ativar solução para tela esbranquiçada</string>
+    <string name="fingbroken">Ativar solução para tela esbranquiçada</string>
+    <string name="backlightsamsung">Definir escala da luz de fundo/nível máximo de brilho</string>
+
+    <!-- misc -->
+    <string name="misc1">Definir nível de segurança BIOMETRIC_STRONG</string>
+    <string name="msic1_s">Necessário para alguns dispositivos antigos</string>
+    <string name="misc2">Definir Launcher3 na tela de recentes</string>
+    <string name="misc3">Deixar sensores virtuais como reais</string>
+    <string name="msic3_s">Tratar todos os sensores de impressão digital virtuais como reais\nAviso: Isso pode causar bootloop – use com extremo cuidado\nRequer reinicialização</string>
+    <string name="misc4">Desativar WPA3/SAE</string>
+    <string name="misc4_s">Para dispositivos sem suporte</string>
+    <string name="misc5">Desativar camada de armazenamento FUSE</string>
+    <string name="msic5_s">Isso pode aumentar ou diminuir a velocidade do armazenamento\nRequer reinicialização</string>
+
+    <!-- Display -->
+    <string name="displaysamsung_1">Ativar DT2W para Agold/Unihertz</string>
+    <string name="displaysamsung_2">Forçar desativação do estado de suspensão Doze da tela para permitir AOD em alguns dispositivos.</string>
+    <string name="displaysamsung_3">Desativar modo de energia EXPENSIVE_RENDERING</string>
+    <string name="displaysamsung_3s">Corrige spam constante nos logs em alguns dispositivos MTK no modo de energia 6\nRequer reinicialização</string>
+
+    <!-- Securize Samsung -->
+    <string name="securizesamsung_1">Ativar Securize</string>
+    <string name="securizesamsung_1s">Desativar pode corrigir os serviços do Google Play em dispositivos não certificados</string>
+<!-- MISC -->
+    <string name="key_misc_secure_adb">Adb seguro</string>
+    <string name="key_misc_secure_adb_summary">O computador requer aprovação</string>
+
+    <string name="key_misc_dt2w">Toque duas vezes para ativar</string>
+    <string name="key_misc_dt2w_summary">Tente e Veja</string>
+
+<!--     NUBIA -->
+    <!-- Categorias -->
+    <string name="nubia_category_touchscreen">TOQUE</string>
+    <string name="nubia_category_misc">DIVERSOS</string>
+    <string name="nubia_category_leds">LEDS</string>
+    <string name="nubia_category_boosts">DESEMPENHO</string>
+
+    <!-- Toque -->
+    <string name="nubia_double_tap_to_wake">Ativar Toque Duplo para Despertar</string>
+    <string name="nubia_double_tap_to_wake_summary">Toque duas vezes para ligar a tela</string>
+
+    <string name="nubia_high_touch_sample_rate">Ativar alta taxa de amostragem</string>
+    <string name="nubia_high_touch_sample_rate_summary">Consome mais bateria</string>
+
+    <string name="nubia_high_touch_sensitivity">Ativar alta sensibilidade ao toque</string>
+    <string name="nubia_high_touch_sensitivity_summary">Útil com luvas</string>
+
+    <!-- Diversos -->
+    <string name="nubia_touchscreen_game_mode">Ativar modo jogo</string>
+    <string name="nubia_touchscreen_game_mode_summary_on">Ventoinha automática desativada</string>
+
+    <string name="nubia_shoulder_btn">Ativar botões de ombro</string>
+    <string name="nubia_shoulder_btn_summary">Gatilhos laterais</string>
+
+    <string name="nubia_bypass_charger">Ativar carregamento direto</string>
+    <string name="nubia_bypass_charger_summary_off">Carregador → Bateria → Celular</string>
+    <string name="nubia_bypass_charger_summary_on">Carregador → Celular</string>
+
+    <string name="nubia_fan_speed">Velocidade da ventoinha</string>
+    <string name="nubia_fan_speed_summary">Suporte a carregamento inteligente</string>
+
+    <!-- LEDs -->
+    <string name="nubia_redmagic_logo_breath">Fazer logotipo Redmagic pulsar</string>
+    <string name="nubia_redmagic_led">RGB REDMAGIC</string>
+
+    <!-- Desempenho -->
+    <string name="nubia_boost_cpu">Melhorar CPU</string>
+    <string name="nubia_boost_cache">Melhorar caches</string>
+    <string name="nubia_boost_gpu">Melhorar GPU</string>
+    <string name="nubia_boost_ufs">Melhorar UFS</string>
+    <string name="nubia_boost_ufs_summary_on">Aumenta velocidade de leitura/gravação</string>
+
+    <string name="fingerprint_real_title">Trate os sensores virtuais como reais</string>
+    <string name="fingerprint_real_summary">Tratar todos os sensores de impressão digital virtuais como reais\nRequer reinicialização</string>
+
+    <string name="sf_latch_unsignaled_title">Ligar Buffers Não Assinados</string>
+    <string name="sf_latch_unsignaled_summary">Força o latch de todos os buffers no SurfaceFlinger quando habilitado.</string>
+
+    <string name="sf_auto_latch_unsignaled_title">Latch Automático Não Assinado</string>
+    <string name="sf_auto_latch_unsignaled_summary">Faz o latch automático de buffers de camada única no SurfaceFlinger quando habilitado.</string>
+
+    <string name="sf_disable_backpressure_title">Desativar Backpressure</string>
+    <string name="sf_disable_backpressure_summary">Desativa a propagação de backpressure do SurfaceFlinger para melhorar a responsividade.</string>
+
+</resources>

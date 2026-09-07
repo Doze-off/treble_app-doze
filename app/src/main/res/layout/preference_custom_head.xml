@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@drawable/bg_preference_item"
+        android:padding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+
+        <ImageView
+            android:id="@android:id/icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:scaleType="centerInside"
+            android:tint="?attr/colorPrimary" />
+
+
+        <TextView
+            android:id="@android:id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:textAppearance="@style/TextAppearance.CustomTitle"
+            android:textColor="?attr/colorOnSurface"
+            android:maxLines="4"
+            android:ellipsize="end"
+            android:lineSpacingExtra="1dp" />
+
+        <TextView
+            android:id="@android:id/summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textAppearance="@style/TextAppearance.CustomSummary"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:maxLines="4"
+            android:ellipsize="end"
+            android:paddingTop="2dp"
+            android:lineSpacingExtra="1dp" />
+
+    </LinearLayout>
+</FrameLayout>

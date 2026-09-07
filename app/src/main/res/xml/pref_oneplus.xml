@@ -1,30 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Display">
+
+    <PreferenceCategory
+        android:title="@string/oneplus_display"
+        android:layout="@layout/preference_category_custom">
 	    <ListPreference
-		android:defaultValue="default"
-		android:entries="@array/pref_oneplus_display_mode"
-		android:entryValues="@array/pref_oneplus_display_mode_values"
-		android:key="key_oneplus_display_mode"
-		android:title="Display Mode" />
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue="default"
+            android:entries="@array/pref_oneplus_display_mode"
+            android:entryValues="@array/pref_oneplus_display_mode_values"
+            android:key="key_oneplus_display_mode"
+            android:title="@string/oneplus_displaymode" />
         <ListPreference
+            android:layout="@layout/preference_list_custom"
             android:defaultValue="0"
             android:entries="@array/pref_oneplus_display_high_brightness"
             android:entryValues="@array/pref_oneplus_display_high_brightness_values"
             android:key="key_oneplus_display_high_brightness"
-            android:title="High brightness mode" />
+            android:title="@string/oneplus_brightness" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Other">
+    <PreferenceCategory
+        android:title="@string/oneplusother"
+        android:layout="@layout/preference_category_custom">
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_oneplus_usb_otg"
-            android:title="Enable USB OTG" />
+            android:title="@string/otg_usb" />
         <SwitchPreference
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_oneplus_double_tap_to_wake"
-            android:title="Enable DT2W" />
+            android:title="@string/dt2w" />
     </PreferenceCategory>
+
 </PreferenceScreen>

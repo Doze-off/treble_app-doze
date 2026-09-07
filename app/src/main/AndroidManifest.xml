@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="me.phh.treble.app"
     android:persistent="true"
     android:sharedUserId="android.uid.system">
 
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.DIAGNOSTIC" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
-    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
+    <!-- Permissões existentes -->
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
+    <uses-permission android:name="android.permission.DIAGNOSTIC" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.REBOOT" />
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
 
     <application
+        android:name=".TrebleApp"
+        android:theme="@style/Theme.TrebleApp"
         android:allowBackup="true"
-        android:icon="@drawable/ic_settings"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning">
@@ -38,7 +37,13 @@
         <uses-library android:name="vendor.qti.hardware.radio.am.V1_0" android:required="false"/>
         <uses-library android:name="vendor.qti.qcril.am.V1_0" android:required="false"/>
 
-        <service android:name=".EntryService" android:foregroundServiceType="connectedDevice" />
+        <service
+            android:name=".EntryService"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="keep device-specific sensor listeners (e.g. motorola chop-chop flashlight, handwave doze) active while the screen is off" />
+        </service>
         <service android:name=".NubiaAutoFanControlService" />
 
         <service
@@ -97,7 +102,7 @@
             </intent-filter>
         </receiver>
 
-	<activity-alias android:enabled="true" android:exported="true" android:name=".TopLevelSettingsActivity" android:targetActivity=".SettingsActivity">
+        <activity-alias android:enabled="true" android:exported="true" android:name=".TopLevelSettingsActivity" android:targetActivity=".SettingsActivity">
             <intent-filter>
                 <action android:name="com.android.settings.action.IA_SETTINGS"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -117,7 +122,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 

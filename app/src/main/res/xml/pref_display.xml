@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/cameratitle"
+        android:layout="@layout/preference_category_custom">
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue="-1"
+            android:entries="@array/pref_display_fps"
+            android:entryValues="@array/pref_display_fps_values"
+            android:key="key_display_display_fps"
+            android:title="@string/forcefreshrate_display" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_display_dynamic_fps"
+            android:title="@string/dynamicfrashrate_display"
+            android:summary="@string/dynamicfrashrate_summary"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_display_disable_sf_gl_backpressure"
+            android:title="@string/sfgl"
+            android:summary="@string/sfgl_summary"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_display_disable_sf_hwc_backpressure"
+            android:title="@string/sfhwc_disable"
+            android:summary="@string/sfhwc_disablesummary"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_display_sf_latch_unsignaled"
+            android:title="@string/sf_latch_unsignaled_title"
+            android:summary="@string/sf_latch_unsignaled_summary" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_display_sf_auto_latch_unsignaled"
+            android:title="@string/sf_auto_latch_unsignaled_title"
+            android:summary="@string/sf_auto_latch_unsignaled_summary" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_display_sf_disable_backpressure"
+            android:title="@string/sf_disable_backpressure_title"
+            android:summary="@string/sf_disable_backpressure_summary" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_display_no_hwcomposer"
+            android:title="@string/hw_overlay"
+            android:summary="@string/hw_overlaysummary" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_display_aod"
+            android:title="@string/forceallowaod" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="RENDER ENGINE"
+        android:layout="@layout/preference_category_custom">
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue=""
+            android:entries="@array/pref_display_sf_renderengine_backend"
+            android:entryValues="@array/pref_display_sf_renderengine_backend_values"
+            android:key="key_display_sf_renderengine_backend"
+            android:title="Render Engine"
+            android:summary="Reboot is required to apply it" />
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue=""
+            android:entries="@array/pref_display_hwui_backend"
+            android:entryValues="@array/pref_display_hwui_backend_values"
+            android:key="key_display_sf_hwui_backend"
+            android:title="Render Hardware UI"
+            android:summary="Reboot is required to apply it" />
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue="kawase"
+            android:entries="@array/pref_display_sf_blur_algorithm"
+            android:entryValues="@array/pref_display_sf_blur_algorithm_values"
+            android:key="key_display_sf_blur_algorithm"
+            android:title="Blur Mecanism"
+            android:summary="Reboot is required to apply it" />
+        </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/backlight_displaytitle"
+        android:layout="@layout/preference_category_custom">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_backlight_low_gamma_brightness"
+            android:title="@string/linearbrightness"
+            android:summary="@string/disable_navigation_bar_summary" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_backlight_linear_brightness"
+            android:title="Set linear brightness curve" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_backlight_backlight_scale"
+            android:title="@string/alt_backlight"
+            android:summary="@string/summary_altbacklight" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_backlight_disable_buttons_backlight"
+            android:title="@string/backlightdisable"
+            android:summary="@string/disable_navigation_bar_summary" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_backlight_minimal_brightness"
+            android:singleLineTitle="false"
+            android:title="@string/backlight_lowest" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

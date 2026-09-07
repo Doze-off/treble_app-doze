@@ -1,7 +1,6 @@
 package me.phh.treble.app
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Handler
@@ -32,7 +31,7 @@ class PresetDownloader {
         val downloadPresets = object: Runnable {
             override fun run() {
                 try {
-                    Log.i("PHH-Presets", "Downloading...")
+                    Log.e("PHH-Presets", "Downloading...")
                     val ctxt = ctxtWp?.get() ?: return
                     if (alreadyDownloaded) return
 

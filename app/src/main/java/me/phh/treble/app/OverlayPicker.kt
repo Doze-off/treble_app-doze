@@ -66,7 +66,7 @@ object OverlayPicker: EntryStartup {
 
     private fun handleNokia(ctxt: Context) {
         if(vendorFp == null) return
-		
+
         //Nokia 8.1/X7 [PNX]
         if(vendorFp.matches(Regex("Nokia/Phoenix.*"))) {
             setOverlayEnabled("me.phh.treble.overlay.nokia.pnx_8_1_x7.systemui", true)

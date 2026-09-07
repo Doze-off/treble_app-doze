@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/cameratitle"
+        android:layout="@layout/preference_category_custom">
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_camera_multi_camera"
+            android:title="@string/exposeauxcameras" />
+
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_camera_force_camera2api_hal3"
+            android:title="@string/camera2apienable" />
+
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue="-1"
+            android:entries="@array/pref_camera_timestamp"
+            android:entryValues="@array/pref_camera_timestamp_values"
+            android:key="key_camera_camera_timestamp"
+            android:title="@string/timestamp"
+            android:summary="@string/reboot_camera" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

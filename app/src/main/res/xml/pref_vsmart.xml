@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Display">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_vsmart_dt2w"
-            android:title="Enable double tap to wake" />
-    </PreferenceCategory>
+            android:title="@string/tap_to_wake" />
 
 </PreferenceScreen>

@@ -1,0 +1,26 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <Preference
+            android:title="@string/debugsensor" android:summary="Are you working?"
+            android:layout="@layout/preference_custom">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="me.phh.treble.app"
+                android:targetClass="me.phh.treble.app.DebugSensors" />
+        </Preference>
+
+        <Preference
+            android:layout="@layout/preference_custom"
+            android:key="key_debug_restart_app"
+            android:title="@string/trebleappkill"
+            android:summary="@string/trebleappkill_summary" />
+
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_debug_debuggable_mode"
+            android:title="@string/debbugablemode"
+            android:summary="@string/debbugablemode_summary" />
+
+</PreferenceScreen>

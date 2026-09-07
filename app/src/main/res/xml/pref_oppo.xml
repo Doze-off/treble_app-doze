@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Touchscreen">
+    <PreferenceCategory
+        android:title="@string/touch"
+        android:layout="@layout/preference_category_custom">
         <SwitchPreference
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_oppo_double_tap_to_wake"
-            android:title="Enable DT2W" />
+            android:title="@string/dt2w" />
         <SwitchPreference
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_oppo_ts_game_mode"
-            android:title="Enable game mode" />
+            android:title="@string/gamemode_oppo" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Other">
+
+    <PreferenceCategory
+        android:title="@string/oneplusother"
+        android:layout="@layout/preference_category_custom">
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_oppo_usb_otg"
-            android:title="Enable USB OTG" />
+            android:title="@string/otg_usb" />
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_oppo_dc_diming"
-            android:title="Enable DC Diming" />
+            android:title="@string/dc_diming" />
     </PreferenceCategory>
+
 </PreferenceScreen>

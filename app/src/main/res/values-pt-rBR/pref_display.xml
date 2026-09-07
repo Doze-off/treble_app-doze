@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <array name="pref_display_fps">
+    <item>"Não forçar"</item>
+    <item>"60fps"</item>
+  </array>
+
+  <array name="pref_ui_fod_color">
+    <item>"Verde"</item>
+    <item>"Ciano"</item>
+    <item>"Branco"</item>
+  </array>
+
+  <array name="pref_ui_custom_pointer_type">
+    <item>"Cursor de mouse"</item>
+    <item>"Ponteiro de caneta"</item>
+    <item>"Transparente"</item>
+  </array>
+
+  <array name="pref_display_sf_blur_algorithm">
+    <item>"Desativado"</item>
+    <item>"Gaussiano"</item>
+    <item>"Kawase"</item>
+    <item>"Kawase2</item>
+    <item>"kawase2_fix_aliasing"</item>
+
+  </array>
+
+  <array name="pref_display_sf_renderengine_backend">
+    <item>"Não sobrescrever"</item>
+    <item>"SkiaGL"</item>
+    <item>"SkiaGL (com threads)"</item>
+    <item>"SkiaVK"</item>
+    <item>"SkiaVK (com threads)"</item>
+  </array>
+
+  <array name="pref_display_sf_renderengine_backend_values">
+    <item>""</item>
+    <item>"skiagl"</item>
+    <item>"skiaglthreaded"</item>
+    <item>"skiavk"</item>
+    <item>"skiavkthreaded"</item>
+  </array>
+
+  <array name="pref_display_max_events_per_sec_values">
+    <item>60</item>
+    <item>90</item>
+    <item>120</item>
+    <item>144</item>
+  </array>
+
+</resources>

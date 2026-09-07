@@ -10,10 +10,9 @@ import android.hardware.input.InputManager
 import android.os.*
 import android.util.Log
 import android.view.InputDevice
-import java.io.ByteArrayOutputStream
-import java.io.File
 import java.io.FileInputStream
 import kotlin.concurrent.thread
+
 
 object Desktop: EntryStartup {
     val devices = HashMap<Int, InputDevice>()
@@ -153,10 +152,6 @@ class DesktopInput : Activity() {
         val getAddressMethod = secondaryDisplay.javaClass.getMethod("getAddress")
         val primaryAddress = getAddressMethod.invoke(primaryDisplay)
         val secondaryAddress = getAddressMethod.invoke(secondaryDisplay)
-        if (secondaryAddress == null) {
-            Log.d("PHH", "Secondary screen with no address, can't do input mapping")
-            return
-        }
         val getPortMethod = secondaryAddress.javaClass.getMethod("getPort")
         val primaryPort = ((getPortMethod.invoke(primaryAddress) as Byte).toInt() + 256) % 256
         val secondaryPort = getPortMethod.invoke(secondaryAddress)
@@ -179,4 +174,3 @@ class DesktopInput : Activity() {
                 .show()
     }
 }
-

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/title_general_mediatek"
+        android:layout="@layout/preference_category_custom">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_mtk_mediatek_touch_hint_rotate"
+            android:title="@string/title_touch_hint_rotate"
+            android:summary="@string/summary_touch_hint_rotate" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_mtk_mediatek_ged_kpi"
+            android:title="@string/title_ged_kpi"
+            android:summary="@string/summary_ged_kpi" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/title_telephony_mediatek"
+        android:layout="@layout/preference_category_custom">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_mtk_force_cognitive"
+            android:title="@string/title_force_cognitive"
+            android:summary="@string/summary_force_cognitive" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

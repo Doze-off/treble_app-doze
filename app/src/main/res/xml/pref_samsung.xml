@@ -1,77 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Audio">
+
+    <PreferenceCategory
+        android:title="AUDIO"
+        android:layout="@layout/preference_category_custom">
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_samsung_audio_stereo"
+            android:title="@string/sterioaudio" />
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_samsung_disable_back_mic"
+            android:title="@string/disable_backmic"
+            android:summary="@string/disablebackmic_summary" />
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_samsung_alternate_audio_policy"
             android:title="Use alternate audio policy" />
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="key_samsung_audio_stereo"
-            android:title="Enable stereo audio mode" />
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="key_samsung_disable_back_mic"
-            android:title="Disable Built-In Back Mic"
-            android:summary="May fix broken mic on video recording" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Screen">
+
+    <PreferenceCategory
+        android:title="@string/oneplus_display"
+        android:layout="@layout/preference_category_custom">
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_samsung_high_brightness"
             android:title="Enable extended brightness range" />
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_samsung_glove_mode"
-            android:title="Enable glove mode" />
+            android:title="@string/glovemode_huawei" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Misc">
+
+    <PreferenceCategory
+        android:title="@string/title_misc_asus"
+        android:layout="@layout/preference_category_custom">
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_samsung_wireless_charging_transmit"
-            android:title="Enable reversed wireless charging(If applicable)" />
+            android:title="@string/reversecharge" />
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_samsung_double_tap_to_wake"
-            android:title="Enable double tap to wake" />
+            android:title="@string/title_dt2w" />
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_samsung_fod_single_click"
-            android:title="Clicking fingerprint turns device on" />
+            android:title="FOD Single Click" />
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_samsung_camera_ids"
-            android:title="Enable access to all cameras"
-            android:summary="Requires Q vendor" />
-        <EditTextPreference
+            android:title="@string/samsungallcam"
+            android:summary="@string/samsung1text" />
+		<EditTextPreference
+            android:layout="@layout/preference_edittext_custom"
             android:defaultValue="1"
             android:key="key_samsung_flash_strength"
-            android:title="Set flash strength"
-            android:summary="Usually values are integers between 1 and 5"
-            android:inputType="number" />
+	        android:title="@string/samsungflash"
+	        android:summary="@string/samsung2text"
+	        android:inputType="number" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Workarounds">
+
+    <PreferenceCategory
+        android:title="@string/samsungtitle3"
+        android:layout="@layout/preference_category_custom">
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_samsung_extra_sensors"
-            android:title="Enable extra sensors" />
+            android:title="@string/samsung4" />
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_samsung_colorspace"
-            android:title="Enable workaround for white-ish screen" />
+            android:title="@string/samsung5" />
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_samsung_broken_fingerprint"
-            android:title="Enable workaround for broken fingerprint" />
+            android:title="@string/fingbroken" />
         <EditTextPreference
+            android:layout="@layout/preference_edittext_custom"
             android:defaultValue="-1"
             android:key="key_samsung_backlight_multiplier"
-            android:title="Set backlight scale/max backlight level"
+            android:title="@string/backlightsamsung"
             android:inputType="number" />
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="key_samsung_force_restore_5g"
             android:title="Forcibly restore 5G"
             android:summary="Restores default 5G behaviour when any option with 5G is enabled.\nTurn on if 5G suddenly isn't working after forcing other network modes (such as 4G, 3G or 2G)." />
     </PreferenceCategory>
+
 </PreferenceScreen>

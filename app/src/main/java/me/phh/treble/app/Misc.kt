@@ -1,22 +1,14 @@
 package me.phh.treble.app
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import android.hardware.display.DisplayManager
-import android.os.Parcel
 import android.os.ServiceManager
 import android.os.SystemProperties
-import android.preference.PreferenceManager
-import android.provider.Settings
 import android.util.Log
-import java.lang.ref.WeakReference
-
-import vendor.ims.zenmotion.V1_0.IZenMotion;
-import vendor.xiaomi.hw.touchfeature.ITouchFeature
+import androidx.preference.PreferenceManager
+import vendor.ims.zenmotion.V1_0.IZenMotion
 import vendor.mediatek.hardware.agolddaemon.IAgoldDaemon
 
-@SuppressLint("StaticFieldLeak")
 object Misc: EntryStartup {
     fun safeSetprop(key: String, value: String?) {
         try {
@@ -27,478 +19,134 @@ object Misc: EntryStartup {
         }
     }
 
-    val surfaceFlinger = ServiceManager.getService("SurfaceFlinger")
-    fun forceFps(v: Int, c: Boolean) {
-        val data = Parcel.obtain()
-        try {
-            data.writeInterfaceToken("android.ui.ISurfaceComposer")
-            data.writeInt(v)
-            surfaceFlinger.transact(1035, data, null, 0)
-            Log.d("PHH", "Set surface flinger forced fps/mode to supportedModes[$v]")
-            if (c) {
-                Log.d("PHH", "Resolution changed, attempting to restart SystemUI")
-                var cmds = listOf(
-                    arrayOf("/sbin/su", "-c", "/system/bin/killall com.android.systemui"),
-                    arrayOf("/system/xbin/su", "-c", "/system/bin/killall com.android.systemui"),
-                    arrayOf("/system/xbin/phh-su", "-c", "/system/bin/killall com.android.systemui"),
-                    arrayOf("/sbin/su", "0", "/system/bin/killall com.android.systemui"),
-                    arrayOf("/system/xbin/su", "0", "/system/bin/killall com.android.systemui"),
-                    arrayOf("/system/xbin/phh-su", "0", "/system/bin/killall com.android.systemui")
-                )
-                for (cmd in cmds) {
-                    try {
-                        Runtime.getRuntime().exec(cmd).waitFor()
-                        break
-                    } catch (t: Throwable) {
-                        Log.d("PHH", "Failed to exec \"" + cmd.joinToString(separator = " ") + "\", skipping")
-                    }
-                }
-            }
-        } catch (r: Exception) {
-            Log.d("PHH", "Failed setting surface flinger forced fps/mode to supportedModes[$v]")
-        } finally {
-            data.recycle()
-        }
-    }
-
-    fun enableHwcOverlay(v: Boolean) {
-        val data = Parcel.obtain()
-        try {
-            data.writeInterfaceToken("android.ui.ISurfaceComposer")
-            data.writeInt(if(v) 0 else 1)
-            surfaceFlinger.transact(1008, data, null, 0)
-            Log.d("PHH", "Set surface flinger hwc overlay to $v")
-        } catch (r: Exception) {
-            Log.d("PHH", "Failed setting surface flinger hwc overlay to $v")
-        } finally {
-            data.recycle()
-        }
-    }
-
-    lateinit var ctxt: WeakReference<Context>
     val spListener = SharedPreferences.OnSharedPreferenceChangeListener { sp, key ->
-        val c = ctxt.get()
-        if(c == null) return@OnSharedPreferenceChangeListener
-        val displayManager = c.getSystemService(DisplayManager::class.java)
-        when(key) {
-            MiscSettings.mobileSignal -> {
-                val value = sp.getString(key, "default")
-                SystemProperties.set("persist.sys.signal.level", value)
-                Log.d("PHH", "Setting signal level method to $value")
-            }
-            MiscSettings.cameraTimestampOverride -> {
-                val value = sp.getString(key, "-1")
-                Log.d("PHH", "Setting cameraTimestampOverride to $value")
-                SystemProperties.set("persist.sys.phh.camera.force_timestampsource", value)
-            }
-            MiscSettings.maxAspectRatioPreO -> {
-                val value = sp.getString(key, "1.86")
-                SystemProperties.set("persist.sys.max_aspect_ratio.pre_o", value)
-                Log.d("PHH", "Setting max aspect ratio for pre-o app $value")
-            }
-            MiscSettings.multiCameras -> {
+        when (key) {
+            MiscSettings.biometricstrong -> {
                 val value = sp.getBoolean(key, false)
-
-                safeSetprop("persist.sys.phh.include_all_cameras", if(value) "true" else "false")
-                if (value ||
-                        SystemProperties.get("vendor.camera.aux.packagelist", null) == null ||
-                        SystemProperties.get("camera.aux.packagelist", null) == null) {
-                    safeSetprop("vendor.camera.aux.packagelist", if (value) "nothing" else null)
-                    safeSetprop("camera.aux.packagelist", if (value) "nothing" else null)
-                    safeSetprop("ctl.restart", "vendor.camera-provider-2-4")
-                    safeSetprop("ctl.restart", "camera-provider-2-4")
-                    safeSetprop("ctl.restart", "cameraserver")
-                }
+                SystemProperties.set("persist.sys.phh.biometricstrong", if (value) "true" else "false")
             }
-            MiscSettings.forceCamera2APIHAL3 -> {
+            MiscSettings.securize -> {
                 val value = sp.getBoolean(key, false)
-                val defValue = "0"
-                val newValue = if (value) "1" else defValue
-
-                if (value ||
-                        SystemProperties.get("persist.vendor.camera.HAL3.enabled", defValue) != newValue ||
-                        SystemProperties.get("persist.vendor.camera.eis.enable", defValue) != newValue) {
-                    safeSetprop("persist.vendor.camera.HAL3.enabled", newValue)
-                    safeSetprop("persist.vendor.camera.eis.enable", newValue)
-                    Log.d("PHH", "forced Camera2API HAL3 to $value")
-                    // Restart services
-                    safeSetprop("ctl.restart", "vendor.camera-provider-2-4")
-                    safeSetprop("ctl.restart", "camera-provider-2-4")
-                }
+                SystemProperties.set("persist.sys.phh.securize", if (value) "1" else "0")
             }
-            MiscSettings.headsetFix -> {
-                val value = sp.getBoolean(key, HuaweiSettings.enabled())
-                if (!sp.contains(key))
-                    Log.d("PHH", "Setting Huawei headset fix to $value")
-                if (value) {
-                    Log.d("PHH", "starting huaweiaudio")
-                    ForceHeadsetAudio.startup(c)
-                } else {
-                    Log.d("PHH", "stopping huaweiaudio")
-                    ForceHeadsetAudio.shutdown(c)
-                }
-            }
-            MiscSettings.roundedCorners -> {
-                val value = sp.getString(key, "-1").toInt()
-                if (value >= 0) {
-                    Settings.Secure.putInt(c.contentResolver, "sysui_rounded_content_padding", value)
-                    SystemProperties.set("persist.sys.phh.rounded_corners_padding", value.toString())
-            } else {
-                    SystemProperties.set("persist.sys.phh.rounded_corners_padding", null)
-                }
-            }
-            MiscSettings.roundedCornersOverlay -> {
-                val value = sp.getString(key, "-1").toFloat()
-                if (value >= 0) {
-                    Settings.Secure.putFloat(c.contentResolver, "sysui_rounded_size", value)
-                }
-            }
-            MiscSettings.disableButtonsBacklight -> {
+            MiscSettings.treatVirtualSensorsAsReal -> {
                 val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.disable_buttons_light", if (value) "true" else "false")
+                SystemProperties.set("persist.sys.phh.virtual_sensors_are_real", if (value) "1" else "0")
             }
-            MiscSettings.forceNavbarOff -> {
+            MiscSettings.launcher3 -> {
                 val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.mainkeys", if (value) "1" else "0")
+                SystemProperties.set("persist.sys.phh.launcher3", if (value) "true" else "false")
             }
-            MiscSettings.bluetooth -> {
-                val value = sp.getString(key, "none")
-                android.util.Log.d("PHH", "Setting bluetooth workaround to $value")
-                when (value) {
-                    "none" -> {
-                        SystemProperties.set("persist.sys.bt.unsupported.commands", "")
-                        SystemProperties.set("persist.sys.bt.unsupported.ogfeatures", "")
-                        SystemProperties.set("persist.sys.bt.unsupported.lefeatures", "")
-                        SystemProperties.set("persist.sys.bt.unsupported.states", "")
-                    }
-                    "mediatek" -> {
-                        // 182 - READ_DEFAULT_ERRONEOUS_DATA_REPORTING
-                        SystemProperties.set("persist.sys.bt.unsupported.commands", "182")
-                        SystemProperties.set("persist.sys.bt.unsupported.ogfeatures", "")
-                        SystemProperties.set("persist.sys.bt.unsupported.lefeatures", "")
-                        SystemProperties.set("persist.sys.bt.unsupported.states", "")
-                    }
-                    "huawei" -> {
-                        // 182 - READ_DEFAULT_ERRONEOUS_DATA_REPORTING
-                        SystemProperties.set("persist.sys.bt.unsupported.commands", "182")
-                        SystemProperties.set("persist.sys.bt.unsupported.ogfeatures", "")
-                        SystemProperties.set("persist.sys.bt.unsupported.lefeatures", "")
-                        SystemProperties.set("persist.sys.bt.unsupported.states", "")
-                    }
-                }
-            }
-            MiscSettings.displayFps -> {
-                val thisModeIndex = sp.getString(key, "-1").toInt()
-                val displayInfo = displayManager.displays[0]
-                if (thisModeIndex < 0 || thisModeIndex >= displayInfo.supportedModes.size) {
-                    Log.d("PHH", "Trying to set impossible supportedModes[$thisModeIndex]")
-                } else {
-                    Log.d("PHH", "Trying to set supportedModes[$thisModeIndex]")
-                    val lastMode = displayInfo.getMode()
-                    var lastModeIndex = displayInfo.supportedModes.indexOf(lastMode)
-                    val thisMode = displayInfo.supportedModes[thisModeIndex]
-                    Log.d("PHH", "\tlastMode = supportedModes[$lastModeIndex] = $lastMode")
-                    Log.d("PHH", "\tthisMode = supportedModes[$thisModeIndex] = $thisMode")
-                    forceFps(thisModeIndex, (thisMode.getPhysicalWidth() != lastMode.getPhysicalWidth())
-                        || (thisMode.getPhysicalHeight() != lastMode.getPhysicalHeight()))
-                }
-            }
-            MiscSettings.dynamicFps -> {
+            MiscSettings.disableSaeUpgrade -> {
                 val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.dynamic_fps", if (value) "1" else "0")
-            }
-            MiscSettings.disableAudioEffects -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.disable_audio_effects", if (value) "1" else "0")
-            }
-            MiscSettings.disableFastAudio -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.disable_fast_audio", if (value) "1" else "0")
-            }
-            MiscSettings.lmkTweaks -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.lmk_tweaks", if (value) "true" else "false")
-            }
-            MiscSettings.sysbta -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.bluetooth.system_audio_hal.enabled", if (value) "true" else "false")
-            }
-            MiscSettings.noHwcomposer -> {
-                val value = sp.getBoolean(key, false)
-                enableHwcOverlay(!value)
+                SystemProperties.set("persist.sys.phh.wifi_disable_sae", if (value) "true" else "false")
             }
             MiscSettings.storageFUSE -> {
                 val value = sp.getBoolean(key, false)
                 Log.d("PHH", "Setting storageFUSE to $value")
                 SystemProperties.set("persist.sys.fflag.override.settings_fuse", if (!value) "true" else "false")
             }
-            MiscSettings.backlightScale -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.backlight.scale", if (value) "1" else "0")
-            }
-            MiscSettings.headsetDevinput -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.overlay.devinputjack", if (value) "true" else "false")
-            }
-            MiscSettings.restartRil -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.restart_ril", if (value) "true" else "false")
-            }
-            MiscSettings.patchSmsc -> {
-                val value = sp.getBoolean(key, true)
-                SystemProperties.set("persist.sys.phh.patch_smsc", if (value) "true" else "false")
-            }
-            MiscSettings.minimalBrightness -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.overlay.minimal_brightness", if (value) "true" else "false")
-            }
-            MiscSettings.aod -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.overlay.aod", if (value) "true" else "false")
-                OverlayPicker.setOverlayEnabled("me.phh.treble.overlay.misc.aod_systemui", value)
-            }
             MiscSettings.disableDisplayDozeSuspend -> {
-                val value = sp.getBoolean(key, false)
+                val value = sp.getBoolean(key, true)
                 SystemProperties.set("persist.sys.phh.disable_display_doze_suspend", if (value) "true" else "false")
-            }
-            MiscSettings.dt2w -> {
-                // Asus dt2w
-                val value = sp.getBoolean(key, false)
-                val asusSvc = try { IZenMotion.getService() } catch(e: Exception) { null }
-                if(asusSvc != null) {
-                    asusSvc.setDclickEnable(if(value) 1 else 0)
-                }
-
-                // Xiaomi dt2w
-                Misc.safeSetprop("persist.sys.phh.xiaomi.dt2w", if(value) "1" else "0")
-                try {
-                    val binder = android.os.Binder.allowBlocking(
-                        ServiceManager.waitForDeclaredService(ITouchFeature.DESCRIPTOR + "/default"));
-                    val instance = ITouchFeature.Stub.asInterface(binder);
-                    val ret = instance.set_mode_value(0 /*touchid*/, 14 /* TOUCH_DOUBLETAP_MODE */, if(value) 1 else 0)
-                    Log.d("PHH", "Setting xiaomi touch mode returned $ret")
-                } catch(t: Throwable) {
-                    Log.d("PHH", "Setting xiaomi touch mode failed", t)
-                }
-
-                // Agold//unihertz dt2w
-                try {
-                    val binder = android.os.Binder.allowBlocking(
-                        ServiceManager.waitForDeclaredService(IAgoldDaemon.DESCRIPTOR + "/default"));
-                    val instance = IAgoldDaemon.Stub.asInterface(binder);
-                    val ret = instance.SendMessageToIoctl(100, 0, if(value) 1 else 0, if(value) 1 else 0)
-                    Log.d("PHH", "Setting agold touch mode returned $ret")
-                } catch(t: Throwable) {
-                    Log.d("PHH", "Setting agold touch mode failed", t)
-                }
-            }
-            MiscSettings.fodColor -> {
-                val value = sp.getString(key, "00ff00")
-                SystemProperties.set("persist.sys.phh.fod_color", value)
-            }
-            MiscSettings.mtkTouchHintIsRotate -> {
-                val value = sp.getBoolean(key, false)
-                if(value) {
-                    SystemProperties.set("persist.sys.phh.touch_hint", "rotate")
-                } else {
-                    SystemProperties.set("persist.sys.phh.touch_hint", "touch")
-                }
-            }
-            MiscSettings.allowBinderThread -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.allow_binder_thread_on_incoming_calls", if(value) "1" else "0")
-            }
-            MiscSettings.statusbarpaddingtop -> {
-                val value = sp.getString(key, "-1").toInt()
-                if(value != -1) {
-                SystemProperties.set("persist.sys.phh.status_bar_padding_top", value.toString())
-                } else {
-                    SystemProperties.set("persist.sys.phh.status_bar_padding_top", null)
-                }
-            }
-            MiscSettings.statusbarpaddingstart -> {
-                val value = sp.getString(key, "-1").toInt()
-                if(value != -1) {
-                SystemProperties.set("persist.sys.phh.status_bar_padding_start", value.toString())
-                } else {
-                    SystemProperties.set("persist.sys.phh.status_bar_padding_start", null)
-                }
-            }
-            MiscSettings.statusbarpaddingend -> {
-                val value = sp.getString(key, "-1").toInt()
-                if(value != -1) {
-                SystemProperties.set("persist.sys.phh.status_bar_padding_end", value.toString())
-                } else {
-                    SystemProperties.set("persist.sys.phh.status_bar_padding_end", null)
-                }
-            }
-            MiscSettings.statusbarpaddingbottom -> {
-                val value = sp.getString(key, "-1").toInt()
-                if(value != -1) {
-                SystemProperties.set("persist.sys.phh.status_bar_padding_bottom", value.toString())
-                } else {
-                    SystemProperties.set("persist.sys.phh.status_bar_padding_bottom", null)
-                }
-            }
-            MiscSettings.qsclockleftpadding -> {
-                val value = sp.getString(key, "-1").toInt()
-                if(value != -1) {
-                    SystemProperties.set("persist.sys.phh.qs_clock_left_padding", value.toString())
-                } else {
-                    SystemProperties.set("persist.sys.phh.qs_clock_left_padding", null)
-                }
-            }
-            MiscSettings.qsclockrightpadding -> {
-                val value = sp.getString(key, "-1").toInt()
-                if(value != -1) {
-                    SystemProperties.set("persist.sys.phh.qs_clock_right_padding", value.toString())
-                } else {
-                    SystemProperties.set("persist.sys.phh.qs_clock_right_padding", null)
-                }
-            }
-            MiscSettings.lowGammaBrightness -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.low_gamma_brightness", if (value) "true" else "false")
-            }
-            MiscSettings.forceDisplay5g -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.force_display_5g", if(value) "1" else "0")
-            }
-            MiscSettings.linearBrightness -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.linear_brightness", if(value) "1" else "0")
-            }
-            MiscSettings.disableVoiceCallIn -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.disable_voice_call_in", if (value) "true" else "false")
-            }
-            MiscSettings.mtkGedKpi -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.mtk_ged_kpi", if (value) "1" else "0")
-            }
-            MiscSettings.disableSfGlBackpressure -> {
-                val value = sp.getBoolean(key, false)
-                // Note: Reversed value because the prop is enabling
-                SystemProperties.set("persist.sys.phh.enable_sf_gl_backpressure", if (value) "0" else "1")
-            }
-            MiscSettings.disableSfHwcBackpressure -> {
-                val value = sp.getBoolean(key, false)
-                // Note: Reversed value because the prop is enabling
-                SystemProperties.set("persist.sys.phh.enable_sf_hwc_backpressure", if (value) "0" else "1")
-            }
-            MiscSettings.disableSaeUpgrade -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.wifi_disable_sae", if (value) "true" else "false")
-            }
-            MiscSettings.escoTransportUnitSize -> {
-                val value = sp.getString(key, "0")
-                SystemProperties.set("persist.sys.bt.esco_transport_unit_size", value)
-            }
-            MiscSettings.securize -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.securize", if (value) "1" else "0")
             }
             MiscSettings.activityAnimPerfOverride -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.activity_anim_perf_override", if (value) "true" else "false")
             }
-            MiscSettings.forceSwCodecs -> {
+            MiscSettings.lmkTweaks -> {
                 val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.force_sw_codecs", if (value) "true" else "false")
+                SystemProperties.set("persist.sys.phh.lmk_tweaks", if (value) "true" else "false")
             }
-            MiscSettings.forceHwCodecs -> {
+            MiscSettings.disableExpensiveRenderingMode -> {
                 val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.force_hw_codecs", if (value) "true" else "false")
+                SystemProperties.set("persist.sys.phh.disable_expensive_rendering_mode", if (value) "1" else "0")
             }
-            MiscSettings.disableLeApcfExtended -> {
+            MiscSettings.preferHwCodecs -> {
                 val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.bt.le.disable_apcf_extended_features", if (value) "1" else "0")
+                SystemProperties.set("persist.sys.phh.prefer_hw_codecs", if (value) "true" else "false")
             }
-            MiscSettings.treatVirtualSensorsAsReal -> {
+            MiscSettings.preferSwCodecs -> {
                 val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.virtual_sensors_are_real", if (value) "1" else "0")
+                SystemProperties.set("persist.sys.phh.prefer_sw_codecs", if (value) "true" else "false")
             }
-            MiscSettings.trafficFix -> {
-                val value = sp.getBoolean(key, true)
-                SystemProperties.set("persist.sys.phh.traffic_indicator_fallback", if (value) "true" else "false")
-            }
-            MiscSettings.safeMedia -> {
+            MiscSettings.fixScreenRecorder -> {
                 val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.disable_safe_media_volume", if (value) "true" else "false")
+                SystemProperties.set("persist.sys.phh.fix_screen_recorder", if (value) "true" else "false")
             }
-            MiscSettings.a2dpAddr -> {
+            MiscSettings.maxCompatibility -> {
                 val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.a2dp_identity_addr", if (value) "true" else "false")
+                SystemProperties.set("persist.sys.phh.max_compatibility", if (value) "true" else "false")
             }
-            MiscSettings.scrollBoost -> {
+            MiscSettings.legacyMode -> {
                 val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.scroll_boost", if (value) "true" else "false")
-            }
-            MiscSettings.axionProps -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.axion_props", if (value) "true" else "false")
-            }
-            MiscSettings.unisocColorTransform -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.unisoc_color_transform_workaround", if (value) "true" else "false")
+                SystemProperties.set("persist.sys.phh.legacy_mode", if (value) "true" else "false")
             }
             MiscSettings.bluetoothFix -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.bluetooth_fix", if (value) "true" else "false")
             }
-            MiscSettings.sfBlurAlgorithm -> {
-                val value = sp.getString(key, "kawase")
-                SystemProperties.set("persist.sys.phh.sf.background_blur", value)
+            MiscSettings.unisocColorTransform -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.unisoc_color_transform_workaround", if (value) "true" else "false")
             }
-            MiscSettings.sfRenderEngineBackend -> {
-                val value = sp.getString(key, "")
-                SystemProperties.set("persist.sys.phh.sf.renderengine.backend", value)
+            MiscSettings.axionProps -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.axion_props", if (value) "true" else "false")
             }
-            MiscSettings.sfHwuiBackend -> {
-                val value = sp.getString(key, "")
-                SystemProperties.set("persist.sys.phh.sf.debug.renderengine.backend", value)
+            MiscSettings.scrollBoost -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.scroll_boost", if (value) "true" else "false")
             }
-            MiscSettings.sfAutoLatchUnsignaled -> {
+            MiscSettings.a2dpAddr -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.a2dp_identity_addr", if (value) "true" else "false")
+            }
+            MiscSettings.safeMedia -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.disable_safe_media_volume", if (value) "true" else "false")
+            }
+            MiscSettings.trafficFix -> {
                 val value = sp.getBoolean(key, true)
-                SystemProperties.set("persist.sys.phh.sf_auto_latch_unsignaled", if (value) "1" else "0")
+                SystemProperties.set("persist.sys.phh.traffic_indicator_fallback", if (value) "true" else "false")
             }
-            MiscSettings.sfDisableBackpressure -> {
+            MiscSettings.unihertzdt2w -> {
                 val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.sf_disable_backpressure", if (value) "1" else "0")
+                try {
+                    val binder = android.os.Binder.allowBlocking(
+                        ServiceManager.waitForDeclaredService(IAgoldDaemon.DESCRIPTOR + "/default")
+                    )
+                    val instance = IAgoldDaemon.Stub.asInterface(binder)
+                    val ret = instance.SendMessageToIoctl(100, 0, if (value) 1 else 0, if (value) 1 else 0)
+                    Log.d("PHH", "Setting agold touch mode returned $ret")
+                } catch (t: Throwable) {
+                    Log.d("PHH", "Setting agold touch mode failed", t)
+                }
             }
-            MiscSettings.sfLatchUnsignaled -> {
+            MiscSettings.dt2w -> {
                 val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.sf_latch_unsignaled", if (value) "1" else "0")
+                val asusSvc = try { IZenMotion.getService() } catch (e: Exception) { null }
+                asusSvc?.setDclickEnable(if (value) 1 else 0)
             }
         }
     }
 
     override fun startup(ctxt: Context) {
-        if (!MiscSettings.enabled()) return
-
+        Log.d("PHH", "Loading Misc fragment")
         val sp = PreferenceManager.getDefaultSharedPreferences(ctxt)
         sp.registerOnSharedPreferenceChangeListener(spListener)
 
-        this.ctxt = WeakReference(ctxt.applicationContext)
-
-        //Refresh parameters on boot
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.cameraTimestampOverride)
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.mobileSignal)
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.maxAspectRatioPreO)
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.multiCameras)
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.forceCamera2APIHAL3)
-        if (! sp.contains(MiscSettings.headsetFix))
-            sp.edit().putBoolean(MiscSettings.headsetFix, HuaweiSettings.enabled()).commit()
-        sp.edit().putBoolean(MiscSettings.sysbta, SystemProperties.getBoolean("persist.bluetooth.system_audio_hal.enabled", false)).apply()
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.headsetFix)
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.bluetooth)
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.displayFps)
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.noHwcomposer)
+        // Refresh on boot
         spListener.onSharedPreferenceChanged(sp, MiscSettings.storageFUSE)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.unihertzdt2w)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.dt2w)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.unisocColorTransform)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.trafficFix)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.safeMedia)
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.a2dpAddr)
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.unisocColorTransform)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.preferHwCodecs)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.preferSwCodecs)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.fixScreenRecorder)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.maxCompatibility)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.legacyMode)
     }
 }

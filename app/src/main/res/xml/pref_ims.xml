@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-	xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference android:title="Create IMS APN"
-        android:key="key_ims_create_apn" />
-    <Preference android:title="Download and install IMS APK"
-        android:key="key_ims_install_apn" />
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="key_ims_request_network"
-        android:title="Request IMS network" />
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="key_ims_force_enable_setting"
-        android:title="Force the presence of 4G Calling setting" />
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/title_ims_requeriments"
+        android:layout="@layout/preference_category_custom">
+        <Preference
+            android:layout="@layout/preference_custom"
+            android:title="@string/ims_apn"
+            android:key="key_ims_create_apn" />
+        <Preference
+            android:layout="@layout/preference_custom"
+            android:title="@string/download_ims"
+            android:key="key_ims_install_apn" />
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_ims_request_network"
+            android:title="@string/key_ims" />
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_ims_force_enable_setting"
+            android:title="@string/force_ims_call" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/title_ims2"
+        android:layout="@layout/preference_category_custom">
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_ims_allow_binder_thread_on_incoming_calls"
+            android:title="@string/ims2_title_call_incoming"
+            android:summary="@string/ims2_summary" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/title_prefaudio"
+        android:layout="@layout/preference_category_custom">
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_audio_alternate_audiopolicy"
+            android:title="@string/alt_audio_police" />
+
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_audio_headset_devinput"
+            android:title="@string/alt_headset_detect_title"
+            android:summary="@string/disable_headset_detect_sumarry"/>
+
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_audio_disable_audio_effects"
+            android:title="@string/disable_audio_effects_title"
+            android:summary="@string/disable_audio_effects_sumarry"/>
+
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_audio_disable_fast_audio"
+            android:title="@string/disable_fast_audio"
+            android:summary="@string/disable_fast_audio_sumarry"/>
+
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_audio_disable_voice_call_in"
+            android:title="@string/disable_voicecall_route"
+            android:summary="@string/voicecall_route_sumarry" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="\nBLUETOOTH"
+        android:layout="@layout/preference_category_custom">
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="true"
+            android:key="key_bt_dynamic_sysbta"
+            android:title="@string/wide_bt_hal" />
+
+        <EditTextPreference
+            android:layout="@layout/preference_edittext_custom"
+            android:defaultValue="1"
+            android:key="key_bt_max_bluetooth_audio_devices"
+            android:title="@string/max_connect_bt_audio"
+            android:inputType="number" />
+
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue="0"
+            android:key="key_bt_esco_transport_unit_size"
+            android:entries="@array/pref_audio_esco_transport_size"
+            android:entryValues="@array/pref_audio_esco_transport_size_values"
+            android:title="@string/esco_size_bt" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/bt_workgrounds_title"
+        android:layout="@layout/preference_category_custom">
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:key="key_bt_disable_le_apcfe"
+            android:defaultValue="false"
+            android:title="@string/disable_le_apcf"
+            android:summary="@string/le_acpf_sumarry" />
+
+        <EditTextPreference
+            android:layout="@layout/preference_edittext_custom"
+            android:key="key_bt_le_version_cap"
+            android:title="@string/cap_le_vendorversion"
+            android:inputType="number"
+            android:summary="Default" />
+
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue="none"
+            android:key="key_bt_workarounds"
+            android:entries="@array/pref_audio_bt_workarounds"
+            android:entryValues="@array/pref_audio_bt_workarounds_values"
+            android:title="@string/predefined_workground_bluetooth" />
+
+        <EditTextPreference
+            android:layout="@layout/preference_edittext_custom"
+            android:key="key_bt_unsupported_commands"
+            android:title="@string/set_bluetooth_commands_unssuported_title"
+            android:inputType="text"
+            android:summary="Default" />
+
+        <EditTextPreference
+            android:layout="@layout/preference_edittext_custom"
+            android:key="key_bt_unsupported_og"
+            android:title="@string/unssuported_bluetooth_of_features"
+            android:inputType="text"
+            android:summary="Default" />
+
+        <EditTextPreference
+            android:layout="@layout/preference_edittext_custom"
+            android:key="key_bt_unsupported_le"
+            android:title="@string/unssuported_le_features_bluetooth"
+            android:inputType="text"
+            android:summary="Default" />
+
+        <EditTextPreference
+            android:layout="@layout/preference_edittext_custom"
+            android:key="key_bt_unsupported_states"
+            android:title="@string/unssuported_bluetooth_stats"
+            android:inputType="text"
+            android:summary="Default" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

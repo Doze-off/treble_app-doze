@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- GENERAL -->
+    <PreferenceCategory
+        android:title="@string/title_prefaudio"
+        android:layout="@layout/preference_category_custom">
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_ui_two_pane_layout"
+            android:title="@string/two_plane_layout"
+            android:summary="@string/two_plane_layout_summary" />
+
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_UI_force_navbar_off"
+            android:title="@string/disable_navigation_bar"
+            android:summary="@string/disable_navigation_bar_summary" />
+
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue="mouse"
+            android:entries="@array/pref_ui_custom_pointer_type"
+            android:entryValues="@array/pref_ui_custom_pointer_type_values"
+            android:key="key_ui_pointer_type"
+            android:title="@string/pointer_type" />
+    </PreferenceCategory>
+
+    <!-- LOCK SCREEN -->
+    <PreferenceCategory
+        android:title="@string/lckscreen"
+        android:layout="@layout/preference_category_custom">
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue="00ff00"
+            android:entries="@array/pref_ui_fod_color"
+            android:entryValues="@array/pref_ui_fod_color_values"
+            android:key="key_ui_fod_color"
+            android:title="@string/fod_icon_color" />
+    </PreferenceCategory>
+
+    <!-- STATUS BAR -->
+    <PreferenceCategory
+        android:title="@string/stats_bar"
+        android:layout="@layout/preference_category_custom">
+        <EditTextPreference
+            android:layout="@layout/preference_edittext_custom"
+            android:key="key_ui_sb_padding_top"
+            android:title="@string/bar_top_padding"
+            android:inputType="number"
+            android:hint="@string/sysui_restart"
+            android:summary="@string/sysui_restart" />
+
+        <EditTextPreference
+            android:layout="@layout/preference_edittext_custom"
+            android:key="key_ui_sb_padding_start"
+            android:title="@string/bar_start_padding"
+            android:inputType="number"
+            android:hint="@string/sysui_restart"
+            android:summary="@string/sysui_restart" />
+
+        <EditTextPreference
+            android:layout="@layout/preference_edittext_custom"
+            android:key="key_ui_sb_padding_end"
+            android:title="@string/bar_end_padding"
+            android:inputType="number"
+            android:hint="@string/sysui_restart"
+            android:summary="@string/sysui_restart" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/styles_title"
+        android:layout="@layout/preference_category_custom">
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue=""
+            android:entries="@array/pref_custom_accent_color"
+            android:entryValues="@array/pref_custom_accent_color_values"
+            android:key="key_custom_accent_color"
+            android:title="@string/accent_color" />
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue=""
+            android:entries="@array/pref_custom_icon_shape"
+            android:entryValues="@array/pref_custom_icon_shape_values"
+            android:key="key_custom_icon_shape"
+            android:title="@string/icon_shape" />
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue=""
+            android:entries="@array/pref_custom_icon_pack"
+            android:entryValues="@array/pref_custom_icon_pack_values"
+            android:key="key_custom_icon_pack"
+            android:title="@string/icon_pack" />
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue=""
+            android:entries="@array/pref_custom_font_family"
+            android:entryValues="@array/pref_custom_font_family_values"
+            android:key="key_custom_font_family"
+            android:title="@string/font_family" />
+        </PreferenceCategory>
+
+    <!-- TOOLS -->
+    <PreferenceCategory
+        android:title="@string/tools_title"
+        android:layout="@layout/preference_category_custom">
+        <Preference
+            android:layout="@layout/preference_custom"
+            android:key="key_ui_restart_systemui"
+            android:title="@string/restart_sysui_tools_option"
+            android:summary="@string/root_accesses" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

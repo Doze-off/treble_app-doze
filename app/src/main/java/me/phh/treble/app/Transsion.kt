@@ -13,19 +13,20 @@ object Transsion: EntryStartup {
             TranssionSettings.usbOtg -> {
                 val b = sp.getBoolean(key, false)
                 val value = if(b) "1" else "0"
-                Misc.safeSetprop("persist.sys.phh.transsion.usbotg", value)
+                Tools.safeSetprop("persist.sys.phh.transsion.usbotg", value)
             }
             TranssionSettings.dt2w -> {
                 val b = sp.getBoolean(key, false)
                 val value = if(b) "1" else "2"
-                Misc.safeSetprop("persist.sys.phh.transsion.dt2w", value)
+                Tools.safeSetprop("persist.sys.phh.transsion.dt2w", value)
             }
         }
     }
 
     override fun startup(ctxt: Context) {
-        if(!TranssionSettings.enabled()) return
+        if (!TranssionSettings.enabled(ctxt)) return
         Log.d("PHH", "Starting Transsion service")
+
         val sp = PreferenceManager.getDefaultSharedPreferences(ctxt)
         sp.registerOnSharedPreferenceChangeListener(spListener)
     }

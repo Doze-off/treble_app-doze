@@ -1,13 +1,12 @@
 <resources>
-    <string name="app_name">TrebleDroidApp</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_top_level">TrebleDroid Settings</string>
+    <string name="app_name">Treble</string>
+    <string name="title_activity_settings">Treble</string>
+    <string name="title_activity_top_level">Treble</string>
     <string name="desc_activity_top_level">Device specific settings</string>
-    <string name="remove_telephony_subsystem">Remove Telephony Subsystem</string>
     <string name="continue_question">Continue?</string>
-    <string name="title_activity_updater">Updater</string>
-    <string name="update_not_found_title">Your system is up to date</string>
-    <string name="update_found_title">System update available</string>
+    <string name="title_activity_updater">treble</string>
+    <string name="update_not_found_title">YOUR SYSTEM IS UP TO DATE</string>
+    <string name="update_found_title">SYSTEM UPDATE AVAILABLE</string>
     <string name="checking_update_title">Checking for available update</string>
     <string name="update_found_button">Download and install</string>
     <string name="update_not_found_button">Check for update</string>
@@ -21,9 +20,392 @@
     <string name="downloading_update_title">Downloading system update</string>
     <string name="applying_update_title">Applying system update</string>
     <string name="applied_update_title">Update applied successfully</string>
+    <string name="manual_ota_button">Apply Manual OTA</string>
+    <string name="clear_ota_button">Clear OTA Files</string>
+    <string name="refresh_urls_button">Refresh URLs</string>
     <string name="prevent_exit_message">The update is still ongoing. Leaving the app now will stop it.\nDo you really want to exit now?</string>
     <string name="warning_dialog_title">Warning</string>
     <string name="magisk_exists_message">Magisk was detected! If you proceed with the update you may lose Magisk or the installation may fail!</string>
     <string name="menu_delete_ota">Delete OTA files</string>
-    <string name="delete_ota_message">Take in consideration that you may lose your userdata if you proceed!\nTo prevent this, cancel this dialog, reboot and flash the latest update on fastboot mode.\nDo you want to proceed anyway?</string>
+    <string name="delete_ota_message">Take in consideration that you may lose your userdata if you proceed!\nTo prevent this, cancel this dialog, reboot and flash the latest update on fastboot mode.\n\nDo you want to proceed anyway?</string>
+    <string name="toast_download_start">Downloading OTA package</string>
+    <string name="toast_download_finished">OTA package downloaded</string>
+    <string name="toast_download_fail">Failed downloading OTA package</string>
+    <string name="changelog_default">Changelog will appear here</string>
+    <string name="toast_install_done">OTA image successfully installed</string>
+    <string name="toast_install_fail">Failed installing OTA image</string>
+    <string name="toast_delete_cache">Packages cache deleted</string>
+    <string name="toast_reboot">Reboot your device to apply changes</string>
+    <string name="update_props">Updating Props</string>
+    <string name="update_available_message">Update available: %1$s\nGSI: %2$s\nVariant: %3$s</string>
+    <string name="no_update_available_message">No update available for variant: %1$s</string>
+    <string name="props_summary">Will bash from an URL, continue?</string>
+    <string name="restart_system_ui">Restarting System UI</string>
+
+
+    <!-- Categorias -->
+    <string name="title_group">GROUP</string>
+    <string name="title_device_specific">DEVICE SPECIFIC</string>
+    <string name="title_display">DISPLAY</string>
+    <string name="title_audio">AUDIO</string>
+    <string name="title_telephony">TELEPHONY</string>
+    <string name="title_camera">CAMERA</string>
+    <string name="title_misc">MISCELLANEOUS</string>
+    <string name="title_debugging">DEBUGGING</string>
+
+    <!-- Preferências -->
+    <string name="title_gsi_group">GSI Support Group</string>
+    <string name="summary_gsi_group">Join</string>
+
+    <string name="title_asus">Asus settings</string>
+    <string name="title_mydevice">My device</string>
+    <string name="title_mediatek">Mediatek settings</string>
+    <string name="title_qualcomm">Qualcomm settings</string>
+    <string name="title_oneplus">OnePlus settings</string>
+    <string name="title_nubia">Nubia settings</string>
+    <string name="title_vsmart">Vsmart settings</string>
+    <string name="title_huawei">Huawei settings</string>
+    <string name="title_samsung">Samsung settings</string>
+    <string name="title_transsion">Transsion settings</string>
+    <string name="title_lenovo">Lenovo settings</string>
+    <string name="title_xiaomi">Xiaomi settings</string>
+    <string name="title_oppo">Oppo settings</string>
+    <string name="title_doze">Doze settings</string>
+
+    <string name="title_display_settings">Display settings</string>
+    <string name="summary_display_settings">Backlight, refresh rate and more</string>
+    <string name="title_ui_settings">User interface</string>
+    <string name="summary_ui_settings">Layouts, paddings, icons and others</string>
+
+    <string name="title_audio_settings">Audio settings</string>
+    <string name="summary_audio_settings">Bluetooth and general fixes</string>
+    <string name="title_audiofx">Audio effects</string>
+    <string name="summary_audiofx">Audio modifications pre-included by your vendor</string>
+
+    <string name="title_telephony_settings">Telephony settings</string>
+    <string name="summary_telephony">Telephony, signal, ril and 5G options</string>
+    <string name="title_ims_settings">IMS settings</string>
+    <string name="summary_ims">VoLTE is here</string>
+
+    <string name="title_camera_settings">Camera settings</string>
+    <string name="summary_camera">Useful camera things</string>
+
+    <string name="title_misc_settings">Misc settings</string>
+    <string name="summary_misc">Fingerprint fix and other stuff</string>
+
+    <string name="title_debug_settings">Debug settings</string>
+    <string name="summary_debug">Debug sensors</string>
+
+<!-- Pref Audio -->
+    <!-- Title General-->
+    <string name="title_prefaudio">General</string>
+    <string name="alt_audio_police">use alternative audio policy</string>
+    <string name="alt_headset_detect_title">Use alternative way to detect headsets</string>
+    <string name="disable_audio_effects_title">Disable audio effects</string>
+    <string name="disable_fast_audio">disable fast audio</string>
+    <string name="disable_voicecall_route">Disable &quot;Voice Call In&quot; route</string>
+    <!-- Summary -->
+    <string name="disable_headset_detect_sumarry">Standard fix for wired headphones recognition</string>
+    <string name="disable_audio_effects_sumarry">Disable all of thems on vendor side</string>
+    <string name="disable_fast_audio_sumarry">Should fix cracked/broken/stutter audio on devices which cant handle it</string>
+    <string name="voicecall_route_sumarry">May fix echo or non-working audio on calls\nRequires a reboot</string>
+    <!-- Bluetooth -->
+    <string name="wide_bt_hal">Use System Wide BT HAL</string>
+    <string name="max_connect_bt_audio">Set maximum connected bluetooth audio devices</string>
+    <string name="esco_size_bt">Set eSCO transport unit size</string>
+     <!-- Bluetooth Workgrounds -->
+    <string name="bt_workgrounds_title">\nBLUETOOTH WORKAROUNDS</string>
+    <string name="disable_le_apcf">Disable LE APCF Extended feature</string>
+    <string name="le_acpf_sumarry">Fix crashing on some legacy devices</string>
+    <string name="cap_le_vendorversion">Cap LE vendor version</string>
+    <string name="predefined_workground_bluetooth">Predefined workarounds</string>
+    <string name="set_bluetooth_commands_unssuported_title">Set unsupported Bluetooth commands</string>
+    <string name="unssuported_bluetooth_of_features">Set unsupported Bluetooth og features</string>
+    <string name="unssuported_le_features_bluetooth">Set unsupported Bluetooth LE features</string>
+    <string name="unssuported_bluetooth_stats">Set unsupported Bluetooth states</string>
+
+<!-- Pref UI -->
+    <string name="two_plane_layout">Two-Pane Layout</string>
+    <string name="two_plane_layout_summary">Enable tablet Layout. Requires restart apps</string>
+    <string name="disable_navigation_bar">Force navigation bar disabled</string>
+    <string name="disable_navigation_bar_summary">Requires a reboot</string>
+    <string name="pointer_type">Pointer type</string>
+    <!-- LockScreen -->
+    <string name="lckscreen">LOCK SCREEN</string>
+    <string name="fod_icon_color">FOD Icon Color</string>
+    <!-- Status Bar -->
+    <string name="stats_bar">STATUS BAR</string>
+    <string name="bar_top_padding">Set status bar top padding</string>
+    <string name="bar_start_padding">Set status bar start padding</string>
+    <string name="bar_end_padding">Set status bar end padding</string>
+    <!-- STYLES -->
+    <string name="styles_title">STYLES</string>
+    <string name="accent_color">Accent color</string>
+    <string name="icon_shape">Icon shape</string>
+    <string name="icon_pack">Icon pack</string>
+    <string name="font_family">Font family</string>
+    <!-- TOOLS -->
+    <string name="tools_title">TOOLS</string>
+    <string name="restart_sysui_tools_option">Restart SystemUI</string>
+
+    
+<!--     Asus -->
+    <!-- Display -->
+    <string name="title_display_asus">DISPLAY</string>
+    <string name="title_glove_mode">Enable glove mode</string>
+    <string name="title_dt2w">Enable double tap to wake</string>
+
+    <!-- Misc -->
+    <string name="title_misc_asus">MISCELLANEOUS</string>
+    <string name="title_fp_wake">Enable fingerprint wake</string>
+    <string name="title_usb_port_picker">USB port picker</string>
+    <string name="summary_usb_port_picker">Requires a reboot</string>
+
+
+<!--     Mediatek -->
+
+
+    <!-- Categories -->
+    <string name="title_general_mediatek">GENERAL</string>
+    <string name="title_telephony_mediatek">TELEPHONY</string>
+
+    <!-- General -->
+    <string name="title_touch_hint_rotate">Rotation perf hint instead of touch</string>
+    <string name="summary_touch_hint_rotate">For Mediatek devices</string>
+
+    <string name="title_ged_kpi">Mediatek GED KPI support</string>
+    <string name="summary_ged_kpi">Might improve GPU performance for Mediatek devices</string>
+
+    <!-- Telephony -->
+    <string name="title_force_cognitive">Forward-port support for forceCognitive</string>
+    <string name="summary_force_cognitive">Required on some Mediatek devices</string>
+
+    
+<!-- Xiaomi -->
+    <string name="dt2w">Enable DT2W</string>
+
+<!-- Sys UI -->
+    <string name="sysui_restart">Requires SystemUI restart</string>
+    <string name="root_accesses">Requieres root access</string>
+
+    <!-- vsmart -->
+    <string name="tap_to_wake">Enable double tap to wake</string>
+
+    <!-- transsion tab -->
+    <string name="display_title">DISPLAY</string>
+    <string name="other_title">OTHER</string>
+    <string name="otg_usb">Enable USB OTG</string>
+
+      <!-- qualcoom -->
+    <string name="alternative_camera_profile">Use alternative camera profile</string>
+    <string name="soundvolume">Disable sound volume effect</string>
+    <string name="soundvolume_summary">May fix audio distorsion</string>
+    <!-- qualcoom VoIP -->
+    <string name="sterio_voip">Disable stereo support on VoIP</string>
+    <string name="sterio_voip_summary">May fix high pitched audio. Requires a reboot</string>
+    <string name="voip_directoutput">Define VoIP as Direct Output</string>
+    <string name="voip_directoutput_summary">Should fix high pitched audio. Requires a reboot</string>
+    <!-- qualcoom mobilenetwork -->
+    <string name="mobile_network_title">MOBILE NETWORK</string>
+    <string name="qcrild_boot">Restart qcrild on boot</string>
+    <string name="qcrild_boot_summary">Workaround for incoming SMS\nCan lead to no-audio on calls on some devices</string>
+  
+    <!-- ims -->
+    <string name="title_ims_requeriments">REQUERIMENTS</string>
+    <string name="ims_apn">Create IMS APN</string>
+    <string name="download_ims">install IMS APK for MEDIATEK R+ vendor</string>
+    <string name="key_ims">Request IMS network</string>
+    <string name="force_ims_call">Force the presence of 4G Calling setting</string>
+    <!-- Workaroud -->
+    <string name="title_ims2">WORKAROUND ISSUES</string>
+    <string name="ims2_title_call_incoming">Allow binder thread on incoming calls</string>
+    <string name="ims2_summary">Workaround for 4G calling\nRequires a reboot</string>
+
+    <!-- Lenovo -->
+    <string name="lenovo_stylus_pen">Enable Support Stylus Pen</string>
+
+    <!-- Oneplus -->
+    <string name="oneplus_display">DISPLAY</string>
+    <string name="oneplus_displaymode">Display Mode</string>
+    <string name="oneplus_brightness">High brightness mode</string>
+    <string name="oneplusother">MISCELLANEOUS</string>
+
+    <!-- Oppo -->
+    <string name="touch">TOUCHSCREEN</string>
+    <string name="gamemode_oppo">Enable game mode</string>
+    <string name="dc_diming">Enable DC Diming</string>
+
+    <!-- telephone -->
+    <string name="smsc">Set SMSC value</string>
+    <string name="simcount">SIM Count</string>
+
+    <string name="reset_simcount">Reset SIM Count</string>
+    <string name="reset_simcount_summary_telephone">Reset SIM count to default values \nRequires a Reboot</string>
+
+    <string name="signal">Signal meter method</string>
+    <string name="restart_ril">Automatically restart RIL</string>
+
+    <string name="patch_smsc">Patch SMSC</string>
+    <string name="pachsmsc_summary">If you cant send messages, primarily on Samsung devices, turn off SMSC patching, IGNORE THIS OPTION</string>
+
+    <string name="simcard">Remove Telephony Subsystem</string>
+    <string name="simcart_summary">For devices without simcard</string>
+
+    <string name="forcenetwork">Force display 5G network</string>
+    <string name="forcenetwork_summary">Displays 5G as an option for the preferred network type\nRequires a reboot</string>
+
+    <string name="restrictnetwork">Restricted networking mode</string>
+    <string name="restrictnetwork_summary">Requires be disabled for some devices</string>
+
+    <!-- camera -->
+    <string name="cameratitle">GENERAL</string>
+    <string name="exposeauxcameras">Expose Aux cameras</string>
+    <string name="camera2apienable">Force Enable Camera2API HAL3</string>
+    <string name="timestamp">Force Timestamp Source</string>
+    <string name="reboot_camera">Requires a reboot</string>
+
+    <!-- Debug -->
+    <string name="debugsensor">Debug Sensors</string>
+    <string name="trebleappkill">Kill TrebleApp</string>
+    <string name="trebleappkill_summary">To save a few taps</string>
+    <string name="debbugablemode">Set debuggable mode</string>
+    <string name="debbugablemode_summary">Toggle insecure adb and related</string>
+    
+    <!-- doze -->
+    <string name="hardware_gesturedoze">Enable Handwave gesture</string>
+    <string name="outofpocket_gesturedoze">Enable out-of-pocket gesture</string>
+    <string name="chopgesture">Enable Chop Chop gesture</string>
+    
+    <!-- display -->
+    <string name="forcefreshrate_display">Force Refresh rate</string>
+    <string name="dynamicfrashrate_display">Dynamic Refresh rate</string>
+    <string name="dynamicfrashrate_summary">Adjust refresh rate based on screen content\nRequires reboot</string>
+    <string name="sfgl">Disable SF GL backpressure</string>
+    <string name="sfgl_summary">Might improve rendering performance\nRequires reboot</string>
+    <string name="sfhwc_disable">Disable SF HWC backpressure</string>
+    <string name="sfhwc_disablesummary">Might improve rendering performance</string>
+    <string name="hw_overlay">Disable HW overlays</string>
+    <string name="hw_overlaysummary">Eats more CPU and battery</string>
+    <string name="forceallowaod">Force allow Always-On Display</string>
+
+    <!-- tab2 -->
+    <string name="display_tab2">RENDER ENGINE</string>
+    <string name="renderengine">Render engine backend</string>
+
+    <!-- Blur -->
+    <string name="blureffects">Enable blur effects</string>
+    <string name="blureffects_summary">May impact performance on low-end devices</string>
+
+    <!-- Backlight -->
+    <string name="backlight_displaytitle">\nBACKLIGHT</string>
+    <string name="linearbrightness">Set alternative brightness curve</string>
+    <string name="alt_backlight">Force alternative backlight scale</string>
+    <string name="summary_altbacklight">Requires turn off/on screen</string>
+    <string name="backlightdisable">Disable backlight of hardware buttons</string>
+    <string name="backlight_lowest">Allows setting brightness to the lowest possible</string>
+
+   <!-- Huawei Strings -->
+    <string name="title_fingerprint">FINGERPRINT</string>
+    <string name="fingerprintgestures">Enable Fingerprint gestures</string>
+    <string name="headsetforce_switchhuawei">Force headset switch (Huawei default)</string>
+    <string name="glovemode_huawei">Enable touchscreen glove mode</string>
+    <string name="grapicissueshuawei">Enable graphic issues workaround</string>
+    <string name="grapicissueshuawei_summary">recommended if ui is blurry</string>
+    <string name="fastcharge_huawei">Huawei Fast Charge</string>
+    
+    <!-- Samsung -->
+    <string name="sterioaudio">Enable stereo audio mode</string>
+    <string name="reversecharge">Enable reversed wireless charging(If applicable)</string>
+    <string name="disable_backmic">Disable Built-In Back Mic</string>
+    <string name="disablebackmic_summary">May fix broken mic on video recording</string>
+    <string name="samsungallcam">Enable access to all cameras</string>
+    <string name="samsung1text">Requires Q vendor</string>
+    <string name="samsung2text">Usually values are integers between 1 and 5</string>
+    <string name="samsungflash">Set flash strength</string>
+    <!-- Samsung Workarounds -->
+    <string name="samsungtitle3">WORKAROUNDS</string>
+    <string name="samsung4">Enable extra sensors</string>
+    <string name="samsung5">Enable workaround for white-ish screen</string>
+    <string name="fingbroken">Enable workaround for white-ish screen</string>
+    <string name="backlightsamsung">Set backlight scale/max backlight level</string>
+
+    <!-- misc -->
+    <string name="misc1">Set BIOMETRIC_STRONG security level</string>
+    <string name="msic1_s">Required by some old broken devices</string>
+    <string name="misc2">Set Launcher3 as recents provider</string>
+    <string name="misc3">Treat virtual sensors as real</string>
+    <string name="msic3_s">Treat all virtual fingerprint sensors as real\nWarning: This can cause bootloops - use with extreme care\nRequires a reboot</string>
+    <string name="misc4">Disable WPA3/SAE</string>
+    <string name="misc4_s">For unsupported devices</string>
+    <string name="misc5">Disable FUSE storage layer</string>
+    <string name="msic5_s">This can (de/in)crease storage speed\nRequires a reboot</string>
+
+    <!-- Display -->
+    <string name="displaysamsung_1">Enable Agold/Unihertz DT2W</string>
+    <string name="displaysamsung_2">Force disable display Doze Suspend state to allow AoD on some devices.</string>
+    <string name="displaysamsung_3">Disable EXPENSIVE_RENDERING power mode</string>
+    <string name="displaysamsung_3s">Fixes constant log spam on some MTK devices about power mode 6\nRequires reboot</string>
+    <!-- Securize Samsung -->
+    <string name="securizesamsung_1">Enable Securize</string>
+    <string name="securizesamsung_1s">Disabling may fix play services on uncertified devices</string>
+<!-- MISC -->
+    <string name="key_misc_secure_adb">Secure adb</string>
+    <string name="key_misc_secure_adb_summary">Computer requires approval</string>
+
+    <string name="key_misc_dt2w">Double tap to wake</string>
+    <string name="key_misc_dt2w_summary">Try and See</string>
+
+<!--     NUBIA -->
+    <!-- Categories -->
+    <string name="nubia_category_touchscreen">TOUCHSCREEN</string>
+    <string name="nubia_category_misc">MISCELLANEOUS</string>
+    <string name="nubia_category_leds">LEDS</string>
+    <string name="nubia_category_boosts">BOOSTS</string>
+
+    <!-- Touchscreen -->
+    <string name="nubia_double_tap_to_wake">Enable DT2W</string>
+    <string name="nubia_double_tap_to_wake_summary">Double tap to wake up</string>
+
+    <string name="nubia_high_touch_sample_rate">Enable high touch sample rate</string>
+    <string name="nubia_high_touch_sample_rate_summary">Drains more battery</string>
+
+    <string name="nubia_high_touch_sensitivity">Enable high touch sensitivity</string>
+    <string name="nubia_high_touch_sensitivity_summary">Useful while wearing gloves</string>
+
+    <!-- Miscellaneous -->
+    <string name="nubia_touchscreen_game_mode">Enable game mode</string>
+    <string name="nubia_touchscreen_game_mode_summary_on">Auto stop fan is disabled</string>
+
+    <string name="nubia_shoulder_btn">Enable shoulder buttons</string>
+    <string name="nubia_shoulder_btn_summary">Shoulder buttons/triggers</string>
+
+    <string name="nubia_bypass_charger">Enable bypass charger</string>
+    <string name="nubia_bypass_charger_summary_off">Charger → Battery → Phone</string>
+    <string name="nubia_bypass_charger_summary_on">Charger → Phone</string>
+
+    <string name="nubia_fan_speed">FAN speed</string>
+    <string name="nubia_fan_speed_summary">Support smart charging</string>
+
+    <!-- LEDs -->
+    <string name="nubia_redmagic_logo_breath">Make Redmagic logo breathe</string>
+    <string name="nubia_redmagic_led">REDMAGIC RGB</string>
+
+    <!-- Boosts -->
+    <string name="nubia_boost_cpu">Boost CPU</string>
+    <string name="nubia_boost_cache">Boost caches</string>
+    <string name="nubia_boost_gpu">Boost GPU</string>
+    <string name="nubia_boost_ufs">Boost UFS</string>
+    <string name="nubia_boost_ufs_summary_on">Increase Read/Write speed</string>
+
+    <string name="fingerprint_real_title">Treat virtual sensors as real</string>
+    <string name="fingerprint_real_summary">Treat all virtual fingerprint sensors as real\nRequires a reboot</string>
+
+    <string name="sf_latch_unsignaled_title">Latch Unsigned Buffers</string>
+    <string name="sf_latch_unsignaled_summary">Forces latch of all buffers in SurfaceFlinger when enabled.</string>
+
+    <string name="sf_auto_latch_unsignaled_title">Auto Latch Unsigned</string>
+    <string name="sf_auto_latch_unsignaled_summary">Automatically latch single-layer buffers in SurfaceFlinger when enabled.</string>
+
+    <string name="sf_disable_backpressure_title">Disable Backpressure</string>
+    <string name="sf_disable_backpressure_summary">Disables SurfaceFlinger backpressure propagation to improve responsiveness.</string>
 </resources>

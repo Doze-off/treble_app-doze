@@ -98,7 +98,7 @@ object Rog: EntryStartup {
     }
 
     override fun startup(ctxt: Context) {
-        if (!RogSettings.enabled()) return
+        if (!RogSettings.enabled(ctxt)) return
         Log.d("PHH", "Starting Rog service")
         val sp = PreferenceManager.getDefaultSharedPreferences(ctxt)
         sp.registerOnSharedPreferenceChangeListener(spListener)

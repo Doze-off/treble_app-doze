@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <PreferenceCategory
+            android:title="@string/cameratitle"
+            android:layout="@layout/preference_category_custom">
+                <ListPreference
+                    android:layout="@layout/preference_list_custom"
+                    android:defaultValue="default"
+                    android:entries="@array/pref_telephony_simcount"
+                    android:entryValues="@array/pref_telephony_simcount_values"
+                    android:key="key_telephony_simcount"
+                    android:title="@string/simcount" />
+
+                <Preference
+                    android:layout="@layout/preference_custom"
+                    android:title="@string/reset_simcount"
+                    android:key="key_telephony_reset_simcount"
+                    android:summary="@string/reset_simcount_summary_telephone" />
+
+                <ListPreference
+                    android:layout="@layout/preference_list_custom"
+                    android:defaultValue="default"
+                    android:entries="@array/pref_telephony_mobile_signal"
+                    android:entryValues="@array/pref_telephony_mobile_signal_values"
+                    android:key="key_telephony_mobile_signal"
+                    android:title="@string/signal" />
+
+                <SwitchPreference
+                    android:layout="@layout/preference_switch_custom"
+                    android:defaultValue="false"
+                    android:key="key_telephony_restart_ril"
+                    android:title="@string/restart_ril" />
+
+                <SwitchPreference
+                    android:layout="@layout/preference_switch_custom"
+                    android:defaultValue="true"
+                    android:key="key_misc_patch_smsc"
+                    android:title="@string/patch_smsc"
+                    android:summary="@string/pachsmsc_summary" />
+
+                <Preference
+                    android:layout="@layout/preference_custom"
+                    android:title="@string/simcard"
+                    android:key="key_telephony_removetelephony"
+                    android:summary="@string/simcart_summary" />
+
+                <SwitchPreference
+                    android:layout="@layout/preference_switch_custom"
+                    android:defaultValue="false"
+                    android:key="key_telephony_force_display_5g"
+                    android:title="@string/forcenetwork"
+                    android:summary="@string/forcenetwork_summary" />
+
+                <SwitchPreference
+                    android:layout="@layout/preference_switch_custom"
+                    android:defaultValue="false"
+                    android:key="key_telephony_restricted_networking"
+                    android:title="@string/restrictnetwork"
+                    android:summary="@string/restrictnetwork_summary" />
+        </PreferenceCategory>
+
+</PreferenceScreen>

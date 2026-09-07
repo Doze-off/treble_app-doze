@@ -1,22 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="key_qualcomm_alternate_mediaprofile"
-        android:title="Use alternate camera profile"
-        android:summary="Requires a reboot" />
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="key_qualcomm_alternate_audiopolicy"
-        android:title="Use alternate audio policy" />
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="key_qualcomm_disable_soundvolume_effect"
-        android:title="Disable soundvolume effect"
-        android:summary="May fix audio distorsion" />
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="key_qualcomm_disable_stereo_voip"
-        android:title="Disable stereo support on VoIP"
-        android:summary="May fix high pitched audio. Requires a reboot" />
+
+    <PreferenceCategory
+        android:title="CAMERA"
+        android:layout="@layout/preference_category_custom">
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_qualcomm_alternate_mediaprofile"
+            android:title="@string/alternative_camera_profile"
+            android:summary="@string/sysui_restart" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="AUDIO"
+        android:layout="@layout/preference_category_custom">
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_qualcomm_disable_soundvolume_effect"
+            android:title="@string/soundvolume"
+            android:summary="@string/soundvolume_summary" />
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_qualcomm_disable_stereo_voip"
+            android:title="@string/sterio_voip"
+            android:summary="@string/sterio_voip_summary" />
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_qualcomm_direct_output_voip"
+            android:title="@string/voip_directoutput"
+            android:summary="@string/voip_directoutput_summary" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/mobile_network_title"
+        android:layout="@layout/preference_category_custom">
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_qualcomm_restart_qcrild"
+            android:title="@string/qcrild_boot"
+            android:summary="@string/qcrild_boot_summary" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
