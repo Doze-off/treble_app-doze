@@ -79,6 +79,7 @@ class EntryService: Service() {
             tryC { Transsion.startup(this) }
             tryC { Xiaomi.startup(this) }
             tryC { Asus.startup(this) }
+            tryC { Rog.startup(this) }
             tryC { Qualcomm.startup(this) }
             tryC { Vsmart.startup(this) }
             tryC { Nubia.startup(this) }

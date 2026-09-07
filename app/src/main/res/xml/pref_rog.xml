@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Aura Sync RGB">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="rog_aura_enable"
+            android:title="Enable Aura Sync RGB" />
+        <EditTextPreference
+            android:defaultValue="0"
+            android:inputType="number"
+            android:key="rog_aura_mode"
+            android:summary="Raw mode index sent to the MCU (0 and up) - named effect mappings aren't documented in ASUS's published source, so this is trial and error"
+            android:title="Aura Sync mode" />
+        <EditTextPreference
+            android:defaultValue="255"
+            android:inputType="number"
+            android:key="rog_aura_red"
+            android:title="Red (0-255)" />
+        <EditTextPreference
+            android:defaultValue="255"
+            android:inputType="number"
+            android:key="rog_aura_green"
+            android:title="Green (0-255)" />
+        <EditTextPreference
+            android:defaultValue="255"
+            android:inputType="number"
+            android:key="rog_aura_blue"
+            android:title="Blue (0-255)" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="AeroActive Cooler 5">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="rog_cooler_fan_enable"
+            android:title="Enable cooler fan" />
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/pref_rog_fan"
+            android:entryValues="@array/pref_rog_fan_values"
+            android:key="rog_cooler_fan_speed"
+            android:summary="Only takes effect while the AeroActive Cooler 5 is attached"
+            android:title="Cooler fan speed" />
+    </PreferenceCategory>
+</PreferenceScreen>
