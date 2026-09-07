@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.util.Log
 import java.io.File
+import java.util.Locale
 
 // ASUS ROG Phone 5 / 5s (ASUS_I005D / ASUS_I005_1) gaming-hardware controls.
 //
@@ -29,21 +30,42 @@ import java.io.File
 //   - rog5_inbox's fan_rpm_store() takes a raw 0-255 setpoint (not literal
 //     RPM despite the name) and rejects anything outside that range.
 //
+// Also implemented: charging limit / ultra battery life (plain persist.sys.*
+// properties - ASUS's own init.asus.rc does the sysfs write on property
+// change, confirmed from that exact file) and X Mode gaming touch tuning
+// (game mode, touch report rate, corner-grip rejection - a sysfs attribute
+// group on the FocalTech touch IC itself, drivers/input/touchscreen/ROG5_TP/
+// asus/asus_game.c, confirmed live at
+// /sys/devices/platform/soc/990000.i2c/i2c-2/2-0038/ via the same
+// init.asus.rc file's chown/chmod/restorecon + property-triggered writes for
+// these exact attribute names).
+//
 // NOT implemented here: the built-in on-frame AirTrigger ultrasonic sensors,
-// and the AeroActive Cooler's own shoulder-button passthrough (key_state).
-// No "airtrigger"/ultrasonic driver exists anywhere in ASUS's published GPL
-// kernel or vendor source for AirTriggers - it's either fully proprietary
-// out-of-tree or folded into the touchscreen digitizer's own closed
-// firmware. key_state does exist and is real, but it's a raw HID
-// button-state readout (DEVICE_ATTR(key_state, 0664, key_state_show, NULL) -
-// no store function) meant for driver-internal polling, not a settings
-// toggle - wiring it up to actual key-event injection is a separate,
-// bigger piece of work than this module covers.
+// the AeroActive Cooler's own shoulder-button passthrough (key_state), the
+// touch IC's raw sensitivity/precision tuning (game_settings) or its virtual
+// touch-injection "Key Mapping" (keymapping_touch). AirTrigger turned out to
+// be real and controllable - vendor.ims.airtrigger@1.2::IAirTrigger/default
+// is a genuine, versioned HIDL service (confirmed via its VINTF manifest
+// entry and decompiled symbol table: setEnable/isEnabled,
+// setBarTabConfig/getBarTabConfig, setBarSqueezeConfig (v1.1),
+// setBarSlideConfig/setBarSwipeConfig (v1.2)) - same architecture Asus.kt
+// already uses for vendor.ims.zenmotion. It's not wired up here because no
+// prebuilt Java HIDL stub for it ships anywhere in the stock firmware (unlike
+// IZenMotion), so calling it needs either the real .hal source or a
+// hand-written one matching the recovered method signatures - bigger,
+// separate work. key_state is real but read-only (no store function) -
+// wiring it to actual key-event injection is also separate work. game_settings
+// and keymapping_touch are real and writable, but game_settings' three
+// tunables are written straight to a hardware register with no kernel-side
+// range validation (unlike edge_settings) and no ASUS-documented safe values
+// were found, and keymapping_touch isn't a meaningful toggle without a
+// zone-assignment UI - both need more work than a simple sysfs write.
 object Rog: EntryStartup {
     private const val COOLER_BASE = "/sys/class/leds/aura_inbox"
     private const val AURA_PHONE_BASE = "/sys/class/leds/aura_sync"
     private const val AURA_SIDE_BASE = "/sys/class/leds/aura_sync_side"
     private const val AURA_BACKCOVER_BASE = "/sys/class/leds/aura_backcover"
+    private const val TOUCH_IC_BASE = "/sys/devices/platform/soc/990000.i2c/i2c-2/2-0038"
 
     // All four LED classdevs share the same attribute_group, so RGB/mode
     // apply uniformly to whichever of them are actually present - the
@@ -81,6 +103,42 @@ object Rog: EntryStartup {
         }
     }
 
+    private fun applyGameMode(sp: SharedPreferences) {
+        val on = sp.getBoolean(RogSettings.gameMode, false)
+        writeToFileNofail("$TOUCH_IC_BASE/fts_game_mode", if (on) "1" else "0")
+    }
+
+    private fun applyTouchReportRate(sp: SharedPreferences) {
+        // 0 = auto (120<->300Hz based on game mode), 1 = force 300Hz,
+        // 2 = force 560Hz - the three values fts_ts's rise_report_rate_store
+        // actually recognizes, anything else is silently ignored by it.
+        val rate = sp.getString(RogSettings.touchReportRate, "0") ?: "0"
+        writeToFileNofail("$TOUCH_IC_BASE/rise_report_rate", rate)
+    }
+
+    private fun applyEdgeReject(sp: SharedPreferences) {
+        // edge_settings_store parses two 3-hex-digit fields via its own
+        // shex_to_u16(), not decimal - "%03X.%03X" matches that, not the
+        // driver's own (inconsistent) "%03d.%03d" show() format. Kernel-side
+        // Rcoefleft/RcoefRight > 10 disables edge rejection entirely, so
+        // "off" is sent as 11 (0x00B) to land past that threshold on
+        // purpose rather than guessing at some other disable path.
+        val strength = sp.getString(RogSettings.edgeRejectStrength, "11")?.toIntOrNull()?.coerceIn(0, 11) ?: 11
+        val hex = String.format(Locale.ROOT, "%03X.%03X", strength, strength)
+        writeToFileNofail("$TOUCH_IC_BASE/edge_settings", hex)
+    }
+
+    private fun applyCharging(sp: SharedPreferences) {
+        // ASUS's own init.asus.rc reacts to these two persist.sys.*
+        // properties by writing /sys/class/asuslib/{charger_limit_mode,
+        // ultra_bat_life} itself - same mechanism the stock Settings app
+        // uses, so there's no sysfs path to write here directly.
+        val limit = sp.getString(RogSettings.chargingLimit, "0") ?: "0"
+        Misc.safeSetprop("persist.sys.charginglimit", limit)
+        val ultra = sp.getBoolean(RogSettings.ultraBatteryLife, false)
+        Misc.safeSetprop("persist.sys.ultrabatterylife", if (ultra) "1" else "0")
+    }
+
     val spListener = SharedPreferences.OnSharedPreferenceChangeListener { sp, key ->
         when (key) {
             RogSettings.auraEnable, RogSettings.auraRed, RogSettings.auraGreen, RogSettings.auraBlue ->
@@ -94,6 +152,10 @@ object Rog: EntryStartup {
                 val speed = sp.getString(key, "0")?.toIntOrNull()?.coerceIn(0, 255) ?: 0
                 writeToFileNofail("$COOLER_BASE/fan_rpm", speed.toString())
             }
+            RogSettings.gameMode -> applyGameMode(sp)
+            RogSettings.touchReportRate -> applyTouchReportRate(sp)
+            RogSettings.edgeRejectStrength -> applyEdgeReject(sp)
+            RogSettings.chargingLimit, RogSettings.ultraBatteryLife -> applyCharging(sp)
         }
     }
 
@@ -105,12 +167,17 @@ object Rog: EntryStartup {
 
         // The MCUs don't remember settings across power cycles, so
         // re-apply persisted state on boot (same reasoning as Nubia.kt's
-        // own "refresh parameters on boot" calls).
+        // own "refresh parameters on boot" calls). The touch IC and
+        // charging properties don't survive reboot either.
         applyAura(sp)
         applyAuraMode(sp)
         if (RogSettings.coolerPresent()) {
             spListener.onSharedPreferenceChanged(sp, RogSettings.coolerFanEnable)
             spListener.onSharedPreferenceChanged(sp, RogSettings.coolerFanSpeed)
         }
+        applyGameMode(sp)
+        applyTouchReportRate(sp)
+        applyEdgeReject(sp)
+        applyCharging(sp)
     }
 }

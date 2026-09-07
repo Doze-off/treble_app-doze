@@ -51,4 +51,37 @@
             android:summary="Only takes effect while the AeroActive Cooler 5 is attached"
             android:title="Cooler fan speed" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="X Mode gaming touch">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="rog_game_mode"
+            android:title="Game mode"
+            android:summary="Puts the touch IC into its game-tuned scan mode" />
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/pref_rog_report_rate"
+            android:entryValues="@array/pref_rog_report_rate_values"
+            android:key="rog_touch_report_rate"
+            android:title="Touch report rate" />
+        <ListPreference
+            android:defaultValue="11"
+            android:entries="@array/pref_rog_edge_reject"
+            android:entryValues="@array/pref_rog_edge_reject_values"
+            android:key="rog_edge_reject_strength"
+            android:summary="Rejects touches near the edges while gripping the phone in landscape"
+            android:title="Corner-grip rejection" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Charging">
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/pref_rog_charging_limit"
+            android:entryValues="@array/pref_rog_charging_limit_values"
+            android:key="rog_charging_limit"
+            android:summary="Exact percentage/behavior per level isn't documented by ASUS - trial and error"
+            android:title="Charging limit" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="rog_ultra_battery_life"
+            android:title="Ultra battery life" />
+    </PreferenceCategory>
 </PreferenceScreen>

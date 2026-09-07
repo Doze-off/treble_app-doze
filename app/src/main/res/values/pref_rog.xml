@@ -18,4 +18,65 @@
         <item>"192"</item>
         <item>"255"</item>
     </array>
+
+    <!-- The three values rise_report_rate_store actually recognizes -
+         anything else is silently ignored by the touch IC driver. -->
+    <array name="pref_rog_report_rate">
+        <item>Auto (120/300Hz)</item>
+        <item>Force 300Hz</item>
+        <item>Force 560Hz</item>
+    </array>
+    <array name="pref_rog_report_rate_values">
+        <item>"0"</item>
+        <item>"1"</item>
+        <item>"2"</item>
+    </array>
+
+    <!-- edge_settings' Rcoefleft/Rcoefright, kernel-validated 0-10; 11 lands
+         past the driver's own ">10 disables it" threshold on purpose. -->
+    <array name="pref_rog_edge_reject">
+        <item>Off</item>
+        <item>1 (lightest)</item>
+        <item>3</item>
+        <item>5</item>
+        <item>7</item>
+        <item>10 (strongest)</item>
+    </array>
+    <array name="pref_rog_edge_reject_values">
+        <item>"11"</item>
+        <item>"1"</item>
+        <item>"3"</item>
+        <item>"5"</item>
+        <item>"7"</item>
+        <item>"10"</item>
+    </array>
+
+    <!-- persist.sys.charginglimit's own recognized values, from ASUS's
+         init.asus.rc "Rev 2.0 of slow charging" block. What each non-zero
+         code actually maps to physically (percent? charge current step?)
+         isn't documented anywhere in the published source - only that
+         these eight exact values are the ones init.asus.rc reacts to and
+         0 means off. Labeled by raw code, not a guessed percentage. -->
+    <array name="pref_rog_charging_limit">
+        <item>Off</item>
+        <item>Limit level 9</item>
+        <item>Limit level 10</item>
+        <item>Limit level 12</item>
+        <item>Limit level 15</item>
+        <item>Limit level 18</item>
+        <item>Limit level 30</item>
+        <item>Limit level 45</item>
+        <item>Limit level 65</item>
+    </array>
+    <array name="pref_rog_charging_limit_values">
+        <item>"0"</item>
+        <item>"9"</item>
+        <item>"10"</item>
+        <item>"12"</item>
+        <item>"15"</item>
+        <item>"18"</item>
+        <item>"30"</item>
+        <item>"45"</item>
+        <item>"65"</item>
+    </array>
 </resources>
