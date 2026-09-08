@@ -103,6 +103,19 @@ object Rog: EntryStartup {
         }
     }
 
+    // set_speed() (drivers/aura_sync/ms51_phone.c) only accepts these five
+    // exact values, rejecting anything else outright - no other range works.
+    // Written straight to register 0x8022 with no documented meaning beyond
+    // that; 0/1/2 are presumed slow/medium/fast given they're the small
+    // monotonic values sharing the set with the two large "special" codes.
+    private fun applyAuraSpeed(sp: SharedPreferences) {
+        val speed = sp.getString(RogSettings.auraSpeed, "1")?.toIntOrNull()
+        if (speed !in setOf(0, 1, 2, 254, 255)) return
+        for (base in auraZones) {
+            if (File(base).exists()) writeToFileNofail("$base/speed", speed.toString())
+        }
+    }
+
     private fun applyGameMode(sp: SharedPreferences) {
         val on = sp.getBoolean(RogSettings.gameMode, false)
         writeToFileNofail("$TOUCH_IC_BASE/fts_game_mode", if (on) "1" else "0")
@@ -144,6 +157,7 @@ object Rog: EntryStartup {
             RogSettings.auraEnable, RogSettings.auraRed, RogSettings.auraGreen, RogSettings.auraBlue ->
                 applyAura(sp)
             RogSettings.auraMode -> applyAuraMode(sp)
+            RogSettings.auraSpeed -> applyAuraSpeed(sp)
             RogSettings.coolerFanEnable -> {
                 val on = sp.getBoolean(key, false)
                 writeToFileNofail("$COOLER_BASE/fan_enable", if (on) "1" else "0")
@@ -171,6 +185,7 @@ object Rog: EntryStartup {
         // charging properties don't survive reboot either.
         applyAura(sp)
         applyAuraMode(sp)
+        applyAuraSpeed(sp)
         if (RogSettings.coolerPresent()) {
             spListener.onSharedPreferenceChanged(sp, RogSettings.coolerFanEnable)
             spListener.onSharedPreferenceChanged(sp, RogSettings.coolerFanSpeed)

@@ -1,8 +1,11 @@
 package me.phh.treble.app
 
+import android.app.AlertDialog
 import android.app.Fragment
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.preference.Preference
 import android.preference.PreferenceFragment
 import android.util.Log
 import android.view.View
@@ -14,6 +17,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.preference.PreferenceManager
 import java.io.File
 
 object RogSettings : Settings {
@@ -22,12 +26,16 @@ object RogSettings : Settings {
     val coolerFanSpeed = "rog_cooler_fan_speed"
 
     // Aura Sync RGB - phone body / side rail / back cover / cooler, all
-    // driven the same way (separate MS51/rog5_inbox MCUs, same attr set)
+    // driven the same way (separate MS51/rog5_inbox MCUs, same attr set).
+    // UI for these now lives in AuraSyncActivity, not this fragment - see
+    // "rog_aura_sync_open" below.
     val auraEnable = "rog_aura_enable"
     val auraMode = "rog_aura_mode"
     val auraRed = "rog_aura_red"
     val auraGreen = "rog_aura_green"
     val auraBlue = "rog_aura_blue"
+    // set_speed() only accepts 0, 1, 2, 254 or 255 - see Rog.kt.
+    val auraSpeed = "rog_aura_speed"
 
     // Charging - plain persist.sys.* properties, ASUS's own init.asus.rc does
     // the actual sysfs write (charger_limit_mode / ultra_bat_life) on
@@ -64,6 +72,11 @@ object RogSettings : Settings {
     // enumerated in sysfs while physically attached, so gate its controls on
     // that rather than just on enabled().
     fun coolerPresent() = File("/sys/class/leds/aura_inbox/fan_enable").exists()
+
+    // Corner-grip rejection strength: labels/values kept identical to the
+    // former ListPreference's pref_rog_edge_reject{,_values} arrays.
+    val edgeRejectLabels = arrayOf("Off", "1 (lightest)", "3", "5", "7", "10 (strongest)")
+    val edgeRejectValues = arrayOf("11", "1", "3", "5", "7", "10")
 }
 
 class RogSettingsFragment : PreferenceFragment() {
@@ -73,12 +86,42 @@ class RogSettingsFragment : PreferenceFragment() {
 
         if (RogSettings.enabled(context!!)) {
             Log.d("PHH", "Loading Rog fragment ${RogSettings.enabled(context!!)}")
-            SettingsActivity.bindPreferenceSummaryToValue(findPreference(RogSettings.auraMode)!!)
-            SettingsActivity.bindPreferenceSummaryToValue(findPreference(RogSettings.auraRed)!!)
-            SettingsActivity.bindPreferenceSummaryToValue(findPreference(RogSettings.auraGreen)!!)
-            SettingsActivity.bindPreferenceSummaryToValue(findPreference(RogSettings.auraBlue)!!)
             SettingsActivity.bindPreferenceSummaryToValue(findPreference(RogSettings.coolerFanSpeed)!!)
         }
+
+        findPreference("rog_aura_sync_open")!!.setOnPreferenceClickListener {
+            startActivity(Intent(activity, AuraSyncActivity::class.java))
+            true
+        }
+
+        findPreference(RogSettings.edgeRejectStrength)!!.setOnPreferenceClickListener {
+            showEdgeRejectDialog()
+            true
+        }
+    }
+
+    // See pref_rog.xml's comment on rog_edge_reject_strength: the equivalent
+    // ListPreference reproducibly crashed (NullPointerException in
+    // ArrayAdapter.createViewFromResource) opening this exact dialog, 3/3
+    // repro, despite its entries/entryValues resource arrays being
+    // well-formed. Building the dialog by hand from a hardcoded Kotlin
+    // array sidesteps whichever part of the ListPreference/resource-array
+    // codepath was actually responsible.
+    private fun showEdgeRejectDialog() {
+        val sp = PreferenceManager.getDefaultSharedPreferences(activity)
+        val current = sp.getString(RogSettings.edgeRejectStrength, "11")
+        val checkedIndex = RogSettings.edgeRejectValues.indexOf(current).coerceAtLeast(0)
+
+        AlertDialog.Builder(activity)
+            .setTitle("Corner-grip rejection")
+            .setSingleChoiceItems(RogSettings.edgeRejectLabels, checkedIndex) { dialog, which ->
+                sp.edit().putString(RogSettings.edgeRejectStrength, RogSettings.edgeRejectValues[which]).apply()
+                findPreference(RogSettings.edgeRejectStrength)!!.summary =
+                    "Rejects touches near the edges while gripping the phone in landscape (${RogSettings.edgeRejectLabels[which]})"
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -88,14 +131,12 @@ class RogSettingsFragment : PreferenceFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configura a Toolbar
         val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
         (activity as? AppCompatActivity)?.supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        // Configura o ListView
         view.findViewById<ListView>(android.R.id.list)?.apply {
             divider = null
             dividerHeight = 0
