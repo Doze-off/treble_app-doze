@@ -28,11 +28,8 @@ object Oppo: EntryStartup {
             OppoSettings.dcDiming -> {
                 val b = sp.getBoolean(key, false)
                 val value = if(b) "1" else "0"
-                try {
-                    File("/sys/kernel/oppo_display/dimlayer_bl_en ").writeText(value)
-                } catch(e: Exception) {
-                    Log.d("PHH", "Failed setting dc diming", e)
-                }
+                Tools.safeSetprop("persist.sys.phh.oppo.dc_dimming", value)
+               }
             }
         }
     }
