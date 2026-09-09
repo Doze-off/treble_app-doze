@@ -29,7 +29,6 @@ object Oppo: EntryStartup {
                 val b = sp.getBoolean(key, false)
                 val value = if(b) "1" else "0"
                 Tools.safeSetprop("persist.sys.phh.oppo.dc_dimming", value)
-               }
             }
         }
     }
