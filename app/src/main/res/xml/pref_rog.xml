@@ -17,6 +17,11 @@
             android:key="rog_aura_sync_open"
             android:title="Aura Sync RGB"
             android:summary="Color, brightness and mode - opens a dedicated screen" />
+        <Preference
+            android:layout="@layout/preference_edittext_custom"
+            android:key="rog_aura_lighting_triggers_open"
+            android:title="Lighting triggers"
+            android:summary="React to calls, charging, notifications and music - opens a dedicated screen" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="AeroActive Cooler 5"
