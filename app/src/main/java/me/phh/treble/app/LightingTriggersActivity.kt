@@ -16,10 +16,13 @@ import androidx.core.app.NotificationManagerCompat
 // AuraSyncActivity editor used for the main "Screen on" color, scoped to
 // that scenario's own color/mode/speed keys.
 class LightingTriggersActivity : AppCompatActivity() {
+    private data class Row(val switch: SwitchCompat, val keys: RogSettings.AuraKeySet)
+
+    private val rows = mutableListOf<Row>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lighting_triggers)
-        val sp = PreferenceManager.getDefaultSharedPreferences(this)
 
         findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
 
@@ -33,22 +36,32 @@ class LightingTriggersActivity : AppCompatActivity() {
         }
     }
 
+    // Editing a scenario (e.g. turning "Enabled" on inside the Incoming
+    // Call screen) writes straight to SharedPreferences without this
+    // Activity knowing - its switches only reflected prefs as they were at
+    // onCreate, so coming back from the editor showed stale state. Re-sync
+    // every time this screen becomes visible again, not just once.
     override fun onResume() {
         super.onResume()
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        for (row in rows) {
+            row.switch.setOnCheckedChangeListener(null)
+            row.switch.isChecked = sp.getBoolean(row.keys.enable, false)
+            row.switch.setOnCheckedChangeListener { _, checked ->
+                sp.edit().putBoolean(row.keys.enable, checked).apply()
+            }
+        }
+
         val hasNotificationAccess = NotificationManagerCompat.getEnabledListenerPackages(this).contains(packageName)
         findViewById<View>(R.id.notifAccessRow).visibility = if (hasNotificationAccess) View.GONE else View.VISIBLE
     }
 
     private fun bindRow(rowId: Int, switchId: Int, scenario: String) {
-        val sp = PreferenceManager.getDefaultSharedPreferences(this)
         val keys = RogSettings.keySetFor(scenario)
         val row = findViewById<View>(rowId)
         val switch = findViewById<SwitchCompat>(switchId)
 
-        switch.isChecked = sp.getBoolean(keys.enable, false)
-        switch.setOnCheckedChangeListener { _, checked ->
-            sp.edit().putBoolean(keys.enable, checked).apply()
-        }
+        rows.add(Row(switch, keys))
         row.setOnClickListener {
             startActivity(Intent(this, AuraSyncActivity::class.java).putExtra(AuraSyncActivity.EXTRA_SCENARIO, scenario))
         }
