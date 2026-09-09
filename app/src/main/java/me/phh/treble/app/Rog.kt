@@ -99,7 +99,16 @@ object Rog: EntryStartup {
     private fun applyAuraMode(sp: SharedPreferences) {
         val mode = sp.getString(RogSettings.auraMode, "0")
         for (base in auraZones) {
-            if (File(base).exists()) writeToFileNofail("$base/mode", mode ?: "0")
+            if (!File(base).exists()) continue
+            writeToFileNofail("$base/mode", mode ?: "0")
+            // mode_store() (ms51_phone.c) writes register 0x8021 immediately,
+            // but that only updates the MCU's *cached* mode - the MCU doesn't
+            // actually re-render until it receives the 0x802F "apply" trigger
+            // (apply_store() bundles every cached parameter - color, mode,
+            // speed, led_on - into that one command). Without this, a mode
+            // change is invisible until something else happens to call
+            // apply() next (e.g. toggling Enable off/on) - confirmed live.
+            writeToFileNofail("$base/apply", "1")
         }
     }
 
