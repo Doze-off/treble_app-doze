@@ -99,6 +99,10 @@ object RogSettings : Settings {
     // property change, same mechanism the stock Settings app uses.
     val chargingLimit = "rog_charging_limit"
     val ultraBatteryLife = "rog_ultra_battery_life"
+    // Bypass charging: routes wall power directly to the board, leaving the
+    // battery at rest. Reduces heat during sustained gaming sessions.
+    // Sysfs: /sys/class/asuslib/bypass_stop_charging (0/1, confirmed on device).
+    val bypassCharging = "rog_bypass_charging"
 
     // Dual Wi-Fi & Network Acceleration
     // AOSP Multi-STA concurrency (FastConnect 6900 / WCN6850 STA+STA):
