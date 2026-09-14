@@ -100,6 +100,13 @@ object RogSettings : Settings {
     val chargingLimit = "rog_charging_limit"
     val ultraBatteryLife = "rog_ultra_battery_life"
 
+    // Dual Wi-Fi & Network Acceleration
+    // AOSP Multi-STA concurrency (FastConnect 6900 / WCN6850 STA+STA):
+    // 0: Disabled, 1: Dual-band same AP (DBS), 2: Multi-AP
+    val dualWifiMode = "rog_dual_wifi_mode"
+    // Qualcomm SLA (Service Level Agreement) / HyperFusion daemon (slad-v2)
+    val hyperFusion = "rog_hyperfusion"
+
     // X Mode gaming touch tuning - FocalTech touch IC sysfs group, confirmed
     // live at /sys/devices/platform/soc/990000.i2c/i2c-2/2-0038/ via ASUS's
     // own init.asus.rc (chown/chmod/restorecon + property-triggered writes
@@ -143,7 +150,10 @@ class RogSettingsFragment : PreferenceFragment() {
 
         if (RogSettings.enabled(context!!)) {
             Log.d("PHH", "Loading Rog fragment ${RogSettings.enabled(context!!)}")
-            SettingsActivity.bindPreferenceSummaryToValue(findPreference(RogSettings.coolerFanSpeed)!!)
+            findPreference(RogSettings.coolerFanSpeed)?.let { SettingsActivity.bindPreferenceSummaryToValue(it) }
+            findPreference(RogSettings.touchReportRate)?.let { SettingsActivity.bindPreferenceSummaryToValue(it) }
+            findPreference(RogSettings.chargingLimit)?.let { SettingsActivity.bindPreferenceSummaryToValue(it) }
+            findPreference(RogSettings.dualWifiMode)?.let { SettingsActivity.bindPreferenceSummaryToValue(it) }
         }
 
         findPreference("rog_aura_sync_open")!!.setOnPreferenceClickListener {
