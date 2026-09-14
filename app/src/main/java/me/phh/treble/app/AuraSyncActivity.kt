@@ -22,9 +22,9 @@ import com.google.android.material.slider.Slider
 // keys, so Rog.kt's already-registered listener still owns the actual
 // sysfs writes - no hardware-access logic duplicated here.
 //
-// Mode names/values (0=Off, 1=Static, 2=Breathing, 3=Strobing,
-// 4=Color Cycle) are confirmed exactly from ASUS's own real Aura Sync
-// software - not guessed. Modes past 4 are left unexposed since
+// Mode names/values (1=Static, 2=Breathing, 3=Strobing, 4=Color Cycle;
+// 0=Off is managed by the master switch) are confirmed exactly from ASUS's own
+// real Aura Sync software - not guessed. Modes past 4 are left unexposed since
 // nothing confirms what (if anything) exists beyond what ASUS's own
 // software itself uses.
 //
@@ -52,7 +52,7 @@ class AuraSyncActivity : AppCompatActivity() {
     private lateinit var modeValue: TextView
     private lateinit var modeRow: LinearLayout
 
-    private val modeNames = arrayOf("Off", "Static", "Breathing", "Strobing", "Color Cycle")
+    private val modeNames = arrayOf("Static", "Breathing", "Strobing", "Color Cycle")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +87,11 @@ class AuraSyncActivity : AppCompatActivity() {
         val startRed = sp.getString(keys.red, "255")?.toIntOrNull() ?: 255
         val startGreen = sp.getString(keys.green, "255")?.toIntOrNull() ?: 255
         val startBlue = sp.getString(keys.blue, "255")?.toIntOrNull() ?: 255
-        val startMode = sp.getString(keys.mode, "0")?.toIntOrNull() ?: 0
+        val rawMode = sp.getString(keys.mode, null)
+        val startMode = rawMode?.toIntOrNull()?.takeIf { it in 1..4 } ?: 1
+        if (rawMode != startMode.toString()) {
+            sp.edit().putString(keys.mode, startMode.toString()).apply()
+        }
         val startRate = sp.getString(keys.speed, "1")?.toIntOrNull()?.takeIf { it in 0..2 } ?: 1
 
         val hsv = FloatArray(3)
@@ -146,21 +150,26 @@ class AuraSyncActivity : AppCompatActivity() {
 
     private fun showModeMenu() {
         val popup = PopupMenu(this, modeRow)
-        for (m in modeNames.indices) popup.menu.add(0, m, m, modeNames[m])
+        for (i in modeNames.indices) {
+            val modeId = i + 1
+            popup.menu.add(0, modeId, i, modeNames[i])
+        }
         popup.setOnMenuItemClickListener { item ->
             setMode(item.itemId)
+            if (!switchEnable.isChecked) switchEnable.isChecked = true
             true
         }
         popup.show()
     }
 
     private fun setMode(mode: Int) {
-        updateModeLabel(mode)
-        sp.edit().putString(keys.mode, mode.toString()).apply()
+        val validMode = mode.coerceIn(1, 4)
+        updateModeLabel(validMode)
+        sp.edit().putString(keys.mode, validMode.toString()).apply()
     }
 
     private fun updateModeLabel(mode: Int) {
-        modeValue.text = modeNames.getOrElse(mode) { "Mode $mode" }
+        modeValue.text = modeNames.getOrElse(mode - 1) { modeNames[0] }
     }
 
     private fun updatePreview(r: Int, g: Int, b: Int) {
@@ -192,12 +201,15 @@ class AuraSyncActivity : AppCompatActivity() {
         sliderSaturation.value = 0f
         sliderBrightness.value = 100f
         sliderRate.value = 1f
-        setMode(0)
+        switchEnable.isChecked = false
+        setMode(1)
         updatePreview(255, 255, 255)
         sp.edit()
+            .putBoolean(keys.enable, false)
             .putString(keys.red, "255")
             .putString(keys.green, "255")
             .putString(keys.blue, "255")
+            .putString(keys.mode, "1")
             .putString(keys.speed, "1")
             .apply()
     }

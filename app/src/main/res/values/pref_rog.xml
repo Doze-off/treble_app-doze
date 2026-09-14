@@ -52,21 +52,21 @@
     </array>
 
     <!-- persist.sys.charginglimit's own recognized values, from ASUS's
-         init.asus.rc "Rev 2.0 of slow charging" block. What each non-zero
-         code actually maps to physically (percent? charge current step?)
-         isn't documented anywhere in the published source - only that
-         these eight exact values are the ones init.asus.rc reacts to and
-         0 means off. Labeled by raw code, not a guessed percentage. -->
+         init.asus.rc "Rev 2.0 of slow charging" block. The numeric codes
+         are what init.asus.rc actually matches on - they don't map 1:1 to
+         a charge percentage but are labeled here by their code value so
+         the user can cross-reference with ASUS documentation or trial
+         and error. 0 = off. -->
     <array name="pref_rog_charging_limit">
         <item>Off</item>
-        <item>Limit level 9</item>
-        <item>Limit level 10</item>
-        <item>Limit level 12</item>
-        <item>Limit level 15</item>
-        <item>Limit level 18</item>
-        <item>Limit level 30</item>
-        <item>Limit level 45</item>
-        <item>Limit level 65</item>
+        <item>Level 9</item>
+        <item>Level 10</item>
+        <item>Level 12</item>
+        <item>Level 15</item>
+        <item>Level 18</item>
+        <item>Level 30</item>
+        <item>Level 45</item>
+        <item>Level 65</item>
     </array>
     <array name="pref_rog_charging_limit_values">
         <item>"0"</item>
@@ -78,5 +78,20 @@
         <item>"30"</item>
         <item>"45"</item>
         <item>"65"</item>
+    </array>
+
+    <!-- Multi-STA concurrency modes (Qualcomm FastConnect 6900 / WCN6850):
+         0: Disabled (Single STA)
+         1: Dual-band simultaneous (2.4GHz + 5GHz same AP)
+         2: Multi-AP (Concurrent connection to two distinct APs) -->
+    <array name="pref_rog_dual_wifi">
+        <item>Off</item>
+        <item>Same network, dual-band (2.4 GHz + 5 GHz)</item>
+        <item>Two networks simultaneously</item>
+    </array>
+    <array name="pref_rog_dual_wifi_values">
+        <item>"0"</item>
+        <item>"1"</item>
+        <item>"2"</item>
     </array>
 </resources>

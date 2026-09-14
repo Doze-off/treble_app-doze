@@ -32,7 +32,11 @@ import java.util.Locale
 //
 // Also implemented: charging limit / ultra battery life (plain persist.sys.*
 // properties - ASUS's own init.asus.rc does the sysfs write on property
-// change, confirmed from that exact file) and X Mode gaming touch tuning
+// change, confirmed from that exact file), bypass charging
+// (/sys/class/asuslib/bypass_stop_charging - plain 0/1 sysfs write, confirmed
+// live on device; routes power directly from adapter to board while gaming so
+// the battery stays at rest rather than cycling charge current) and X Mode
+// gaming touch tuning
 // (game mode, touch report rate, corner-grip rejection - a sysfs attribute
 // group on the FocalTech touch IC itself, drivers/input/touchscreen/ROG5_TP/
 // asus/asus_game.c, confirmed live at
@@ -61,6 +65,7 @@ import java.util.Locale
 // were found, and keymapping_touch isn't a meaningful toggle without a
 // zone-assignment UI - both need more work than a simple sysfs write.
 object Rog: EntryStartup {
+    private var appCtxt: Context? = null
     private const val COOLER_BASE = "/sys/class/leds/aura_inbox"
     private const val AURA_PHONE_BASE = "/sys/class/leds/aura_sync"
     private const val AURA_SIDE_BASE = "/sys/class/leds/aura_sync_side"
@@ -87,9 +92,15 @@ object Rog: EntryStartup {
         val red = sp.getString(RogSettings.auraRed, "255")
         val green = sp.getString(RogSettings.auraGreen, "255")
         val blue = sp.getString(RogSettings.auraBlue, "255")
+        val mode = if (enabled) {
+            sp.getString(RogSettings.auraMode, "1")?.toIntOrNull()?.takeIf { it in 1..4 } ?: 1
+        } else {
+            0
+        }
         for (base in auraZones) {
             if (!File(base).exists()) continue
             writeToFileNofail("$base/led_on", if (enabled) "1" else "0")
+            writeToFileNofail("$base/mode", mode.toString())
             writeToFileNofail("$base/red_pwm", red ?: "255")
             writeToFileNofail("$base/green_pwm", green ?: "255")
             writeToFileNofail("$base/blue_pwm", blue ?: "255")
@@ -99,10 +110,12 @@ object Rog: EntryStartup {
     }
 
     private fun applyAuraMode(sp: SharedPreferences) {
-        val mode = sp.getString(RogSettings.auraMode, "0")
+        val enabled = sp.getBoolean(RogSettings.auraEnable, false)
+        if (!enabled) return
+        val mode = sp.getString(RogSettings.auraMode, "1")?.toIntOrNull()?.takeIf { it in 1..4 } ?: 1
         for (base in auraZones) {
             if (!File(base).exists()) continue
-            writeToFileNofail("$base/mode", mode ?: "0")
+            writeToFileNofail("$base/mode", mode.toString())
             // mode_store() (ms51_phone.c) writes register 0x8021 immediately,
             // but that only updates the MCU's *cached* mode - the MCU doesn't
             // actually re-render until it receives the 0x802F "apply" trigger
@@ -129,7 +142,14 @@ object Rog: EntryStartup {
 
     private fun applyGameMode(sp: SharedPreferences) {
         val on = sp.getBoolean(RogSettings.gameMode, false)
-        writeToFileNofail("$TOUCH_IC_BASE/fts_game_mode", if (on) "1" else "0")
+        val value = if (on) "1" else "0"
+        writeToFileNofail("$TOUCH_IC_BASE/fts_game_mode", value)
+        Misc.safeSetprop("vendor.asus.gamingtype", value)
+        // Raise the kernel's global scheduler boost so the touch IC's
+        // 300/560 Hz scan rate isn't starved by competing background work.
+        // /proc/sys/kernel/sched_boost is confirmed present on this kernel;
+        // writeToFileNofail silently skips it on kernels that lack it.
+        writeToFileNofail("/proc/sys/kernel/sched_boost", value)
     }
 
     private fun applyTouchReportRate(sp: SharedPreferences) {
@@ -163,6 +183,89 @@ object Rog: EntryStartup {
         Misc.safeSetprop("persist.sys.ultrabatterylife", if (ultra) "1" else "0")
     }
 
+    private fun applyBypassCharging(sp: SharedPreferences) {
+        // Bypass charging routes wall power directly to the board while gaming,
+        // leaving the battery at rest (neither charging nor discharging). This
+        // reduces heat under sustained load - the same mode ASUS's own Armoury
+        // Crate exposes as "Bypass Charging". Confirmed on device:
+        // echo 1 > /sys/class/asuslib/bypass_stop_charging  → 1 read-back ✓
+        // echo 0 > /sys/class/asuslib/bypass_stop_charging  → 0 read-back ✓
+        val on = sp.getBoolean(RogSettings.bypassCharging, false)
+        writeToFileNofail("/sys/class/asuslib/bypass_stop_charging", if (on) "1" else "0")
+    }
+
+    private fun applyDualWifi(sp: SharedPreferences) {
+        val modeStr = sp.getString(RogSettings.dualWifiMode, "0") ?: "0"
+        val mode = modeStr.toIntOrNull()?.coerceIn(0, 2) ?: 0
+        Log.d("PHH", "Rog: applying dual Wi-Fi mode $mode")
+
+        val ctxt = appCtxt
+        if (ctxt != null) {
+            try {
+                val wm = ctxt.applicationContext.getSystemService(Context.WIFI_SERVICE)
+                if (wm != null) {
+                    val method = wm.javaClass.getMethod("setStaConcurrencyForMultiInternetMode", Int::class.javaPrimitiveType)
+                    val res = method.invoke(wm, mode)
+                    Log.d("PHH", "Rog: WifiManager.setStaConcurrencyForMultiInternetMode($mode) = $res")
+                }
+            } catch (t: Throwable) {
+                Log.d("PHH", "Rog: reflection setStaConcurrencyForMultiInternetMode failed", t)
+            }
+
+            try {
+                android.provider.Settings.Global.putInt(ctxt.contentResolver, "wifi_multi_internet_mode", mode)
+            } catch (t: Throwable) {
+                Log.d("PHH", "Rog: putInt wifi_multi_internet_mode failed", t)
+            }
+        }
+
+        kotlin.concurrent.thread {
+            val cmdStr = if (mode > 0) {
+                "cmd wifi force-overlay-config-value bool config_wifiMultiStaMultiInternetConcurrencyEnabled enabled true && cmd wifi set-multi-internet-mode $mode"
+            } else {
+                "cmd wifi set-multi-internet-mode 0"
+            }
+            val cmds = listOf(
+                arrayOf("su", "-c", cmdStr),
+                arrayOf("phh-su", "-c", cmdStr)
+            )
+            for (cmd in cmds) {
+                try {
+                    Runtime.getRuntime().exec(cmd).waitFor()
+                    break
+                } catch (t: Throwable) {
+                    Log.d("PHH", "Rog: failed exec " + cmd.joinToString(" "), t)
+                }
+            }
+        }
+
+        Misc.safeSetprop("persist.sys.rog.dual_wifi_mode", mode.toString())
+    }
+
+    private fun applyHyperFusion(sp: SharedPreferences) {
+        val on = sp.getBoolean(RogSettings.hyperFusion, false)
+        val value = if (on) "1" else "0"
+        Log.d("PHH", "Rog: applying HyperFusion SLA enabled=$value")
+
+        Misc.safeSetprop("vendor.sla.enabled", value)
+        Misc.safeSetprop("persist.vendor.sla.enabled", value)
+
+        kotlin.concurrent.thread {
+            val cmds = listOf(
+                arrayOf("su", "-c", "setprop vendor.sla.enabled $value && setprop persist.vendor.sla.enabled $value"),
+                arrayOf("phh-su", "-c", "setprop vendor.sla.enabled $value && setprop persist.vendor.sla.enabled $value")
+            )
+            for (cmd in cmds) {
+                try {
+                    Runtime.getRuntime().exec(cmd).waitFor()
+                    break
+                } catch (t: Throwable) {
+                    Log.d("PHH", "Rog: failed exec " + cmd.joinToString(" "), t)
+                }
+            }
+        }
+    }
+
     val spListener = SharedPreferences.OnSharedPreferenceChangeListener { sp, key ->
         when (key) {
             RogSettings.auraEnable, RogSettings.auraRed, RogSettings.auraGreen, RogSettings.auraBlue ->
@@ -181,12 +284,16 @@ object Rog: EntryStartup {
             RogSettings.touchReportRate -> applyTouchReportRate(sp)
             RogSettings.edgeRejectStrength -> applyEdgeReject(sp)
             RogSettings.chargingLimit, RogSettings.ultraBatteryLife -> applyCharging(sp)
+            RogSettings.bypassCharging -> applyBypassCharging(sp)
+            RogSettings.dualWifiMode -> applyDualWifi(sp)
+            RogSettings.hyperFusion -> applyHyperFusion(sp)
         }
     }
 
     override fun startup(ctxt: Context) {
         if (!RogSettings.enabled(ctxt)) return
         Log.d("PHH", "Starting Rog service")
+        appCtxt = ctxt.applicationContext
         val sp = PreferenceManager.getDefaultSharedPreferences(ctxt)
         sp.registerOnSharedPreferenceChangeListener(spListener)
 
@@ -205,6 +312,9 @@ object Rog: EntryStartup {
         applyTouchReportRate(sp)
         applyEdgeReject(sp)
         applyCharging(sp)
+        applyBypassCharging(sp)
+        applyDualWifi(sp)
+        applyHyperFusion(sp)
     }
 
     // Re-applies the persisted base "Screen on" color/mode/speed to the
