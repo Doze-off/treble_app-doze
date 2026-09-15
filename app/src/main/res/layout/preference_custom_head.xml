@@ -36,7 +36,7 @@
             android:textSize="14sp"
             android:textAppearance="@style/TextAppearance.CustomTitle"
             android:textColor="?attr/colorOnSurface"
-            android:maxLines="4"
+            android:maxLines="25"
             android:ellipsize="end"
             android:lineSpacingExtra="1dp" />
 
@@ -50,7 +50,7 @@
             android:textSize="12sp"
             android:textAppearance="@style/TextAppearance.CustomSummary"
             android:textColor="?attr/colorOnSurfaceVariant"
-            android:maxLines="4"
+            android:maxLines="25"
             android:ellipsize="end"
             android:paddingTop="2dp"
             android:lineSpacingExtra="1dp" />
