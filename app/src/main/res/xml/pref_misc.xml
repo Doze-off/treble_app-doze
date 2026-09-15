@@ -157,6 +157,31 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+    android:title="Performance & DEXOPT"
+    android:layout="@layout/preference_category_custom">
+
+    <Preference
+        android:layout="@layout/preference_custom"
+        android:selectable="false"
+        android:title="⚠️ Performance & DEXOPT Options"
+        android:summary="Two separate optimization modes:\n\n• Performance Tweaks: System-wide optimizations (Dalvik heap, SurfaceFlinger, I/O, Network, CPU/GPU)\n• Aggressive DEXOPT: Force OAT recompilation for ALL apps (slow first boot: 10-30 min)\n\n⚠️ Performance Tweaks conflicts with LMK Tweaks - LMK will be auto-disabled.\n⚠️ Use both for maximum performance, but expect higher battery drain." />
+
+    <SwitchPreference
+        android:layout="@layout/preference_switch_custom"
+        android:defaultValue="false"
+        android:key="key_misc_performance_tweaks"
+        android:title="Performance Tweaks"
+        android:summary="⚠️ MAXIMUM PERFORMANCE - Increases battery drain and heat\n\nApplies comprehensive system-wide optimizations:\n\n📊 Dalvik/ART Heap & GC:\n• Heap: 512MB max, 256MB growth limit\n• GC threads: 4 parallel threads\n• Finalizer timeout: 30s\n• Target utilization: 75%\n\n🎨 SurfaceFlinger:\n• Uclamp priorities: 100-1024\n• Buffer management: 4 buffers, 384 layers\n• VSYNC backpressure: enabled\n• GL + HWC backpressure: enabled\n\n💾 I/O & Storage:\n• Scheduler: CFQ (balanced)\n• Read-ahead: 128KB (eMMC), 256KB (SATA)\n• VM dirty ratio: 20%/10%\n• Swappiness: 10 (avoid swap)\n\n🌐 Network:\n• TCP buffers: 16KB-1MB (adaptive per network)\n• Core buffers: 16MB max\n• Socket backlog: 4096 connections\n\n⚙️ CPU/GPU:\n• DEX2OAT threads: 8 parallel\n• Block cache: enabled\n• GPU acceleration: full (EGL + SF)\n\n⚠️ Steps:\n1. Enable this option\n2. REBOOT immediately\n3. Test performance and stability\n\n⚠️ CONFLICT WARNING:\n• Automatically disables LMK Tweaks\n• May cause instability on <4GB RAM\n• Battery drain: +15-25%\n• Heat: noticeably higher\n\nPerformance: ⭐⭐⭐⭐⭐ | Battery: Poor | Heat: High | RAM: 4GB+ recommended\n\n📝 Note: Does NOT include DEXOPT - use 'Aggressive DEXOPT' separately for OAT recompilation." />
+
+    <SwitchPreference
+        android:layout="@layout/preference_switch_custom"
+        android:defaultValue="false"
+        android:key="key_misc_dexopt_aggressive"
+        android:title="Aggressive DEXOPT"
+        android:summary="⚠️ FORCES OAT RECOMPILATION - Very slow first boot (10-30 min)\n\nForces speed-mode DEXOPT compilation for ALL apps:\n\n📦 What it does:\n• Sets ALL pm.dexopt.* props to 'speed'\n• Recompiles system + user apps to OAT\n• Boot scenarios: boot, post-boot, first-boot, boot-after-ota\n• Install scenarios: install, install-fast, install-bulk\n• Background: bg-dexopt, inactive, first-use\n• System: core-app, shared, nsys-library, forced-dexopt\n• Filters: systemserver, systemui compiler filters\n• DEX2OAT flags: --force-large-compilation-threshold=0\n• Triggers: cmd package compile -m speed -f -a\n\n⏱️ Time required:\n• First boot: 10-30 minutes\n• Background: continues after boot\n• Storage: +1-3GB for OAT files\n• Location: /data/dalvik-cache/arm64/\n\n⚠️ Steps:\n1. Enable this option\n2. REBOOT and wait (10-30 min)\n3. Keep device plugged in\n4. Monitor: tail -f /data/misc/dexopt.log\n\n✅ Enable if:\n• You want fastest app launches\n• You have 64GB+ storage\n• You can wait for first boot\n• Device will stay on this ROM long-term\n\n❌ Disable if:\n• You need quick boot\n• You have <32GB storage\n• You frequently change ROMs\n• You don't want background compilation\n\n⚠️ WARNING:\n• First boot WILL BE VERY SLOW\n• Device may get HOT during compilation\n• Use only when plugged in\n• Check progress: tail -f /data/misc/dexopt.log\n• View status: dumpsys package | grep DexOpt\n\nPerformance: ⭐⭐⭐⭐⭐ | Storage: +1-3GB | First Boot: 10-30 min\n\n📝 Note: Can be used WITH Performance Tweaks for maximum optimization." />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/oneplus_display"
         android:layout="@layout/preference_category_custom">
         <SwitchPreference
