@@ -30,6 +30,7 @@ object MiscSettings : Settings {
     val fixScreenRecorder = "key_misc_fix_screen_recorder"
     val maxCompatibility = "key_misc_max_compatibility"
     val legacyMode = "key_misc_legacy_mode"
+    val maxPerformance = "key_misc_max_performance"
     val bluetoothFix =  "key_misc_bluetooth_fix"
     val unisocColorTransform = "key_misc_unisoc_color_transform"
     val axionProps = "key_misc_axion_props"
@@ -37,10 +38,6 @@ object MiscSettings : Settings {
     val a2dpAddr = "key_misc_a2dp_identity"
     val safeMedia = "key_misc_safe_media"
     val trafficFix = "key_misc_traffic_indicator"
-
-    
-
-
 
     override fun enabled(context: Context): Boolean = true
     fun isRoot() = File(Tools.phhsu).exists()

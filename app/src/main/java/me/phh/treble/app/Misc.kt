@@ -82,6 +82,10 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.legacy_mode", if (value) "true" else "false")
             }
+            MiscSettings.maxPerformance -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.max_performance", if (value) "true" else "false")
+            }
             MiscSettings.bluetoothFix -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.bluetooth_fix", if (value) "true" else "false")
@@ -148,5 +152,6 @@ object Misc: EntryStartup {
         spListener.onSharedPreferenceChanged(sp, MiscSettings.fixScreenRecorder)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.maxCompatibility)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.legacyMode)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.maxPerformance)
     }
 }
