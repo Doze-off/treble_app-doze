@@ -73,6 +73,7 @@
              patching around it blind.
         -->
         <Preference
+            android:layout="@layout/preference_edittext_custom"
             android:key="rog_edge_reject_strength"
             android:title="Corner-grip rejection"
             android:summary="Suppress accidental edge touches while gripping the phone in landscape" />
