@@ -90,10 +90,6 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.performance_tweaks", if (value) "true" else "false")
             }
-            MiscSettings.dexoptAggressive -> {
-                val value = sp.getBoolean(key, false)
-                SystemProperties.set("persist.sys.phh.dexopt_aggressive", if (value) "true" else "false")
-            }
             MiscSettings.bluetoothFix -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.bluetooth_fix", if (value) "true" else "false")
@@ -162,6 +158,5 @@ object Misc: EntryStartup {
         spListener.onSharedPreferenceChanged(sp, MiscSettings.legacyMode)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.maxPerformance)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.performanceTweaks)
-        spListener.onSharedPreferenceChanged(sp, MiscSettings.dexoptAggressive)
     }
 }
