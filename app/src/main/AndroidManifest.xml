@@ -148,6 +148,12 @@
             android:theme="@style/Theme.TrebleApp"
             android:exported="false" />
 
+        <activity
+            android:name=".DualWifiActivity"
+            android:label="@string/dual_wifi_title"
+            android:theme="@style/Theme.TrebleApp"
+            android:exported="false" />
+
         <service
             android:name=".RogNotificationListenerService"
             android:label="ROG Aura Sync event lighting"
