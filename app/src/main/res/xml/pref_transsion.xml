@@ -9,6 +9,12 @@
             android:defaultValue="false"
             android:key="key_transsion_dt2w"
             android:title="@string/dt2w" />
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="key_transsion_udfps_hbm"
+            android:title="UDFPS HBM trigger"
+            android:summary="Force High Brightness Mode via SurfaceControl for under-display fingerprint reading (workaround for Transsion devices)" />
     </PreferenceCategory>
 
     <PreferenceCategory
