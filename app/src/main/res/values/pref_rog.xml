@@ -79,19 +79,4 @@
         <item>"45"</item>
         <item>"65"</item>
     </array>
-
-    <!-- Multi-STA concurrency modes (Qualcomm FastConnect 6900 / WCN6850):
-         0: Disabled (Single STA)
-         1: Dual-band simultaneous (2.4GHz + 5GHz same AP)
-         2: Multi-AP (Concurrent connection to two distinct APs) -->
-    <array name="pref_rog_dual_wifi">
-        <item>Disabled</item>
-        <item>Dual-band same network (2.4GHz + 5GHz)</item>
-        <item>Dual network (Two distinct Wi-Fi networks)</item>
-    </array>
-    <array name="pref_rog_dual_wifi_values">
-        <item>"0"</item>
-        <item>"1"</item>
-        <item>"2"</item>
-    </array>
 </resources>
