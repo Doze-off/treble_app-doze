@@ -157,18 +157,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-    android:title="Performance"
-    android:layout="@layout/preference_category_custom">
-        
-    <SwitchPreference
-        android:layout="@layout/preference_switch_custom"
-        android:defaultValue="false"
-        android:key="key_misc_performance_tweaks"
-        android:title="Performance Tweaks"
-        android:summary="⚠️ MAXIMUM PERFORMANCE - Increases battery drain and heat\n\nApplies comprehensive system-wide optimizations:\n\n📊 Dalvik/ART Heap &amp; GC:\n• Heap: 512MB max, 256MB growth limit\n• GC threads: 4 parallel threads\n• Finalizer timeout: 30s\n• Target utilization: 75%\n\n🎨 SurfaceFlinger:\n• Uclamp priorities: 100-1024\n• Buffer management: 4 buffers, 384 layers\n• VSYNC backpressure: enabled\n• GL + HWC backpressure: enabled\n\n💾 I/O &amp; Storage:\n• Scheduler: CFQ (balanced)\n• Read-ahead: 128KB (eMMC), 256KB (SATA)\n• VM dirty ratio: 20%/10%\n• Swappiness: 10 (avoid swap)\n\n🌐 Network:\n• TCP buffers: 16KB-1MB (adaptive per network)\n• Core buffers: 16MB max\n• Socket backlog: 4096 connections\n\n⚙️ CPU/GPU:\n• DEX2OAT threads: 8 parallel\n• Block cache: enabled\n• GPU acceleration: full (EGL + SF)\n\n⚠️ Steps:\n1. Enable this option\n2. REBOOT immediately\n3. Test performance and stability\n\n⚠️ CONFLICT WARNING:\n• Automatically disables LMK Tweaks\n• May cause instability on &lt;4GB RAM\n• Battery drain: +15-25%\n• Heat: noticeably higher\n\nPerformance: ⭐⭐⭐⭐⭐ | Battery: Poor | Heat: High | RAM: 4GB+ recommended\n\n📝 Note: Does NOT include DEXOPT - use 'Aggressive DEXOPT' separately for OAT recompilation." />
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:title="@string/oneplus_display"
         android:layout="@layout/preference_category_custom">
         <SwitchPreference

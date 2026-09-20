@@ -38,7 +38,6 @@ object MiscSettings : Settings {
     val a2dpAddr = "key_misc_a2dp_identity"
     val safeMedia = "key_misc_safe_media"
     val trafficFix = "key_misc_traffic_indicator"
-    val performanceTweaks = "key_misc_performance_tweaks"
 
     override fun enabled(context: Context): Boolean = true
     fun isRoot() = File(Tools.phhsu).exists()
