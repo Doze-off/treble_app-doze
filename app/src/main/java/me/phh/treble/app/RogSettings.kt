@@ -37,6 +37,63 @@ object RogSettings : Settings {
     // set_speed() only accepts 0, 1, 2, 254 or 255 - see Rog.kt.
     val auraSpeed = "rog_aura_speed"
 
+    // The 6 preference keys AuraSyncActivity needs to edit one color/mode
+    // profile - bundled so the same editor screen can be reused for both
+    // the base "Screen on" color and each event-triggered profile below,
+    // instead of hardcoding the base keys throughout that activity.
+    data class AuraKeySet(
+        val enable: String, val red: String, val green: String,
+        val blue: String, val mode: String, val speed: String
+    )
+
+    val screenOn = AuraKeySet(auraEnable, auraRed, auraGreen, auraBlue, auraMode, auraSpeed)
+
+    // Per-event lighting profiles. Confirmed from ASUS's own real Aura
+    // Sync software that these 4 scenarios (ringing/charging/notification/
+    // music) each carry their own independent (enabled, color, mode,
+    // speed) profile - AuraLightManager's own setScenarioEffect(scenario,
+    // active, color, mode, speed) has exactly this shape. All default to
+    // disabled so nothing changes for existing users until they opt in.
+    val ringingEvent = AuraKeySet(
+        "rog_aura_event_ringing_enable", "rog_aura_event_ringing_red",
+        "rog_aura_event_ringing_green", "rog_aura_event_ringing_blue",
+        "rog_aura_event_ringing_mode", "rog_aura_event_ringing_speed"
+    )
+    val chargingEvent = AuraKeySet(
+        "rog_aura_event_charging_enable", "rog_aura_event_charging_red",
+        "rog_aura_event_charging_green", "rog_aura_event_charging_blue",
+        "rog_aura_event_charging_mode", "rog_aura_event_charging_speed"
+    )
+    val notificationEvent = AuraKeySet(
+        "rog_aura_event_notification_enable", "rog_aura_event_notification_red",
+        "rog_aura_event_notification_green", "rog_aura_event_notification_blue",
+        "rog_aura_event_notification_mode", "rog_aura_event_notification_speed"
+    )
+    val musicEvent = AuraKeySet(
+        "rog_aura_event_music_enable", "rog_aura_event_music_red",
+        "rog_aura_event_music_green", "rog_aura_event_music_blue",
+        "rog_aura_event_music_mode", "rog_aura_event_music_speed"
+    )
+
+    // Ordered highest-priority-first: if more than one event is active at
+    // once (e.g. a call rings while charging), the first enabled-and-active
+    // one in this order wins. id/keys/label triples drive both the
+    // trigger-list screen and AuraSyncActivity's per-scenario title.
+    val eventScenarios = listOf(
+        Triple("ringing", ringingEvent, "Incoming Call"),
+        Triple("notification", notificationEvent, "Notification"),
+        Triple("music", musicEvent, "Music Playback"),
+        Triple("charging", chargingEvent, "Charging")
+    )
+
+    const val SCENARIO_SCREEN_ON = "screen_on"
+
+    fun keySetFor(scenario: String): AuraKeySet =
+        eventScenarios.firstOrNull { it.first == scenario }?.second ?: screenOn
+
+    fun labelFor(scenario: String): String =
+        eventScenarios.firstOrNull { it.first == scenario }?.third ?: "Aura Sync RGB"
+
     // Charging - plain persist.sys.* properties, ASUS's own init.asus.rc does
     // the actual sysfs write (charger_limit_mode / ultra_bat_life) on
     // property change, same mechanism the stock Settings app uses.
@@ -91,6 +148,11 @@ class RogSettingsFragment : PreferenceFragment() {
 
         findPreference("rog_aura_sync_open")!!.setOnPreferenceClickListener {
             startActivity(Intent(activity, AuraSyncActivity::class.java))
+            true
+        }
+
+        findPreference("rog_aura_lighting_triggers_open")!!.setOnPreferenceClickListener {
+            startActivity(Intent(activity, LightingTriggersActivity::class.java))
             true
         }
 

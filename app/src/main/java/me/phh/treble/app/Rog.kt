@@ -70,9 +70,11 @@ object Rog: EntryStartup {
     // All four LED classdevs share the same attribute_group, so RGB/mode
     // apply uniformly to whichever of them are actually present - the
     // cooler is accessory-dependent, the other three are always there.
-    private val auraZones = listOf(AURA_PHONE_BASE, AURA_SIDE_BASE, AURA_BACKCOVER_BASE, COOLER_BASE)
+    // internal: RogEvents.kt writes the same zones directly while an event
+    // trigger (call/charging/notification/music) is overriding the base color.
+    internal val auraZones = listOf(AURA_PHONE_BASE, AURA_SIDE_BASE, AURA_BACKCOVER_BASE, COOLER_BASE)
 
-    private fun writeToFileNofail(path: String, content: String) {
+    internal fun writeToFileNofail(path: String, content: String) {
         try {
             File(path).printWriter().use { it.println(content) }
         } catch (t: Throwable) {
@@ -203,5 +205,17 @@ object Rog: EntryStartup {
         applyTouchReportRate(sp)
         applyEdgeReject(sp)
         applyCharging(sp)
+    }
+
+    // Re-applies the persisted base "Screen on" color/mode/speed to the
+    // MCUs. Called by RogEvents once no event trigger (call/charging/
+    // notification/music) is active anymore, to restore whatever the user
+    // actually configured on the main Aura Sync screen - mirrors the same
+    // three calls startup() makes at boot.
+    internal fun reapplyBaseAura(ctxt: Context) {
+        val sp = PreferenceManager.getDefaultSharedPreferences(ctxt)
+        applyAura(sp)
+        applyAuraMode(sp)
+        applyAuraSpeed(sp)
     }
 }

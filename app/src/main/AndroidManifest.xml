@@ -19,6 +19,11 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!-- Aura Sync "Music" event trigger: Visualizer(session 0) output-mix
+         capture for the real-time peak-reactive hue effect (see
+         RogEvents.kt) - not microphone recording. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
 
 
     <application
@@ -131,6 +136,22 @@
             android:label="Aura Sync RGB"
             android:theme="@style/Theme.TrebleApp"
             android:exported="false" />
+
+        <activity
+            android:name=".LightingTriggersActivity"
+            android:label="Lighting Triggers"
+            android:theme="@style/Theme.TrebleApp"
+            android:exported="false" />
+
+        <service
+            android:name=".RogNotificationListenerService"
+            android:label="ROG Aura Sync event lighting"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".UpdaterActivity"

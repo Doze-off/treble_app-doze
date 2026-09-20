@@ -38,6 +38,7 @@ import com.google.android.material.slider.Slider
 // artwork/logo, which isn't reproduced here.
 class AuraSyncActivity : AppCompatActivity() {
     private lateinit var sp: SharedPreferences
+    private lateinit var keys: RogSettings.AuraKeySet
     private val debounceHandler = Handler(Looper.getMainLooper())
     private var pendingColorWrite: Runnable? = null
 
@@ -58,6 +59,13 @@ class AuraSyncActivity : AppCompatActivity() {
         setContentView(R.layout.activity_aura_sync)
         sp = PreferenceManager.getDefaultSharedPreferences(this)
 
+        // Absent extra = the main "Screen on" color, so the existing
+        // "Aura Sync RGB" entry point keeps working unchanged. Present =
+        // one of RogSettings.eventScenarios' ids (see RogEvents.kt/
+        // LightingTriggersActivity), editing that event's own profile.
+        val scenario = intent.getStringExtra(EXTRA_SCENARIO) ?: RogSettings.SCENARIO_SCREEN_ON
+        keys = RogSettings.keySetFor(scenario)
+
         colorWheel = findViewById(R.id.colorWheel)
         centerSwatch = findViewById(R.id.centerSwatch)
         hexLabel = findViewById(R.id.hexLabel)
@@ -68,19 +76,24 @@ class AuraSyncActivity : AppCompatActivity() {
         modeValue = findViewById(R.id.modeValue)
         modeRow = findViewById(R.id.modeRow)
 
+        if (scenario != RogSettings.SCENARIO_SCREEN_ON) {
+            findViewById<TextView>(R.id.titleText).text = RogSettings.labelFor(scenario).uppercase()
+            findViewById<TextView>(R.id.enableLabel).text = "Enabled"
+        }
+
         findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
         findViewById<View>(R.id.btnReset).setOnClickListener { resetToDefaults() }
 
-        val startRed = sp.getString(RogSettings.auraRed, "255")?.toIntOrNull() ?: 255
-        val startGreen = sp.getString(RogSettings.auraGreen, "255")?.toIntOrNull() ?: 255
-        val startBlue = sp.getString(RogSettings.auraBlue, "255")?.toIntOrNull() ?: 255
-        val startMode = sp.getString(RogSettings.auraMode, "0")?.toIntOrNull() ?: 0
-        val startRate = sp.getString(RogSettings.auraSpeed, "1")?.toIntOrNull()?.takeIf { it in 0..2 } ?: 1
+        val startRed = sp.getString(keys.red, "255")?.toIntOrNull() ?: 255
+        val startGreen = sp.getString(keys.green, "255")?.toIntOrNull() ?: 255
+        val startBlue = sp.getString(keys.blue, "255")?.toIntOrNull() ?: 255
+        val startMode = sp.getString(keys.mode, "0")?.toIntOrNull() ?: 0
+        val startRate = sp.getString(keys.speed, "1")?.toIntOrNull()?.takeIf { it in 0..2 } ?: 1
 
         val hsv = FloatArray(3)
         Color.RGBToHSV(startRed, startGreen, startBlue, hsv)
 
-        switchEnable.isChecked = sp.getBoolean(RogSettings.auraEnable, false)
+        switchEnable.isChecked = sp.getBoolean(keys.enable, false)
         colorWheel.setHueSat(hsv[0], hsv[1])
         colorWheel.setValue(hsv[2])
         sliderSaturation.value = Math.round(hsv[1] * 100f).toFloat().coerceIn(0f, 100f)
@@ -90,7 +103,7 @@ class AuraSyncActivity : AppCompatActivity() {
         updatePreview(startRed, startGreen, startBlue)
 
         switchEnable.setOnCheckedChangeListener { _, checked ->
-            sp.edit().putBoolean(RogSettings.auraEnable, checked).apply()
+            sp.edit().putBoolean(keys.enable, checked).apply()
         }
 
         colorWheel.onColorChange = { _, _ ->
@@ -108,7 +121,7 @@ class AuraSyncActivity : AppCompatActivity() {
         }
 
         sliderRate.addOnChangeListener { _, value, _ ->
-            sp.edit().putString(RogSettings.auraSpeed, value.toInt().toString()).apply()
+            sp.edit().putString(keys.speed, value.toInt().toString()).apply()
         }
 
         modeRow.setOnClickListener { showModeMenu() }
@@ -124,9 +137,9 @@ class AuraSyncActivity : AppCompatActivity() {
         updatePreview(r, g, b)
         scheduleColorWrite {
             sp.edit()
-                .putString(RogSettings.auraRed, r.toString())
-                .putString(RogSettings.auraGreen, g.toString())
-                .putString(RogSettings.auraBlue, b.toString())
+                .putString(keys.red, r.toString())
+                .putString(keys.green, g.toString())
+                .putString(keys.blue, b.toString())
                 .apply()
         }
     }
@@ -143,7 +156,7 @@ class AuraSyncActivity : AppCompatActivity() {
 
     private fun setMode(mode: Int) {
         updateModeLabel(mode)
-        sp.edit().putString(RogSettings.auraMode, mode.toString()).apply()
+        sp.edit().putString(keys.mode, mode.toString()).apply()
     }
 
     private fun updateModeLabel(mode: Int) {
@@ -182,10 +195,10 @@ class AuraSyncActivity : AppCompatActivity() {
         setMode(0)
         updatePreview(255, 255, 255)
         sp.edit()
-            .putString(RogSettings.auraRed, "255")
-            .putString(RogSettings.auraGreen, "255")
-            .putString(RogSettings.auraBlue, "255")
-            .putString(RogSettings.auraSpeed, "1")
+            .putString(keys.red, "255")
+            .putString(keys.green, "255")
+            .putString(keys.blue, "255")
+            .putString(keys.speed, "1")
             .apply()
     }
 
@@ -227,9 +240,9 @@ class AuraSyncActivity : AppCompatActivity() {
                     updatePreview(r, g, b)
                     if (!switchEnable.isChecked) switchEnable.isChecked = true
                     sp.edit()
-                        .putString(RogSettings.auraRed, r.toString())
-                        .putString(RogSettings.auraGreen, g.toString())
-                        .putString(RogSettings.auraBlue, b.toString())
+                        .putString(keys.red, r.toString())
+                        .putString(keys.green, g.toString())
+                        .putString(keys.blue, b.toString())
                         .apply()
                 }
             }
@@ -240,5 +253,9 @@ class AuraSyncActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         pendingColorWrite?.let { debounceHandler.removeCallbacks(it) }
+    }
+
+    companion object {
+        const val EXTRA_SCENARIO = "scenario"
     }
 }
