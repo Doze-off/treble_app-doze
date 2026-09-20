@@ -17,8 +17,13 @@ object Transsion: EntryStartup {
             }
             TranssionSettings.dt2w -> {
                 val b = sp.getBoolean(key, false)
-                val value = if(b) "1" else "2"
+                val value = if(b) "1" else "0"
                 Tools.safeSetprop("persist.sys.phh.transsion.dt2w", value)
+            }
+            TranssionSettings.udfpsHbm -> {
+                val b = sp.getBoolean(key, false)
+                val value = if(b) "1" else "0"
+                Tools.safeSetprop("persist.sys.phh.transsion_udfps_hbm", value)
             }
         }
     }
