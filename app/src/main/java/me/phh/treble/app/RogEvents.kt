@@ -83,7 +83,7 @@ object RogEvents : EntryStartup {
             val r = sp.getString(keys.red, "255")?.toIntOrNull() ?: 255
             val g = sp.getString(keys.green, "255")?.toIntOrNull() ?: 255
             val b = sp.getString(keys.blue, "255")?.toIntOrNull() ?: 255
-            val mode = sp.getString(keys.mode, "1")?.toIntOrNull()?.takeIf { it in 1..4 } ?: 1
+            val mode = sp.getString(keys.mode, "1")?.toIntOrNull() ?: 1
             val speed = sp.getString(keys.speed, "1")?.toIntOrNull() ?: 1
             writeDirect(r, g, b, mode, speed)
         }

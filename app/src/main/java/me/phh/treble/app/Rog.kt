@@ -87,15 +87,9 @@ object Rog: EntryStartup {
         val red = sp.getString(RogSettings.auraRed, "255")
         val green = sp.getString(RogSettings.auraGreen, "255")
         val blue = sp.getString(RogSettings.auraBlue, "255")
-        val mode = if (enabled) {
-            sp.getString(RogSettings.auraMode, "1")?.toIntOrNull()?.takeIf { it in 1..4 } ?: 1
-        } else {
-            0
-        }
         for (base in auraZones) {
             if (!File(base).exists()) continue
             writeToFileNofail("$base/led_on", if (enabled) "1" else "0")
-            writeToFileNofail("$base/mode", mode.toString())
             writeToFileNofail("$base/red_pwm", red ?: "255")
             writeToFileNofail("$base/green_pwm", green ?: "255")
             writeToFileNofail("$base/blue_pwm", blue ?: "255")
@@ -105,12 +99,10 @@ object Rog: EntryStartup {
     }
 
     private fun applyAuraMode(sp: SharedPreferences) {
-        val enabled = sp.getBoolean(RogSettings.auraEnable, false)
-        if (!enabled) return
-        val mode = sp.getString(RogSettings.auraMode, "1")?.toIntOrNull()?.takeIf { it in 1..4 } ?: 1
+        val mode = sp.getString(RogSettings.auraMode, "0")
         for (base in auraZones) {
             if (!File(base).exists()) continue
-            writeToFileNofail("$base/mode", mode.toString())
+            writeToFileNofail("$base/mode", mode ?: "0")
             // mode_store() (ms51_phone.c) writes register 0x8021 immediately,
             // but that only updates the MCU's *cached* mode - the MCU doesn't
             // actually re-render until it receives the 0x802F "apply" trigger
