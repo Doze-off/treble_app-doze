@@ -98,7 +98,6 @@ class EntryService: Service() {
 
             tryC { Asus.startup(this) }
             tryC { Rog.startup(this) }
-            tryC { RogEvents.startup(this) }
             tryC { Huawei.startup(this) }
             tryC { Hct.startup(this) }
             tryC { Lenovo.startup(this) }
