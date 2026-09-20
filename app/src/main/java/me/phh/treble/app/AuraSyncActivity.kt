@@ -22,12 +22,20 @@ import com.google.android.material.slider.Slider
 // keys, so Rog.kt's already-registered listener still owns the actual
 // sysfs writes - no hardware-access logic duplicated here.
 //
-// Mode values 0-4 are confirmed to apply without error (apply_state=0) on
-// ASUS_I005D/ASUS_I005_1 firmware 33.0210.0210.200-0, but no named presets
-// are used for it - what each raw index actually does visually is still
-// unverified, and ASUS never published this. "Rate" maps to the MCU's real
-// speed register, which only accepts 0/1/2/254/255 (see Rog.kt) - only
-// 0/1/2 are exposed here since 254/255's meaning isn't documented either.
+// Mode names/values (0=Off, 1=Static, 2=Breathing, 3=Strobing,
+// 4=Color Cycle) are confirmed exactly from ASUS's own real Aura Sync
+// software - not guessed. Modes past 4 are left unexposed since
+// nothing confirms what (if anything) exists beyond what ASUS's own
+// software itself uses.
+//
+// "Rate" maps to the MCU's real speed register, which only accepts
+// 0/1/2/254/255 (see Rog.kt) - only 0/1/2 are exposed here, matching
+// ASUS's own light editor UI (a plain 0-2 scale there too), since
+// 254/255's meaning isn't documented anywhere.
+//
+// Colors/dimensions here (background, accent red, brightness floor of
+// 15) are taken from ASUS's own real design tokens - not their
+// artwork/logo, which isn't reproduced here.
 class AuraSyncActivity : AppCompatActivity() {
     private lateinit var sp: SharedPreferences
     private val debounceHandler = Handler(Looper.getMainLooper())
@@ -37,13 +45,13 @@ class AuraSyncActivity : AppCompatActivity() {
     private lateinit var centerSwatch: View
     private lateinit var hexLabel: TextView
     private lateinit var switchEnable: SwitchCompat
+    private lateinit var sliderSaturation: Slider
     private lateinit var sliderBrightness: Slider
     private lateinit var sliderRate: Slider
     private lateinit var modeValue: TextView
     private lateinit var modeRow: LinearLayout
 
-    private val modeRange = 0..20
-    private val rateLabels = arrayOf("Slow", "Medium", "Fast")
+    private val modeNames = arrayOf("Off", "Static", "Breathing", "Strobing", "Color Cycle")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +62,7 @@ class AuraSyncActivity : AppCompatActivity() {
         centerSwatch = findViewById(R.id.centerSwatch)
         hexLabel = findViewById(R.id.hexLabel)
         switchEnable = findViewById(R.id.switchEnable)
+        sliderSaturation = findViewById(R.id.sliderSaturation)
         sliderBrightness = findViewById(R.id.sliderBrightness)
         sliderRate = findViewById(R.id.sliderRate)
         modeValue = findViewById(R.id.modeValue)
@@ -74,7 +83,8 @@ class AuraSyncActivity : AppCompatActivity() {
         switchEnable.isChecked = sp.getBoolean(RogSettings.auraEnable, false)
         colorWheel.setHueSat(hsv[0], hsv[1])
         colorWheel.setValue(hsv[2])
-        sliderBrightness.value = (hsv[2] * 100f)
+        sliderSaturation.value = Math.round(hsv[1] * 100f).toFloat().coerceIn(0f, 100f)
+        sliderBrightness.value = Math.round(hsv[2] * 100f).toFloat().coerceIn(15f, 100f)
         sliderRate.value = startRate.toFloat()
         updateModeLabel(startMode)
         updatePreview(startRed, startGreen, startBlue)
@@ -84,6 +94,11 @@ class AuraSyncActivity : AppCompatActivity() {
         }
 
         colorWheel.onColorChange = { _, _ ->
+            applyWheelColor()
+        }
+
+        sliderSaturation.addOnChangeListener { _, value, _ ->
+            colorWheel.setSaturation(value / 100f)
             applyWheelColor()
         }
 
@@ -118,7 +133,7 @@ class AuraSyncActivity : AppCompatActivity() {
 
     private fun showModeMenu() {
         val popup = PopupMenu(this, modeRow)
-        for (m in modeRange) popup.menu.add(0, m, m, "Mode $m")
+        for (m in modeNames.indices) popup.menu.add(0, m, m, modeNames[m])
         popup.setOnMenuItemClickListener { item ->
             setMode(item.itemId)
             true
@@ -132,7 +147,7 @@ class AuraSyncActivity : AppCompatActivity() {
     }
 
     private fun updateModeLabel(mode: Int) {
-        modeValue.text = "Mode $mode"
+        modeValue.text = modeNames.getOrElse(mode) { "Mode $mode" }
     }
 
     private fun updatePreview(r: Int, g: Int, b: Int) {
@@ -161,6 +176,7 @@ class AuraSyncActivity : AppCompatActivity() {
     private fun resetToDefaults() {
         colorWheel.setHueSat(0f, 0f)
         colorWheel.setValue(1f)
+        sliderSaturation.value = 0f
         sliderBrightness.value = 100f
         sliderRate.value = 1f
         setMode(0)
@@ -175,13 +191,16 @@ class AuraSyncActivity : AppCompatActivity() {
 
     private fun buildPresets() {
         val row = findViewById<LinearLayout>(R.id.presetRow)
+        // The 6 non-white/off swatches match ASUS's own default
+        // preset palette exactly - not arbitrary picks.
         val presets = listOf(
-            "Red" to Triple(255, 0, 0),
-            "Green" to Triple(0, 255, 0),
-            "Blue" to Triple(0, 0, 255),
+            "Red" to Triple(0xc9, 0x01, 0x01),
+            "Orange" to Triple(0xff, 0x58, 0x23),
+            "Yellow" to Triple(0xff, 0xcb, 0x2a),
+            "Green" to Triple(0x03, 0xe6, 0x78),
+            "Blue" to Triple(0x2a, 0x63, 0xff),
+            "Purple" to Triple(0x62, 0x00, 0xea),
             "White" to Triple(255, 255, 255),
-            "Purple" to Triple(160, 32, 240),
-            "Cyan" to Triple(0, 255, 255),
             "Off" to Triple(0, 0, 0)
         )
         val sizePx = (48 * resources.displayMetrics.density).toInt()
@@ -203,7 +222,8 @@ class AuraSyncActivity : AppCompatActivity() {
                     Color.RGBToHSV(r, g, b, hsv)
                     colorWheel.setHueSat(hsv[0], hsv[1])
                     colorWheel.setValue(hsv[2])
-                    sliderBrightness.value = hsv[2] * 100f
+                    sliderSaturation.value = Math.round(hsv[1] * 100f).toFloat().coerceIn(0f, 100f)
+                    sliderBrightness.value = Math.round(hsv[2] * 100f).toFloat().coerceIn(15f, 100f)
                     updatePreview(r, g, b)
                     if (!switchEnable.isChecked) switchEnable.isChecked = true
                     sp.edit()
