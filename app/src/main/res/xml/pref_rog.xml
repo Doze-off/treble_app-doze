@@ -105,19 +105,10 @@
     <PreferenceCategory
         android:title="Dual Wi-Fi &amp; Network Acceleration"
         android:layout="@layout/preference_category_custom">
-        <ListPreference
-            android:layout="@layout/preference_list_custom"
-            android:defaultValue="0"
-            android:entries="@array/pref_rog_dual_wifi"
-            android:entryValues="@array/pref_rog_dual_wifi_values"
-            android:key="rog_dual_wifi_mode"
-            android:summary="Use both Wi-Fi interfaces simultaneously for lower latency"
-            android:title="Dual Wi-Fi mode" />
-        <SwitchPreference
-            android:layout="@layout/preference_switch_custom"
-            android:defaultValue="false"
-            android:key="rog_hyperfusion"
-            android:title="HyperFusion"
-            android:summary="Bonds Wi-Fi and mobile data to minimise gaming latency (Qualcomm SLA)" />
+        <Preference
+            android:layout="@layout/preference_edittext_custom"
+            android:key="rog_dual_wifi_open"
+            android:title="@string/dual_wifi_title"
+            android:summary="@string/dual_wifi_summary" />
     </PreferenceCategory>
 </PreferenceScreen>
