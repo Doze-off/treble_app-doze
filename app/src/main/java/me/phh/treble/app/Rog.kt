@@ -2,13 +2,6 @@ package me.phh.treble.app
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
-import android.net.wifi.ScanResult
-import android.net.wifi.WifiManager
-import android.net.wifi.WifiNetworkSpecifier
 import android.preference.PreferenceManager
 import android.util.Log
 import java.io.File
@@ -73,7 +66,6 @@ import java.util.Locale
 // zone-assignment UI - both need more work than a simple sysfs write.
 object Rog: EntryStartup {
     private var appCtxt: Context? = null
-    private var activeSecondaryNetworkCallback: ConnectivityManager.NetworkCallback? = null
     private const val COOLER_BASE = "/sys/class/leds/aura_inbox"
     private const val AURA_PHONE_BASE = "/sys/class/leds/aura_sync"
     private const val AURA_SIDE_BASE = "/sys/class/leds/aura_sync_side"
@@ -227,27 +219,9 @@ object Rog: EntryStartup {
             }
         }
 
-        // ASUS Stock DBS hardware antenna switch
-        if (mode > 0) {
-            writeToFileNofail("/sys/devices/platform/soc/b0000000.qcom,cnss-qca6490/do_wifi_antenna_switch", "1")
-            Misc.safeSetprop("vendor.asus.netutild.enabled", "1")
-        } else {
-            writeToFileNofail("/sys/devices/platform/soc/b0000000.qcom,cnss-qca6490/do_wifi_antenna_switch", "0")
-        }
-
         kotlin.concurrent.thread {
             val cmdStr = if (mode > 0) {
-                listOf(
-                    "ip link show wifi-aware0 >/dev/null 2>&1 && ip link set dev wifi-aware0 name wlan1",
-                    "ip link set dev wlan1 up",
-                    "service call wifinl80211 2 s16 'wlan1'",
-                    "cmd wifi force-overlay-config-value bool config_wifiMultiStaMultiInternetConcurrencyEnabled enabled true",
-                    "cmd wifi force-overlay-config-value bool config_wifiMultiStaLocalOnlyConcurrencyEnabled enabled true",
-                    "cmd wifi force-overlay-config-value bool config_wifiMultiStaRestrictedConcurrencyEnabled enabled true",
-                    "cmd wifi force-overlay-config-value bool config_wifiMultiStaNetworkSwitchingMakeBeforeBreakEnabled enabled true",
-                    "cmd wifi set-multi-internet-mode $mode",
-                    "cmd wifi set-network-selection-config disabled disabled -a 2"
-                ).joinToString(" && ")
+                "cmd wifi force-overlay-config-value bool config_wifiMultiStaMultiInternetConcurrencyEnabled enabled true && cmd wifi set-multi-internet-mode $mode"
             } else {
                 "cmd wifi set-multi-internet-mode 0"
             }
@@ -266,57 +240,6 @@ object Rog: EntryStartup {
         }
 
         Misc.safeSetprop("persist.sys.rog.dual_wifi_mode", mode.toString())
-
-        // Register / unregister Multi-Internet NetworkRequest
-        if (ctxt != null) {
-            val cm = ctxt.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
-            if (cm != null) {
-                activeSecondaryNetworkCallback?.let {
-                    try { cm.unregisterNetworkCallback(it) } catch (_: Throwable) {}
-                    activeSecondaryNetworkCallback = null
-                }
-
-                if (mode > 0) {
-                    try {
-                        val wm = ctxt.applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager
-                        val primaryFreq = wm?.connectionInfo?.frequency ?: 0
-                        val is5GHz = primaryFreq > 4000
-                        val targetBand = if (is5GHz) ScanResult.WIFI_BAND_24_GHZ else ScanResult.WIFI_BAND_5_GHZ
-                        Log.d("PHH", "Rog: Multi-Internet target band=$targetBand (primary freq=$primaryFreq)")
-
-                        val specifierBuilder = WifiNetworkSpecifier.Builder()
-                        try {
-                            val method = specifierBuilder.javaClass.getMethod("setBand", Int::class.javaPrimitiveType)
-                            method.invoke(specifierBuilder, targetBand)
-                        } catch (t: Throwable) {
-                            Log.w("PHH", "Rog: setBand reflection failed", t)
-                        }
-                        val specifier = specifierBuilder.build()
-
-                        val request = NetworkRequest.Builder()
-                            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-                            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                            .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED)
-                            .setNetworkSpecifier(specifier)
-                            .build()
-
-                        val callback = object : ConnectivityManager.NetworkCallback() {
-                            override fun onAvailable(network: Network) {
-                                Log.i("PHH", "Rog: Multi-Internet secondary network connected: $network")
-                            }
-                            override fun onLost(network: Network) {
-                                Log.w("PHH", "Rog: Multi-Internet secondary network lost: $network")
-                            }
-                        }
-                        activeSecondaryNetworkCallback = callback
-                        cm.requestNetwork(request, callback)
-                        Log.i("PHH", "Rog: ConnectivityManager.requestNetwork registered for Multi-Internet band $targetBand")
-                    } catch (t: Throwable) {
-                        Log.w("PHH", "Rog: Multi-Internet requestNetwork failed", t)
-                    }
-                }
-            }
-        }
     }
 
     private fun applyHyperFusion(sp: SharedPreferences) {
@@ -327,24 +250,10 @@ object Rog: EntryStartup {
         Misc.safeSetprop("vendor.sla.enabled", value)
         Misc.safeSetprop("persist.vendor.sla.enabled", value)
 
-        if (on) {
-            writeToFileNofail("/proc/sla/config", "1")
-            writeToFileNofail("/proc/sla/config", "ports=80,443")
-            writeToFileNofail("/proc/sla/config", "rate_on=1")
-            writeToFileNofail("/proc/sla/config", "max_size=4096")
-        } else {
-            writeToFileNofail("/proc/sla/config", "0")
-        }
-
         kotlin.concurrent.thread {
-            val cmdStr = if (on) {
-                "setprop vendor.sla.enabled 1 && setprop persist.vendor.sla.enabled 1 && start slad-v2 && start netutild_V1.1"
-            } else {
-                "setprop vendor.sla.enabled 0 && setprop persist.vendor.sla.enabled 0 && stop slad-v2 && stop netutild_V1.1"
-            }
             val cmds = listOf(
-                arrayOf("su", "-c", cmdStr),
-                arrayOf("phh-su", "-c", cmdStr)
+                arrayOf("su", "-c", "setprop vendor.sla.enabled $value && setprop persist.vendor.sla.enabled $value"),
+                arrayOf("phh-su", "-c", "setprop vendor.sla.enabled $value && setprop persist.vendor.sla.enabled $value")
             )
             for (cmd in cmds) {
                 try {

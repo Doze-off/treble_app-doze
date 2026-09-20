@@ -170,11 +170,6 @@ class RogSettingsFragment : PreferenceFragment() {
             true
         }
 
-        findPreference("rog_dual_wifi_open")?.setOnPreferenceClickListener {
-            startActivity(Intent(activity, DualWifiActivity::class.java))
-            true
-        }
-
         findPreference(RogSettings.edgeRejectStrength)!!.setOnPreferenceClickListener {
             showEdgeRejectDialog()
             true
