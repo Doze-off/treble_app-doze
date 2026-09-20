@@ -40,17 +40,22 @@
             android:summary="Only takes effect while the AeroActive Cooler 5 is attached"
             android:title="Cooler fan speed" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="X Mode gaming touch">
+    <PreferenceCategory
+        android:title="X Mode gaming touch"
+        android:layout="@layout/preference_category_custom">
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="rog_game_mode"
             android:title="Game mode"
-            android:summary="Puts the touch IC into its game-tuned scan mode" />
+            android:summary="High-rate touch scan mode and CPU scheduler boost for gaming" />
         <ListPreference
+            android:layout="@layout/preference_list_custom"
             android:defaultValue="0"
             android:entries="@array/pref_rog_report_rate"
             android:entryValues="@array/pref_rog_report_rate_values"
             android:key="rog_touch_report_rate"
+            android:summary="Higher rates reduce input latency at the cost of slightly more battery"
             android:title="Touch report rate" />
         <!--
              Was a ListPreference (android.preference, same as touch report
@@ -70,26 +75,31 @@
         <Preference
             android:key="rog_edge_reject_strength"
             android:title="Corner-grip rejection"
-            android:summary="Rejects touches near the edges while gripping the phone in landscape" />
+            android:summary="Suppress accidental edge touches while gripping the phone in landscape" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Charging">
+    <PreferenceCategory
+        android:title="Charging"
+        android:layout="@layout/preference_category_custom">
         <ListPreference
+            android:layout="@layout/preference_list_custom"
             android:defaultValue="0"
             android:entries="@array/pref_rog_charging_limit"
             android:entryValues="@array/pref_rog_charging_limit_values"
             android:key="rog_charging_limit"
-            android:summary="Exact percentage/behavior per level isn't documented by ASUS - trial and error"
+            android:summary="Cap charge current to extend long-term battery health"
             android:title="Charging limit" />
         <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="rog_ultra_battery_life"
-            android:title="Ultra battery life" />
+            android:title="Ultra battery life"
+            android:summary="Limits charging to ~60% for maximum long-term cell longevity" />
         <SwitchPreference
             android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="rog_bypass_charging"
             android:title="Bypass charging"
-            android:summary="Routes wall power directly to board, leaving battery at rest to reduce heat while gaming" />
+            android:summary="Powers the board directly from the adapter while gaming, leaving the battery at rest to reduce heat" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="Dual Wi-Fi &amp; Network Acceleration"
@@ -100,13 +110,13 @@
             android:entries="@array/pref_rog_dual_wifi"
             android:entryValues="@array/pref_rog_dual_wifi_values"
             android:key="rog_dual_wifi_mode"
-            android:summary="Connect concurrently using primary and secondary Wi-Fi interfaces"
+            android:summary="Use both Wi-Fi interfaces simultaneously for lower latency"
             android:title="Dual Wi-Fi mode" />
         <SwitchPreference
             android:layout="@layout/preference_switch_custom"
             android:defaultValue="false"
             android:key="rog_hyperfusion"
-            android:title="HyperFusion acceleration"
-            android:summary="Qualcomm SLA multi-network bonding to minimize gaming latency" />
+            android:title="HyperFusion"
+            android:summary="Bonds Wi-Fi and mobile data to minimise gaming latency (Qualcomm SLA)" />
     </PreferenceCategory>
 </PreferenceScreen>
