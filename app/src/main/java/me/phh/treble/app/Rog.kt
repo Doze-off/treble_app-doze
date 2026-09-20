@@ -32,11 +32,7 @@ import java.util.Locale
 //
 // Also implemented: charging limit / ultra battery life (plain persist.sys.*
 // properties - ASUS's own init.asus.rc does the sysfs write on property
-// change, confirmed from that exact file), bypass charging
-// (/sys/class/asuslib/bypass_stop_charging - plain 0/1 sysfs write, confirmed
-// live on device; routes power directly from adapter to board while gaming so
-// the battery stays at rest rather than cycling charge current) and X Mode
-// gaming touch tuning
+// change, confirmed from that exact file) and X Mode gaming touch tuning
 // (game mode, touch report rate, corner-grip rejection - a sysfs attribute
 // group on the FocalTech touch IC itself, drivers/input/touchscreen/ROG5_TP/
 // asus/asus_game.c, confirmed live at
@@ -145,11 +141,6 @@ object Rog: EntryStartup {
         val value = if (on) "1" else "0"
         writeToFileNofail("$TOUCH_IC_BASE/fts_game_mode", value)
         Misc.safeSetprop("vendor.asus.gamingtype", value)
-        // Raise the kernel's global scheduler boost so the touch IC's
-        // 300/560 Hz scan rate isn't starved by competing background work.
-        // /proc/sys/kernel/sched_boost is confirmed present on this kernel;
-        // writeToFileNofail silently skips it on kernels that lack it.
-        writeToFileNofail("/proc/sys/kernel/sched_boost", value)
     }
 
     private fun applyTouchReportRate(sp: SharedPreferences) {
@@ -181,17 +172,6 @@ object Rog: EntryStartup {
         Misc.safeSetprop("persist.sys.charginglimit", limit)
         val ultra = sp.getBoolean(RogSettings.ultraBatteryLife, false)
         Misc.safeSetprop("persist.sys.ultrabatterylife", if (ultra) "1" else "0")
-    }
-
-    private fun applyBypassCharging(sp: SharedPreferences) {
-        // Bypass charging routes wall power directly to the board while gaming,
-        // leaving the battery at rest (neither charging nor discharging). This
-        // reduces heat under sustained load - the same mode ASUS's own Armoury
-        // Crate exposes as "Bypass Charging". Confirmed on device:
-        // echo 1 > /sys/class/asuslib/bypass_stop_charging  → 1 read-back ✓
-        // echo 0 > /sys/class/asuslib/bypass_stop_charging  → 0 read-back ✓
-        val on = sp.getBoolean(RogSettings.bypassCharging, false)
-        writeToFileNofail("/sys/class/asuslib/bypass_stop_charging", if (on) "1" else "0")
     }
 
     private fun applyDualWifi(sp: SharedPreferences) {
@@ -284,7 +264,6 @@ object Rog: EntryStartup {
             RogSettings.touchReportRate -> applyTouchReportRate(sp)
             RogSettings.edgeRejectStrength -> applyEdgeReject(sp)
             RogSettings.chargingLimit, RogSettings.ultraBatteryLife -> applyCharging(sp)
-            RogSettings.bypassCharging -> applyBypassCharging(sp)
             RogSettings.dualWifiMode -> applyDualWifi(sp)
             RogSettings.hyperFusion -> applyHyperFusion(sp)
         }
@@ -312,7 +291,6 @@ object Rog: EntryStartup {
         applyTouchReportRate(sp)
         applyEdgeReject(sp)
         applyCharging(sp)
-        applyBypassCharging(sp)
         applyDualWifi(sp)
         applyHyperFusion(sp)
     }
