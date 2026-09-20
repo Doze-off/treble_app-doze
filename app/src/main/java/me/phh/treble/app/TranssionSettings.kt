@@ -20,7 +20,6 @@ import androidx.core.view.updatePadding
 object TranssionSettings : Settings {
     val usbOtg = "key_transsion_usb_otg"
     val dt2w = "key_transsion_dt2w"
-    val udfpsHbm = "key_transsion_udfps_hbm"
 
     override fun enabled(context: Context): Boolean {
         val isTranssion = Tools.vendorFp.startsWith("Infinix/") ||

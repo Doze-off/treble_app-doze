@@ -408,9 +408,4 @@
 
     <string name="sf_disable_backpressure_title">Disable Backpressure</string>
     <string name="sf_disable_backpressure_summary">Disables SurfaceFlinger backpressure propagation to improve responsiveness.</string>
-
-    <!-- ROG Dual Wi-Fi & Network Acceleration -->
-    <string name="dual_wifi_title">Network Acceleration Hub</string>
-    <string name="dual_wifi_summary">Hardware bonding for Dual Wi-Fi &amp; Mobile Data (Qualcomm DBS/SLA)</string>
-    <string name="hint_password">Wi-Fi Password</string>
 </resources>
