@@ -61,6 +61,7 @@ import java.util.Locale
 // were found, and keymapping_touch isn't a meaningful toggle without a
 // zone-assignment UI - both need more work than a simple sysfs write.
 object Rog: EntryStartup {
+    private var appCtxt: Context? = null
     private const val COOLER_BASE = "/sys/class/leds/aura_inbox"
     private const val AURA_PHONE_BASE = "/sys/class/leds/aura_sync"
     private const val AURA_SIDE_BASE = "/sys/class/leds/aura_sync_side"
@@ -137,7 +138,9 @@ object Rog: EntryStartup {
 
     private fun applyGameMode(sp: SharedPreferences) {
         val on = sp.getBoolean(RogSettings.gameMode, false)
-        writeToFileNofail("$TOUCH_IC_BASE/fts_game_mode", if (on) "1" else "0")
+        val value = if (on) "1" else "0"
+        writeToFileNofail("$TOUCH_IC_BASE/fts_game_mode", value)
+        Misc.safeSetprop("vendor.asus.gamingtype", value)
     }
 
     private fun applyTouchReportRate(sp: SharedPreferences) {
@@ -171,6 +174,78 @@ object Rog: EntryStartup {
         Misc.safeSetprop("persist.sys.ultrabatterylife", if (ultra) "1" else "0")
     }
 
+    private fun applyDualWifi(sp: SharedPreferences) {
+        val modeStr = sp.getString(RogSettings.dualWifiMode, "0") ?: "0"
+        val mode = modeStr.toIntOrNull()?.coerceIn(0, 2) ?: 0
+        Log.d("PHH", "Rog: applying dual Wi-Fi mode $mode")
+
+        val ctxt = appCtxt
+        if (ctxt != null) {
+            try {
+                val wm = ctxt.applicationContext.getSystemService(Context.WIFI_SERVICE)
+                if (wm != null) {
+                    val method = wm.javaClass.getMethod("setStaConcurrencyForMultiInternetMode", Int::class.javaPrimitiveType)
+                    val res = method.invoke(wm, mode)
+                    Log.d("PHH", "Rog: WifiManager.setStaConcurrencyForMultiInternetMode($mode) = $res")
+                }
+            } catch (t: Throwable) {
+                Log.d("PHH", "Rog: reflection setStaConcurrencyForMultiInternetMode failed", t)
+            }
+
+            try {
+                android.provider.Settings.Global.putInt(ctxt.contentResolver, "wifi_multi_internet_mode", mode)
+            } catch (t: Throwable) {
+                Log.d("PHH", "Rog: putInt wifi_multi_internet_mode failed", t)
+            }
+        }
+
+        kotlin.concurrent.thread {
+            val cmdStr = if (mode > 0) {
+                "cmd wifi force-overlay-config-value bool config_wifiMultiStaMultiInternetConcurrencyEnabled enabled true && cmd wifi set-multi-internet-mode $mode"
+            } else {
+                "cmd wifi set-multi-internet-mode 0"
+            }
+            val cmds = listOf(
+                arrayOf("su", "-c", cmdStr),
+                arrayOf("phh-su", "-c", cmdStr)
+            )
+            for (cmd in cmds) {
+                try {
+                    Runtime.getRuntime().exec(cmd).waitFor()
+                    break
+                } catch (t: Throwable) {
+                    Log.d("PHH", "Rog: failed exec " + cmd.joinToString(" "), t)
+                }
+            }
+        }
+
+        Misc.safeSetprop("persist.sys.rog.dual_wifi_mode", mode.toString())
+    }
+
+    private fun applyHyperFusion(sp: SharedPreferences) {
+        val on = sp.getBoolean(RogSettings.hyperFusion, false)
+        val value = if (on) "1" else "0"
+        Log.d("PHH", "Rog: applying HyperFusion SLA enabled=$value")
+
+        Misc.safeSetprop("vendor.sla.enabled", value)
+        Misc.safeSetprop("persist.vendor.sla.enabled", value)
+
+        kotlin.concurrent.thread {
+            val cmds = listOf(
+                arrayOf("su", "-c", "setprop vendor.sla.enabled $value && setprop persist.vendor.sla.enabled $value"),
+                arrayOf("phh-su", "-c", "setprop vendor.sla.enabled $value && setprop persist.vendor.sla.enabled $value")
+            )
+            for (cmd in cmds) {
+                try {
+                    Runtime.getRuntime().exec(cmd).waitFor()
+                    break
+                } catch (t: Throwable) {
+                    Log.d("PHH", "Rog: failed exec " + cmd.joinToString(" "), t)
+                }
+            }
+        }
+    }
+
     val spListener = SharedPreferences.OnSharedPreferenceChangeListener { sp, key ->
         when (key) {
             RogSettings.auraEnable, RogSettings.auraRed, RogSettings.auraGreen, RogSettings.auraBlue ->
@@ -189,12 +264,15 @@ object Rog: EntryStartup {
             RogSettings.touchReportRate -> applyTouchReportRate(sp)
             RogSettings.edgeRejectStrength -> applyEdgeReject(sp)
             RogSettings.chargingLimit, RogSettings.ultraBatteryLife -> applyCharging(sp)
+            RogSettings.dualWifiMode -> applyDualWifi(sp)
+            RogSettings.hyperFusion -> applyHyperFusion(sp)
         }
     }
 
     override fun startup(ctxt: Context) {
         if (!RogSettings.enabled(ctxt)) return
         Log.d("PHH", "Starting Rog service")
+        appCtxt = ctxt.applicationContext
         val sp = PreferenceManager.getDefaultSharedPreferences(ctxt)
         sp.registerOnSharedPreferenceChangeListener(spListener)
 
@@ -213,6 +291,8 @@ object Rog: EntryStartup {
         applyTouchReportRate(sp)
         applyEdgeReject(sp)
         applyCharging(sp)
+        applyDualWifi(sp)
+        applyHyperFusion(sp)
     }
 
     // Re-applies the persisted base "Screen on" color/mode/speed to the

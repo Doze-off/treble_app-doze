@@ -85,4 +85,22 @@
             android:key="rog_ultra_battery_life"
             android:title="Ultra battery life" />
     </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Dual Wi-Fi &amp; Network Acceleration"
+        android:layout="@layout/preference_category_custom">
+        <ListPreference
+            android:layout="@layout/preference_list_custom"
+            android:defaultValue="0"
+            android:entries="@array/pref_rog_dual_wifi"
+            android:entryValues="@array/pref_rog_dual_wifi_values"
+            android:key="rog_dual_wifi_mode"
+            android:summary="Connect concurrently using primary and secondary Wi-Fi interfaces"
+            android:title="Dual Wi-Fi mode" />
+        <SwitchPreference
+            android:layout="@layout/preference_switch_custom"
+            android:defaultValue="false"
+            android:key="rog_hyperfusion"
+            android:title="HyperFusion acceleration"
+            android:summary="Qualcomm SLA multi-network bonding to minimize gaming latency" />
+    </PreferenceCategory>
 </PreferenceScreen>
