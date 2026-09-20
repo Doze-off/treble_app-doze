@@ -206,24 +206,16 @@ object RogEvents : EntryStartup {
         if (!RogSettings.enabled(ctxt)) return
         appContext = ctxt
 
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val handler = Handler(HandlerThread("RogEventsThread").apply { start() }.looper)
-                val tm = ctxt.getSystemService(TelephonyManager::class.java)
-                tm.registerTelephonyCallback({ r -> handler.post(r) }, telephonyCallback)
-            }
-        } catch (t: Throwable) {
-            Log.d("PHH", "RogEvents: failed registering telephony callback", t)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val handler = Handler(HandlerThread("RogEventsThread").apply { start() }.looper)
+            val tm = ctxt.getSystemService(TelephonyManager::class.java)
+            tm.registerTelephonyCallback({ r -> handler.post(r) }, telephonyCallback)
         }
 
-        try {
-            ctxt.registerReceiver(chargingReceiver, IntentFilter().apply {
-                addAction(Intent.ACTION_POWER_CONNECTED)
-                addAction(Intent.ACTION_POWER_DISCONNECTED)
-            })
-        } catch (t: Throwable) {
-            Log.d("PHH", "RogEvents: failed registering charging receiver", t)
-        }
+        ctxt.registerReceiver(chargingReceiver, IntentFilter().apply {
+            addAction(Intent.ACTION_POWER_CONNECTED)
+            addAction(Intent.ACTION_POWER_DISCONNECTED)
+        })
 
         Log.d("PHH", "RogEvents started")
     }
