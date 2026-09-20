@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#0A0A0A">
+    android:background="#00060D">
 
     <!-- Header: back arrow / title / reset-to-defaults, ROG-style red accents -->
     <LinearLayout
@@ -21,7 +21,7 @@
             android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back"
-            app:tint="#FF1F3C" />
+            app:tint="#FF0029" />
 
         <TextView
             android:layout_width="0dp"
@@ -29,7 +29,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="AURA SYNC RGB"
-            android:textColor="#FF1F3C"
+            android:textColor="#FF0029"
             android:textStyle="bold"
             android:letterSpacing="0.08"
             android:textSize="18sp" />
@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:trackTint="#33FFFFFF"
-                    app:thumbTint="#FF1F3C" />
+                    app:thumbTint="#FF0029" />
             </LinearLayout>
 
             <!-- Color wheel with live preview readout in the center -->
@@ -121,9 +121,10 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <!-- Effect mode - dropdown-style row (raw index; ASUS never
-                 documented what each does, so labels stay numeric - see
-                 AuraSyncActivity's header comment) -->
+            <!-- Effect mode - dropdown-style row. Names (Off/Static/
+                 Breathing/Strobing/Color Cycle) are confirmed from ASUS's
+                 own real Aura Sync software - see AuraSyncActivity's
+                 header comment. -->
             <LinearLayout
                 android:id="@+id/modeRow"
                 android:layout_width="match_parent"
@@ -147,8 +148,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
-                    android:text="Mode 0"
-                    android:textColor="#FF1F3C"
+                    android:text="Off"
+                    android:textColor="#FF0029"
                     android:textSize="15sp" />
 
                 <ImageView
@@ -159,7 +160,28 @@
                     app:tint="#AAAAAA" />
             </LinearLayout>
 
-            <!-- Brightness (HSV "value") -->
+            <!-- Saturation -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Saturation"
+                android:textColor="#EEEEEE"
+                android:textSize="15sp" />
+            <com.google.android.material.slider.Slider
+                android:id="@+id/sliderSaturation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:valueFrom="0"
+                android:valueTo="100"
+                android:stepSize="1"
+                app:trackColorActive="#FF0029"
+                app:thumbColor="#FF0029"
+                app:trackColorInactive="#33FFFFFF" />
+
+            <!-- Brightness (HSV "value"). Floor of 15 (not 0) matches
+                 ASUS's own brightness control minimum in their real
+                 Aura Sync software - going below that is likely below
+                 the MCU's visible floor. -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -170,11 +192,11 @@
                 android:id="@+id/sliderBrightness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:valueFrom="0"
+                android:valueFrom="15"
                 android:valueTo="100"
                 android:stepSize="1"
-                app:trackColorActive="#FF1F3C"
-                app:thumbColor="#FF1F3C"
+                app:trackColorActive="#FF0029"
+                app:thumbColor="#FF0029"
                 app:trackColorInactive="#33FFFFFF" />
 
             <!-- Rate - wired to the MCU's real "speed" register (0/1/2 =
