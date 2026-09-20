@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0A0A0A">
+
+    <!-- Header: back arrow / title / reset-to-defaults, ROG-style red accents -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="12dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="#FF1F3C" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="AURA SYNC RGB"
+            android:textColor="#FF1F3C"
+            android:textStyle="bold"
+            android:letterSpacing="0.08"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/btnReset"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_system_update"
+            app:tint="#AAAAAA" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="32dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Enable -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Screen on"
+                    android:textColor="#EEEEEE"
+                    android:textSize="15sp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchEnable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:trackTint="#33FFFFFF"
+                    app:thumbTint="#FF1F3C" />
+            </LinearLayout>
+
+            <!-- Color wheel with live preview readout in the center -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="280dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+
+                <me.phh.treble.app.ColorWheelView
+                    android:id="@+id/colorWheel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/bg_wheel_center"
+                    android:padding="18dp">
+
+                    <View
+                        android:id="@+id/centerSwatch"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_color_preview" />
+
+                    <TextView
+                        android:id="@+id/hexLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="monospace"
+                        android:textColor="#EEEEEE"
+                        android:textSize="13sp"
+                        android:text="#FFFFFF" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- Effect mode - dropdown-style row (raw index; ASUS never
+                 documented what each does, so labels stay numeric - see
+                 AuraSyncActivity's header comment) -->
+            <LinearLayout
+                android:id="@+id/modeRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_rog_row"
+                android:padding="14dp"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Effect mode"
+                    android:textColor="#EEEEEE"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/modeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="Mode 0"
+                    android:textColor="#FF1F3C"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:rotation="270"
+                    app:tint="#AAAAAA" />
+            </LinearLayout>
+
+            <!-- Brightness (HSV "value") -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Brightness"
+                android:textColor="#EEEEEE"
+                android:textSize="15sp" />
+            <com.google.android.material.slider.Slider
+                android:id="@+id/sliderBrightness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:valueFrom="0"
+                android:valueTo="100"
+                android:stepSize="1"
+                app:trackColorActive="#FF1F3C"
+                app:thumbColor="#FF1F3C"
+                app:trackColorInactive="#33FFFFFF" />
+
+            <!-- Rate - wired to the MCU's real "speed" register (0/1/2 =
+                 presumed slow/medium/fast; the driver's own two other valid
+                 codes, 254/255, aren't exposed here since their meaning
+                 isn't documented anywhere) -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Rate"
+                android:textColor="#EEEEEE"
+                android:textSize="15sp" />
+            <com.google.android.material.slider.Slider
+                android:id="@+id/sliderRate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:valueFrom="0"
+                android:valueTo="2"
+                android:stepSize="1"
+                app:trackColorActive="#4D9FFF"
+                app:thumbColor="#4D9FFF"
+                app:trackColorInactive="#33FFFFFF" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Slow"
+                    android:textColor="#888888"
+                    android:textSize="12sp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Medium"
+                    android:textColor="#888888"
+                    android:textSize="12sp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="Fast"
+                    android:textColor="#888888"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Presets -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Presets"
+                android:textColor="#EEEEEE"
+                android:textSize="15sp" />
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:paddingTop="8dp">
+
+                <LinearLayout
+                    android:id="@+id/presetRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

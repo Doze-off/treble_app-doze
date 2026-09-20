@@ -127,6 +127,12 @@
         </activity>
 
         <activity
+            android:name=".AuraSyncActivity"
+            android:label="Aura Sync RGB"
+            android:theme="@style/Theme.TrebleApp"
+            android:exported="false" />
+
+        <activity
             android:name=".UpdaterActivity"
             android:label="@string/title_activity_updater"
             android:theme="@style/Theme.TrebleApp"
