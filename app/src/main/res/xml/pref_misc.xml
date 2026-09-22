@@ -103,59 +103,197 @@
             android:summary="@string/displaysamsung_3s" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="Codec Settings"
-        android:layout="@layout/preference_category_custom">
+<PreferenceCategory
+    android:title="Codec Settings"
+    android:layout="@layout/preference_category_custom">
 
-        <Preference
-            android:layout="@layout/preference_custom"
-            android:selectable="false"
-            android:title="⚠️ Important: Use only ONE codec mode at a time"
-            android:summary="Enable only ONE option below. After changing, you MUST reboot before trying another mode. Using multiple modes simultaneously will cause conflicts and may break video recording or screen recording. Start with 'Prefer hardware codecs' (default) and only change if you have issues." />
+    <Preference
+        android:layout="@layout/preference_custom"
+        android:selectable="false"
+        android:title="⚠️ Important: Use only ONE codec mode at a time"
+        android:summary="Enable only ONE option below. After changing, you MUST reboot before trying another mode. Using multiple modes simultaneously will cause conflicts and may break video recording or screen recording. Start with 'Prefer hardware codecs' (default) and only change if you have issues." />
 
-        <SwitchPreference
-            android:layout="@layout/preference_switch_custom"
-            android:defaultValue="false"
-            android:key="key_misc_prefer_hw_codecs"
-            android:title="Prefer hardware codecs (Recommended)"
-            android:summary="✅ BEST FOR PERFORMANCE - Default mode for most devices\n\nUses vendor hardware codecs for video recording and playback:\n• Lowest CPU usage and best battery life\n• Fastest encoding/decoding speed\n• Hardware-accelerated by SoC DSP\n• Default mode - try this first\n\n⚠️ Enable ONLY this option, then reboot\n❌ Disable all other codec modes\n\nPerformance: ⭐⭐⭐⭐⭐ | Battery: Excellent | CPU: Low" />
+    <SwitchPreference
+        android:layout="@layout/preference_switch_custom"
+        android:defaultValue="false"
+        android:key="key_misc_prefer_hw_codecs"
+        android:title="Prefer hardware codecs (Recommended)"
+        android:summary="✅ BEST FOR PERFORMANCE - Default mode for most devices
 
-        <SwitchPreference
-            android:layout="@layout/preference_switch_custom"
-            android:defaultValue="false"
-            android:key="key_misc_force_sw_codecs"
-            android:title="Force software codecs"
-            android:summary="⚠️ USE ONLY IF HW CODECS FAIL - Higher CPU usage\n\nUses software/OMX codecs instead of hardware:\n• Higher CPU usage and battery drain\n• Slower encoding but more compatible\n• Use c2.android.* software codecs\n• Fallback for buggy hardware codecs\n\n⚠️ Steps:\n1. Disable 'Prefer hardware codecs'\n2. Enable this option\n3. REBOOT immediately\n4. Test video recording\n\nEnable ONLY if:\n• Video recording crashes or hangs\n• Corrupted video files\n• Audio/video sync issues\n\nPerformance: ⭐⭐⭐ | Battery: Fair | CPU: High" />
+Uses vendor hardware codecs for video recording and playback:
+• Lowest CPU usage and best battery life
+• Fastest encoding/decoding speed
+• Hardware-accelerated by SoC DSP
+• Default mode - try this first
 
-        <SwitchPreference
-            android:layout="@layout/preference_switch_custom"
-            android:defaultValue="false"
-            android:key="key_misc_fix_screen_recorder"
-            android:title="Fix screen recorder"
-            android:summary="⚠️ FOR SCREEN RECORDING ISSUES ONLY\n\nCompatibility mode for screen recording:\n• Prioritizes software codecs for input surface\n• Balanced C2 + OMX configuration\n• Fixes black screen or crashes\n• Intermediate OMX rank (256)\n\n⚠️ Steps:\n1. Disable all other codec modes\n2. Enable this option\n3. REBOOT immediately\n4. Test screen recording\n\nEnable if:\n• Screen recorder shows black screen\n• Screen recorder crashes on start\n• Recording stops unexpectedly\n\nPerformance: ⭐⭐⭐⭐ | Battery: Good | CPU: Medium" />
+⚠️ Enable ONLY this option, then reboot
+❌ Disable all other codec modes
 
-        <SwitchPreference
-            android:layout="@layout/preference_switch_custom"
-            android:defaultValue="false"
-            android:key="key_misc_max_compatibility"
-            android:title="Max compatibility mode"
-            android:summary="⚠️ BALANCED MODE - For older or problematic devices\n\nMaximum codec compatibility:\n• C2 + OMX work together\n• OMX preferred but C2 available\n• Good for Android 10 or older\n• Fallback for buggy C2\n\n⚠️ Steps:\n1. Disable all other codec modes\n2. Enable this option\n3. REBOOT immediately\n4. Test recording\n\nEnable if:\n• Video recording fails with other modes\n• Screen recorder unstable\n• Old device with codec issues\n• Android 10 or older\n\nPerformance: ⭐⭐⭐ | Battery: Fair | CPU: Medium-High" />
+Performance: ⭐⭐⭐⭐⭐ | Battery: Excellent | CPU: Low" />
 
-        <SwitchPreference
-            android:layout="@layout/preference_switch_custom"
-            android:defaultValue="false"
-            android:key="key_misc_legacy_mode"
-            android:title="Legacy mode (Android 9 or less)"
-            android:summary="⚠️ FOR ANDROID 9 OR BOOTLOOPS ONLY - Last resort\n\nDisables Codec2 completely:\n• Only OMX codecs available\n• Slowest mode, highest CPU usage\n• For Android 9 or older devices\n• Use if C2 causes bootloop/crash\n\n⚠️ Steps:\n1. Disable all other codec modes\n2. Enable this option\n3. REBOOT immediately\n4. Test device stability\n\nEnable ONLY if:\n• Android 9 or older\n• C2 causes bootloop\n• System crashes with C2\n• All other modes fail\n\nWARNING: Avoid unless necessary!\nPerformance: ⭐⭐ | Battery: Poor | CPU: High" />
+    <SwitchPreference
+        android:layout="@layout/preference_switch_custom"
+        android:defaultValue="false"
+        android:key="key_misc_force_sw_codecs"
+        android:title="Force software codecs"
+        android:summary="⚠️ USE ONLY IF HW CODECS FAIL - Higher CPU usage
 
-        <SwitchPreference
-            android:layout="@layout/preference_switch_custom"
-            android:defaultValue="false"
-            android:key="key_misc_max_performance"
-            android:title="Max performance mode"
-            android:summary="⚠️ MAXIMUM PERFORMANCE - For Android 11+ with stable C2\n\nPrioritizes C2 hardware codecs above all:\n• C2 hardware codecs always first\n• OMX as last resort only (rank 1024)\n• Maximum encoding speed\n• Best battery efficiency\n• Lowest CPU usage\n\n⚠️ Steps:\n1. Disable all other codec modes\n2. Enable this option\n3. REBOOT immediately\n4. Test recording\n\nEnable ONLY if:\n• Android 11 or newer\n• C2 implementation is stable\n• You want maximum performance\n• Video recording works perfectly\n\nWARNING: May cause compatibility issues on older devices!\nPerformance: ⭐⭐⭐⭐⭐ | Battery: Best | CPU: Lowest" />
-    </PreferenceCategory>
+Uses software/OMX codecs instead of hardware:
+• Higher CPU usage and battery drain
+• Slower encoding but more compatible
+• Use c2.android.* software codecs
+• Fallback for buggy hardware codecs
 
+⚠️ Steps:
+1. Disable 'Prefer hardware codecs'
+2. Enable this option
+3. REBOOT immediately
+4. Test video recording
+
+Enable ONLY if:
+• Video recording crashes or hangs
+• Corrupted video files
+• Audio/video sync issues
+
+Performance: ⭐⭐⭐ | Battery: Fair | CPU: High" />
+
+    <SwitchPreference
+        android:layout="@layout/preference_switch_custom"
+        android:defaultValue="false"
+        android:key="key_misc_fix_screen_recorder"
+        android:title="Fix screen recorder"
+        android:summary="⚠️ FOR SCREEN RECORDING ISSUES ONLY
+
+Compatibility mode for screen recording:
+• Prioritizes software codecs for input surface
+• Balanced C2 + OMX configuration
+• Fixes black screen or crashes
+• Intermediate OMX rank (256)
+
+⚠️ Steps:
+1. Disable all other codec modes
+2. Enable this option
+3. REBOOT immediately
+4. Test screen recording
+
+Enable if:
+• Screen recorder shows black screen
+• Screen recorder crashes on start
+• Recording stops unexpectedly
+
+Performance: ⭐⭐⭐⭐ | Battery: Good | CPU: Medium" />
+
+    <SwitchPreference
+        android:layout="@layout/preference_switch_custom"
+        android:defaultValue="false"
+        android:key="key_misc_max_compatibility"
+        android:title="Max compatibility mode"
+        android:summary="⚠️ BALANCED MODE - For older or problematic devices
+
+Maximum codec compatibility:
+• C2 + OMX work together
+• OMX preferred but C2 available
+• Good for Android 10 or older
+• Fallback for buggy C2
+
+⚠️ Steps:
+1. Disable all other codec modes
+2. Enable this option
+3. REBOOT immediately
+4. Test recording
+
+Enable if:
+• Video recording fails with other modes
+• Screen recorder unstable
+• Old device with codec issues
+• Android 10 or older
+
+Performance: ⭐⭐⭐ | Battery: Fair | CPU: Medium-High" />
+
+    <SwitchPreference
+        android:layout="@layout/preference_switch_custom"
+        android:defaultValue="false"
+        android:key="key_misc_legacy_mode"
+        android:title="Legacy mode (Android 9 or less)"
+        android:summary="⚠️ FOR ANDROID 9 OR BOOTLOOPS ONLY - Last resort
+
+Disables Codec2 completely:
+• Only OMX codecs available
+• Slowest mode, highest CPU usage
+• For Android 9 or older devices
+• Use if C2 causes bootloop/crash
+
+⚠️ Steps:
+1. Disable all other codec modes
+2. Enable this option
+3. REBOOT immediately
+4. Test device stability
+
+Enable ONLY if:
+• Android 9 or older
+• C2 causes bootloop
+• System crashes with C2
+• All other modes fail
+
+WARNING: Avoid unless necessary!
+Performance: ⭐⭐ | Battery: Poor | CPU: High" />
+
+    <SwitchPreference
+        android:layout="@layout/preference_switch_custom"
+        android:defaultValue="false"
+        android:key="key_misc_max_performance"
+        android:title="Max performance mode"
+        android:summary="⚠️ MAXIMUM PERFORMANCE - For Android 11+ with stable C2
+
+Prioritizes C2 hardware codecs above all:
+• C2 hardware codecs always first
+• OMX as last resort only (rank 1024)
+• Maximum encoding speed
+• Best battery efficiency
+• Lowest CPU usage
+
+⚠️ Steps:
+1. Disable all other codec modes
+2. Enable this option
+3. REBOOT immediately
+4. Test recording
+
+Enable ONLY if:
+• Android 11 or newer
+• C2 implementation is stable
+• You want maximum performance
+• Video recording works perfectly
+
+WARNING: May cause compatibility issues on older devices!
+Performance: ⭐⭐⭐⭐⭐ | Battery: Best | CPU: Lowest" />
+
+    <SwitchPreference
+        android:layout="@layout/preference_switch_custom"
+        android:defaultValue="false"
+        android:key="key_misc_c2inputsurface_omx"
+        android:title="C2 Input Surface OMX Workaround"
+        android:summary="⚠️ FOR SPECIFIC DEVICES ONLY - Advanced troubleshooting
+
+Forces OMX input surface path (skips Codec2 entirely):
+• Use ONLY if video recording or screen recorder fails with all modes above
+• This option CAN be enabled together with other codec modes
+• Unlike other options, this does NOT conflict with them
+• Default system behavior uses -1 (automatic), this sets to 0 (OMX only)
+
+⚠️ When to use:
+• You tried all codec modes above and still have issues
+• Video recording crashes or produces corrupted files
+• Screen recorder shows black screen
+• Other users with your device model report this fixes the issue
+
+⚠️ Steps:
+1. Try all codec modes above first
+2. If none work, enable this option
+3. No reboot required - applies instantly
+4. Test video/screen recording
+
+Performance: Same as selected codec mode | Compatibility: ⭐⭐⭐⭐⭐ for buggy Codec2 HALs" />
+</PreferenceCategory>
     <PreferenceCategory
         android:title="@string/oneplus_display"
         android:layout="@layout/preference_category_custom">
