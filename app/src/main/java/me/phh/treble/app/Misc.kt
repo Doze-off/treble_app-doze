@@ -157,5 +157,6 @@ object Misc: EntryStartup {
         spListener.onSharedPreferenceChanged(sp, MiscSettings.maxCompatibility)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.legacyMode)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.maxPerformance)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.c2InputSurfaceOmx)
     }
 }
