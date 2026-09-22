@@ -31,6 +31,7 @@ object MiscSettings : Settings {
     val maxCompatibility = "key_misc_max_compatibility"
     val legacyMode = "key_misc_legacy_mode"
     val maxPerformance = "key_misc_max_performance"
+    val c2InputSurfaceOmx = "key_misc_c2inputsurface_omx"
     val bluetoothFix =  "key_misc_bluetooth_fix"
     val unisocColorTransform = "key_misc_unisoc_color_transform"
     val axionProps = "key_misc_axion_props"
