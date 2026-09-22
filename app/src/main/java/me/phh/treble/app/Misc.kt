@@ -86,6 +86,10 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.max_performance", if (value) "true" else "false")
             }
+            MiscSettings.c2InputSurfaceOmx -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.c2inputsurface_omx", if (value) "true" else "false")
+            }
             MiscSettings.bluetoothFix -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.bluetooth_fix", if (value) "true" else "false")
