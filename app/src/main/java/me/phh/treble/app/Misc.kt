@@ -90,6 +90,10 @@ object Misc: EntryStartup {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.c2inputsurface_omx", if (value) "true" else "false")
             }
+            MiscSettings.unisocReelsFix -> {
+                val value = sp.getBoolean(key, false)
+                SystemProperties.set("persist.sys.phh.unisoc_reels_fix", if (value) "true" else "false")
+            }
             MiscSettings.bluetoothFix -> {
                 val value = sp.getBoolean(key, false)
                 SystemProperties.set("persist.sys.phh.bluetooth_fix", if (value) "true" else "false")
@@ -158,5 +162,6 @@ object Misc: EntryStartup {
         spListener.onSharedPreferenceChanged(sp, MiscSettings.legacyMode)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.maxPerformance)
         spListener.onSharedPreferenceChanged(sp, MiscSettings.c2InputSurfaceOmx)
+        spListener.onSharedPreferenceChanged(sp, MiscSettings.unisocReelsFix)
     }
 }
